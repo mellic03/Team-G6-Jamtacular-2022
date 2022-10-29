@@ -10,9 +10,10 @@ let player1;
 let p;
 let player_pos;
 let move;
-let speed;
+let speed = 1.2;
 
-let up, left, down, right;
+let px = 0,
+	py = 0;
 
 // Test
 let sc = [100, 200, 0];
@@ -41,24 +42,34 @@ class Player {
 
 		player_pos = p.position;
 
-		if (keyIsDown(UP) == true) up = true;
-		else up = false;
-		if (keyIsDown(DOWN) == true) down = true;
-		else down = false;
-		if (keyIsDown(LEFT) == true) left = true;
-		else left = false;
-		if (keyIsDown(RIGHT) == true) right = true;
-		else right = false;
+		if (px <= 1 && px >= -1) {
+			px = 0;
+		} else {
+			if (px > 0) px -= 0.5;
+			if (px < 0) px += 0.5;
+		}
+		if (py <= 1 && py >= -1) {
+			py = 0;
+		} else {
+			if (py > 0) py -= 0.5;
+			if (py < 0) py += 0.5;
+		}
 
+		if (keyIsDown(UP) == true && py > -speed * 2) py -= speed;
+		if (keyIsDown(DOWN) == true && py < speed * 2) py += speed;
+		if (keyIsDown(LEFT) == true && px > -speed * 2) px -= speed;
+		if (keyIsDown(RIGHT) == true && px < speed * 2) px += speed;
 
+		p.setVelocity(px, py);
 
 		this.playerOutOfBounds();
 	}
 
 	playerOutOfBounds() {
-
-
-
+		if (player_pos.x < this.w / 2) player_pos.x = this.w / 2;
+		if (player_pos.x > width - this.w / 2) player_pos.x = width - this.w / 2;
+		if (player_pos.y < this.h / 2) player_pos.y = this.h / 2;
+		if (player_pos.y > height - this.h / 2) player_pos.y = height - this.h / 2;
 	}
 
 	playerAnim() {
