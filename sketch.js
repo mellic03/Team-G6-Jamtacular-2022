@@ -4,6 +4,6 @@ function setup() {
 
 function draw() {
   background(220);
-  square(10,10,10,10);
+  square(100,100,100,100)
   console.log("Hello this is Geet");
 }
