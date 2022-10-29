@@ -15,8 +15,22 @@ let speed = 1.2;
 let px = 0,
 	py = 0;
 
+// Player Spritesheet
+let player_idle_sprites;
+let player_idle_anim;
+let player_run_sprites;
+let player_run_anim;
+
+
 // Test
 let sc = [100, 200, 0];
+
+function preload() {
+	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 24, 48, 4);
+	player_idle_anim = loadAnimation(player_idle_sprites);
+	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 30, 48, 6);
+	player_run_anim = loadAnimation(player_run_sprites);
+}
 
 class Player {
 
@@ -28,6 +42,9 @@ class Player {
 
 		p = createSprite(this.x, this.y, this.w, this.h);
 		p.shapeColor = sc;
+		p.scale = 2;
+		p.addAnimation('player_idle', player_idle_anim);
+		p.addAnimation('player_run', player_run_anim);
 
 	}
 
@@ -74,7 +91,8 @@ class Player {
 
 	playerAnim() {
 
-
+		if (px == 0 && py == 0) p.changeAnimation('player_idle');
+		else p.changeAnimation('player_run');
 
 	}
 
