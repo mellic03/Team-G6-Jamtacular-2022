@@ -6,7 +6,7 @@ const DOWN = 40;
 const SPACE = 32;
 
 // Player Variables
-let player;
+let player1;
 let p;
 let player_pos;
 let move;
@@ -33,6 +33,7 @@ class Player {
 	playerSystem() {
 
 		this.move();
+		this.playerAnim();
 	}
 
 
@@ -55,6 +56,12 @@ class Player {
 	}
 
 	playerOutOfBounds() {
+
+
+
+	}
+
+	playerAnim() {
 
 
 
