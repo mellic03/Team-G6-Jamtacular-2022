@@ -1,4 +1,3 @@
-/// <reference path="../lib/p5.js" />
 
 function MIN(a, b) {
   return a<b ? a : b;
