@@ -34,13 +34,13 @@ class EnemyHandler {
     else {
 
       console.log(`%cERROR: enemy does not fit enemy specification`, "color: red;");
-      for (let error of validity)
-        console.log(`REASON: ${error}`);
+      for (let reason of validity)
+        console.log(`REASON: ${reason}`);
     }
   }
 
   /** Remove an enemy from the EnemyHandler */
-  rem(enemy) {
+  remove(enemy) {
     for (let i=0; i<this._enemies.length; i++)
       if (enemy == this._enemies[i])
         this._enemies.splice(i, 1);

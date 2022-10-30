@@ -59,8 +59,21 @@ class Player {
 		this.sprite.addAnimation('player_climb', player_climb_anim);
   }
 
-  draw() {
+  /**
+   * @param {Object} world_data Javascript object in the following format:
+   * {
+   *    maps: [],
+   *    enemies: []
+   * }
+   */
+  draw(world_data) {
+
     this.move();
+
+    for (let map of world_data.maps) {
+      this.raycast(map);
+    }
+
   }
   //------------------------------------------------------------------------------------------------
 

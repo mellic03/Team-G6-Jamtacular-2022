@@ -33,13 +33,13 @@ class PlayerHandler {
       this._players.push(player);
     else {
       console.log(`%cERROR: player does not fit player specification\n`, "color: red;");
-      for (let error of validity)
-        console.log(`REASON: ${error}`);
+      for (let reason of validity)
+        console.log(`REASON: ${reason}`);
     }
   }
 
   /** Remove a player from the PlayerHandler */
-  rem(player) {
+  remove(player) {
     for (let i=0; i<this._players.length; i++)
       if (player == this._players[i])
         this._players.splice(i, 1);
@@ -58,9 +58,13 @@ class PlayerHandler {
   }
 
   /** Execute the draw() function of all players in this._players[] */
-  draw() {
+  draw(world_data) {
+    if (world_data == undefined || !world_data.hasOwnProperty("maps") || !world_data.hasOwnProperty("enemies")) {
+      console.log(`%cERROR: world_data does not fit specification`, "color: red;");
+      return;
+    }
     for (let player of this._players)
-      player.draw();
+      player.draw(world_data);
   }
 }
 

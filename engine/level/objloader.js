@@ -27,10 +27,8 @@ class Edge {
 class Map {
 
   obj_filepath;
-  raw_obj;
 
   polygons = [];
-
   edges = [];
 
   /**
@@ -70,46 +68,22 @@ class Map {
           let tok3 = splitTokens(tokens[3], '/');
           let tok4 = splitTokens(tokens[4], '/');
 
-          edge1.p1.x = vertices[+tok1[0]-1].x;
-          edge1.p1.y = vertices[+tok1[0]-1].y;
-          edge1.p2.x = vertices[+tok2[0]-1].x;
-          edge1.p2.y = vertices[+tok2[0]-1].y;
-
-          edge2.p1.x = vertices[+tok2[0]-1].x;
-          edge2.p1.y = vertices[+tok2[0]-1].y;
-          edge2.p2.x = vertices[+tok3[0]-1].x;
-          edge2.p2.y = vertices[+tok3[0]-1].y;
-
-          edge3.p1.x = vertices[+tok3[0]-1].x;
-          edge3.p1.y = vertices[+tok3[0]-1].y;
-          edge3.p2.x = vertices[+tok4[0]-1].x;
-          edge3.p2.y = vertices[+tok4[0]-1].y;
-
-          edge4.p1.x = vertices[+tok4[0]-1].x;
-          edge4.p1.y = vertices[+tok4[0]-1].y;
-          edge4.p2.x = vertices[+tok1[0]-1].x;
-          edge4.p2.y = vertices[+tok1[0]-1].y;
-
-          this.edges.push(edge1);
-          this.edges.push(edge2);
-          this.edges.push(edge3);
-          this.edges.push(edge4);
+          edge1.p1 = new Vector2(vertices[+tok1[0]-1].x, vertices[+tok1[0]-1].y);
+          edge1.p2 = new Vector2(vertices[+tok2[0]-1].x, vertices[+tok2[0]-1].y);
+          
+          edge2.p1 = new Vector2(vertices[+tok2[0]-1].x, vertices[+tok2[0]-1].y);
+          edge2.p2 = new Vector2(vertices[+tok3[0]-1].x, vertices[+tok3[0]-1].y);
+          
+          edge3.p1 = new Vector2(vertices[+tok3[0]-1].x, vertices[+tok3[0]-1].y);
+          edge3.p2 = new Vector2(vertices[+tok4[0]-1].x, vertices[+tok4[0]-1].y);
+          
+          edge4.p1 = new Vector2(vertices[+tok4[0]-1].x, vertices[+tok4[0]-1].y);
+          edge4.p2 = new Vector2(vertices[+tok1[0]-1].x, vertices[+tok1[0]-1].y);
+          
+          this.edges.push(edge1, edge2, edge3, edge4);
         }
       }
-      console.log(this.edges);
-
-      // Remove all duplicate edges
-      for (let i=0; i<this.edges.length; i++) {
-        for (let j=0; j<this.edges.length; j++) {
-          if (i != j) {
-            if (this.edges[i].p1.y == this.edges[j].p1.y && this.edges[i].p2.y == this.edges[j].p2.y
-              && this.edges[i].p1.x == this.edges[j].p1.x && this.edges[i].p2.x == this.edges[j].p2.x) {
-              this.edges.splice(j, 1);
-              j -= 1;
-            }
-          }
-        }
-      }
+      // console.log(this.edges);
 
       // Calculate surface normals
       for (let edge of this.edges) {
@@ -118,13 +92,13 @@ class Map {
         edge.face_normal.rotate(1.57);
       }
 
-      console.log(this.edges);
-    
+      // console.log(this.edges);
     });
   }
 
   setup() {
-
+    this.scale(25);
+    this.translate(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
   }
 
   draw() {
