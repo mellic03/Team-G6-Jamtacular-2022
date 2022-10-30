@@ -31,8 +31,12 @@ class EnemyHandler {
     let validity = is_valid_enemy(enemy);
     if (validity == true)
       this._enemies.push(enemy);
-    else
-      console.log(`WARNING: enemy does not fit enemy specification\nREASON: ${validity}`);
+    else {
+
+      console.log(`%cERROR: enemy does not fit enemy specification`, "color: red;");
+      for (let error of validity)
+        console.log(`REASON: ${error}`);
+    }
   }
 
   /** Remove an enemy from the EnemyHandler */
@@ -68,23 +72,25 @@ class EnemyHandler {
  */
 function is_valid_enemy(enemy) {
 
+  let errors = [];
+
   if (enemy.preload == undefined)
-    return `enemy.preload() is undefined.`;
+    errors.push(`enemy.preload() is undefined.`);
 
   if (enemy.setup == undefined)
-    return `enemy.setup() is undefined.`;
+    errors.push(`enemy.setup() is undefined.`);
 
   if (enemy.draw == undefined)
-    return `enemy.draw() is undefined.`;
+    errors.push(`enemy.draw() is undefined.`);
 
   if (!enemy.hasOwnProperty("health"))
-    return `property "health" does not exist.`;
+    errors.push(`property "health" does not exist.`);
 
   if (!enemy.hasOwnProperty("damage"))
-    return `property "damage" does not exist.`;
+    errors.push(`property "damage" does not exist.`);
 
   if (!enemy.hasOwnProperty("pos"))
-    return `property "pos" does not exist.`;
+    errors.push(`property "pos" does not exist.`);
 
-  return true;
+  return (errors.length == 0) ? true : errors;
 }

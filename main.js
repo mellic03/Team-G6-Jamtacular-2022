@@ -1,7 +1,11 @@
+/// <reference path="./lib/p5.play.js" />
+
 "use strict";
 
 let enemy_handler = new EnemyHandler();
 let player_handler = new PlayerHandler();
+
+player_handler.add(new Player(250, 250));
 
 
 function preload() {
@@ -12,11 +16,9 @@ function preload() {
 
 
 function setup() {
-	createCanvas(800, 600);
+	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   enemy_handler.setup();
   player_handler.setup();
-
-	// player1 = new Player(200, 300, 50, 50);
 }
 
 
@@ -26,7 +28,6 @@ function draw() {
   enemy_handler.draw();
   player_handler.draw();
 
-	// player1.playerSystem();
 	drawSprites();
 }
 

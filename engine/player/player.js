@@ -1,16 +1,8 @@
-// Arrow/Space Values
-const LEFT = 37;
-const RIGHT = 39;
-const UP = 38;
-const DOWN = 40;
-const SPACE = 32;
+/// <reference path="../../lib/p5.min.js" />
+/// <reference path="../../lib/p5.play.js" />
+/// <reference path="../math/vector.js" />
 
 // Player Variables
-let player1;
-let p;
-let player_pos;
-let move;
-let speed = 1.2;
 
 let px = 0,
 	py = 0;
@@ -24,81 +16,102 @@ let player_climb_sprites;
 let player_climb_anim;
 
 
-// Test
-let sc = [100, 200, 0];
-
-// function preload() {
-// 	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 24, 48, 4);
-// 	player_idle_anim = loadAnimation(player_idle_sprites);
-// 	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 30, 48, 6);
-// 	player_run_anim = loadAnimation(player_run_sprites);
-// }
-
 class Player {
 
-	constructor(x, y, w, h) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+  sprite;
+  w = 50; h = 50;
+  speed = 2.2;
 
-		p = createSprite(this.x, this.y, this.w, this.h);
-		p.shapeColor = sc;
-		p.scale = 2;
-		p.addAnimation('player_idle', player_idle_anim);
-		p.addAnimation('player_run', player_run_anim);
-		p.addAnimation('player_climb', player_climb_anim);
-
+  /**
+   * @param {*} x x position of player
+   * @param {*} y y position of player
+   */
+	constructor(x, y) {
+		this.pos = new Vector2(x, y);
 	}
 
-	playerSystem() {
 
-		this.move();
+  // PLAYER SPECIFICATION
+  //------------------------------------------------------------------------------------------------
+  health;
+  damage;
+
+  /** @type {Vector2} */ pos;
+  /** @type {Vector2} */ vel;
+  /** @type {Vector2} */ dir;
+
+  preload() {
+    player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
+    player_idle_anim = loadAnimation(player_idle_sprites);
+    player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
+    player_run_anim = loadAnimation(player_run_sprites);
+    player_climb_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_climb.png', 48, 48, 6);
+    player_climb_anim = loadAnimation(player_climb_sprites);
+  }
+
+  setup() {
+    this.sprite = createSprite(this.x, this.y, this.w, this.h);
+    this.sprite.position.x = this.pos.x;
+    this.sprite.position.y = this.pos.y;
+		this.sprite.scale = 2;
+		this.sprite.addAnimation('player_idle', player_idle_anim);
+		this.sprite.addAnimation('player_run', player_run_anim);
+		this.sprite.addAnimation('player_climb', player_climb_anim);
+  }
+
+  draw() {
+    this.move();
 		this.playerAnim();
-	}
-
+  }
+  //------------------------------------------------------------------------------------------------
 
 	move() {
+ 
+    this.sprite.position.x = this.pos.x;
+    this.sprite.position.y = this.pos.y;
 
-		player_pos = p.position;
+    this.sprite.changeAnimation("player_idle");
 
-		if (px <= 1 && px >= -1) {
-			px = 0;
-		} else {
-			if (px > 0) px -= 0.5;
-			if (px < 0) px += 0.5;
-		}
-		if (py <= 1 && py >= -1) {
-			py = 0;
-		} else {
-			if (py > 0) py -= 0.5;
-			if (py < 0) py += 0.5;
-		}
+    if (keyIsDown(keycodes.LEFT)) {
+      this.sprite.mirrorX(-1);
+      this.sprite.changeAnimation("player_run");
+      this.pos.x -= this.speed;
+    }
 
-		if (keyIsDown(UP) == true && py > -speed * 2) py -= speed;
-		if (keyIsDown(DOWN) == true && py < speed * 2) py += speed;
-		if (keyIsDown(LEFT) == true && px > -speed * 2) px -= speed, p.mirrorX(-1);
-		if (keyIsDown(RIGHT) == true && px < speed * 2) px += speed, p.mirrorX(1);
+    if (keyIsDown(keycodes.RIGHT)) {
+      this.sprite.mirrorX(1);
+      this.sprite.changeAnimation("player_run");
+      this.pos.x += this.speed;
+    }
+    
+    if (keyIsDown(keycodes.UP)) {
+      this.sprite.changeAnimation("player_run");
+      this.pos.y -= this.speed;
+    }
 
-		p.setVelocity(px, py);
+    if (keyIsDown(keycodes.DOWN)) {
+      this.sprite.changeAnimation("player_run");
+      this.pos.y += this.speed;
+    }
 
 		this.playerOutOfBounds();
 	}
 
 	playerOutOfBounds() {
-		if (player_pos.x < this.w / 2) player_pos.x = this.w / 2;
-		if (player_pos.x > width - this.w / 2) player_pos.x = width - this.w / 2;
-		if (player_pos.y < this.h / 2) player_pos.y = this.h / 2;
-		if (player_pos.y > height - this.h / 2) player_pos.y = height - this.h / 2;
+    
+    this.pos.x = (this.pos.x > 0) ? this.pos.x : 0;
+    this.pos.x = (this.pos.x < SCREEN_WIDTH) ? this.pos.x : SCREEN_WIDTH;
+    this.pos.y = (this.pos.y > 0) ? this.pos.y : 0;
+    this.pos.y = (this.pos.y < SCREEN_HEIGHT) ? this.pos.y : SCREEN_HEIGHT;
+
 	}
 
 	playerAnim() {
-
-		if (px < 0 || px > 0 && py == 0) p.changeAnimation('player_run');
-		else if (px == 0 && py < 0 || py > 0) p.changeAnimation('player_climb');
-		else p.changeAnimation('player_idle');
-
+		// if (px < 0 || px > 0 && py == 0) this.sprite.changeAnimation('player_run');
+		// else if (px == 0 && py < 0 || py > 0) this.sprite.changeAnimation('player_climb');
+		// else this.sprite.changeAnimation('player_idle');
 	}
 
 
 }
+

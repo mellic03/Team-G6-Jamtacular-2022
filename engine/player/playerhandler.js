@@ -1,8 +1,8 @@
 /*
-  The enemy specification detailed here is subject to change.
+  The player specification detailed here is subject to change.
 
   //--------------------------------------
-  For a class to conform to the "enemy" standard,
+  For a class to conform to the "player" standard,
   the following methods must be defined:
   
   - preload(void): void
@@ -31,8 +31,11 @@ class PlayerHandler {
     let validity = is_valid_player(player);
     if (validity == true)
       this._players.push(player);
-    else
-      console.log(`WARNING: player does not fit player specification\nREASON: ${validity}`);
+    else {
+      console.log(`%cERROR: player does not fit player specification\n`, "color: red;");
+      for (let error of validity)
+        console.log(`REASON: ${error}`);
+    }
   }
 
   /** Remove a player from the PlayerHandler */
@@ -61,9 +64,38 @@ class PlayerHandler {
   }
 }
 
-function is_valid_player(player) {
-  if (0)
-    return `0 == 1`;
-  
-  return true;
+/** Determine if an object fits the player specification
+ *  described in this file.
+ * @param {Object} player 
+ * @returns {boolean | string} true if valid, error message otherwise.
+ */
+ function is_valid_player(player) {
+
+  let errors = [];
+
+  if (player.preload == undefined)
+    errors.push(`player.preload() is undefined.`);
+
+  if (player.setup == undefined)
+    errors.push(`player.setup() is undefined.`);
+
+  if (player.draw == undefined)
+    errors.push(`player.draw() is undefined.`);
+
+  if (!player.hasOwnProperty("health"))
+    errors.push(`property "health" does not exist.`);
+
+  if (!player.hasOwnProperty("damage"))
+    errors.push(`property "damage" does not exist.`);
+
+  if (!player.hasOwnProperty("pos"))
+    errors.push(`property "pos" does not exist.`);
+
+  if (!player.hasOwnProperty("vel"))
+    errors.push(`property "vel" does not exist.`);
+
+  if (!player.hasOwnProperty("dir"))
+    errors.push(`property "dir" does not exist.`);
+
+  return (errors.length == 0) ? true : errors;
 }
