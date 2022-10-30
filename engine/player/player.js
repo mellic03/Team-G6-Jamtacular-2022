@@ -20,16 +20,20 @@ let player_idle_sprites;
 let player_idle_anim;
 let player_run_sprites;
 let player_run_anim;
+let player_climb_sprites;
+let player_climb_anim;
 
 
 // Test
 let sc = [100, 200, 0];
 
 function preload() {
-	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 24, 48, 4);
+	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
 	player_idle_anim = loadAnimation(player_idle_sprites);
-	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 30, 48, 6);
+	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
 	player_run_anim = loadAnimation(player_run_sprites);
+	player_climb_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_climb.png', 48, 48, 6);
+	player_climb_anim = loadAnimation(player_climb_sprites);
 }
 
 class Player {
@@ -45,6 +49,7 @@ class Player {
 		p.scale = 2;
 		p.addAnimation('player_idle', player_idle_anim);
 		p.addAnimation('player_run', player_run_anim);
+		p.addAnimation('player_climb', player_climb_anim);
 
 	}
 
@@ -74,8 +79,8 @@ class Player {
 
 		if (keyIsDown(UP) == true && py > -speed * 2) py -= speed;
 		if (keyIsDown(DOWN) == true && py < speed * 2) py += speed;
-		if (keyIsDown(LEFT) == true && px > -speed * 2) px -= speed;
-		if (keyIsDown(RIGHT) == true && px < speed * 2) px += speed;
+		if (keyIsDown(LEFT) == true && px > -speed * 2) px -= speed, p.mirrorX(-1);
+		if (keyIsDown(RIGHT) == true && px < speed * 2) px += speed, p.mirrorX(1);
 
 		p.setVelocity(px, py);
 
@@ -91,8 +96,9 @@ class Player {
 
 	playerAnim() {
 
-		if (px == 0 && py == 0) p.changeAnimation('player_idle');
-		else p.changeAnimation('player_run');
+		if (px < 0 || px > 0 && py == 0) p.changeAnimation('player_run');
+		else if (px == 0 && py < 0 || py > 0) p.changeAnimation('player_climb');
+		else p.changeAnimation('player_idle');
 
 	}
 
