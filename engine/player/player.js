@@ -17,8 +17,6 @@ let player_climb_anim;
 
 class Player {
 
-  camera;
-
   sprite;
   w = 50; h = 50;
   speed = 3;
@@ -52,7 +50,6 @@ class Player {
   }
 
   setup() {
-    this.camera = createCamera();
     this.sprite = createSprite(this.x, this.y, this.w, this.h);
     this.sprite.position.x = this.pos.x;
     this.sprite.position.y = this.pos.y;
@@ -124,9 +121,9 @@ class Player {
     for (let edge of partition.edges) {
 
       dist = this.line_line_intersect(this.pos, ray_up, edge.p1, edge.p2);
-      if (dist <= this.h/2) {
-        let overlap = this.h/2 - dist;
-        this.vel.y *= -0.5;
+      if (dist <= this.h/4) {
+        let overlap = this.h/4 - dist;
+        this.vel.y = (this.vel.y < 0) ? -0.5*this.vel.y : this.vel.y;
         this.pos.y += overlap/2;
       }
 
@@ -191,8 +188,8 @@ class Player {
       this.vel.y = -7;
     }
 
-    camera.position.x = this.pos.x + SCREEN_WIDTH/2;
-    camera.position.y = this.pos.y + SCREEN_HEIGHT/2;
+    camera.position.x = this.pos.x;
+    camera.position.y = this.pos.y;
 
 		this.playerOutOfBounds();
 	}

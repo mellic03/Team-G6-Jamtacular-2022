@@ -20,11 +20,11 @@ function preload() {
 
 
 function setup() {
-	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT, WEBGL);
+	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   enemy_handler.setup();
   player_handler.setup();
   m1.scale(25);
-  m1.translate(0, 250);
+  m1.translate(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 }
 
 
