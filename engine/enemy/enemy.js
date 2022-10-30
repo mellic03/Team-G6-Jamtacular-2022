@@ -1,19 +1,20 @@
+
 class Enemy {
 
   health;
   damage;
   pos;
 
-  preload() {
+  sprite;
 
+  preload() {
   }
 
   setup() {
-
+    this.sprite = createSprite();
   }
 
   draw() {
 
   }
-
 }

@@ -1,6 +1,5 @@
 /*
-  The enemy specification detailed here is
-  subject to change.
+  The enemy specification detailed here is subject to change.
 
   //--------------------------------------
   For a class to conform to the "enemy" standard,
@@ -15,7 +14,9 @@
 
   - health: number
   - damage: number
-  - pos: vector
+  - pos: Vector2
+  - vel: Vector2
+  - dir: Vector2
   //--------------------------------------
 */
 
@@ -25,6 +26,7 @@ class EnemyHandler {
     this._enemies = [];
   }
 
+  /** Add an enemy to the EnemyHandler */
   add(enemy) {
     let validity = is_valid_enemy(enemy);
     if (validity == true)
@@ -33,6 +35,7 @@ class EnemyHandler {
       console.log(`WARNING: enemy does not fit enemy specification\nREASON: ${validity}`);
   }
 
+  /** Remove an enemy from the EnemyHandler */
   rem(enemy) {
     for (let i=0; i<this._enemies.length; i++)
       if (enemy == this._enemies[i])
@@ -56,7 +59,6 @@ class EnemyHandler {
     for (let enemy of this._enemies)
       enemy.draw();
   }
-
 }
 
 /** Determine if an object fits the enemy specification

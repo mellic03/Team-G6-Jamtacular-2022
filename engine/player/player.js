@@ -27,14 +27,12 @@ let player_climb_anim;
 // Test
 let sc = [100, 200, 0];
 
-function preload() {
-	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
-	player_idle_anim = loadAnimation(player_idle_sprites);
-	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
-	player_run_anim = loadAnimation(player_run_sprites);
-	player_climb_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_climb.png', 48, 48, 6);
-	player_climb_anim = loadAnimation(player_climb_sprites);
-}
+// function preload() {
+// 	player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 24, 48, 4);
+// 	player_idle_anim = loadAnimation(player_idle_sprites);
+// 	player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 30, 48, 6);
+// 	player_run_anim = loadAnimation(player_run_sprites);
+// }
 
 class Player {
 
