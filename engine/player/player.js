@@ -171,7 +171,6 @@ class Player {
 
 	move() {
 
-    console.log(this.vel.y)
 
     this.vel.y += GRAV_CONSTANT;
     if (this.grounded)
