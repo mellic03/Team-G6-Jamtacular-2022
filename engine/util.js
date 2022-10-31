@@ -1,7 +1,7 @@
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 600;
 
-const GRAV_CONSTANT = 0.1;
+const GRAV_CONSTANT = 0.3;
 
 const keycodes = {
   

@@ -125,6 +125,7 @@ class Player {
     let ray_down = new Vector2(0, SCREEN_HEIGHT);
     ray_down.add(this.pos);
 
+    stroke(0);
     line(this.pos.x, this.pos.y+this.h/2, ray_left.x, ray_left.y);
     line(this.pos.x, this.pos.y+this.h/2, ray_right.x, ray_right.y);
     line(this.pos.x, this.pos.y, ray_up.x, ray_up.y);
@@ -171,7 +172,6 @@ class Player {
   }
 
 	move() {
-
 
     this.vel.y += GRAV_CONSTANT;
     if (this.grounded)
@@ -232,7 +232,7 @@ class Player {
     text('HP', this.pos.x, this.pos.y - 50);
     //noStroke();
     fill(0,250,0);
-    rect(this.pos.x +50*(this.health/100) , this.pos.y - 50, this.pos.x-50 , this.pos.y-35);
+    rect(this.pos.x-40, this.pos.y-50, this.pos.x + 40*(this.health/100), this.pos.y-40);
 
   }
 
