@@ -67,6 +67,22 @@ class Vector2 {
     let new_vec = new Vector2(this.x, this.y);
     return new_vec;
   }
+
+
+  lerp(v2, alpha) {
+    let dir = vector2_sub(this, v2);
+    dir.normalise();
+    dir.scale(alpha);
+    this.add(dir);
+  }
+
+  get_lerped(v2, alpha) {
+    let dir = vector2_sub(this, v2);
+    dir.normalise();
+    dir.scale(alpha);
+    return new Vector2(this.x + dir.x, this.y + dir.y);
+  }
+
 }
 
 function vector2_sub(v0, v1) {

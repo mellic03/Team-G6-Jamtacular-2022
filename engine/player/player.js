@@ -72,9 +72,11 @@ class Player {
    */
   draw(world_data) {
 
+    text(`x: ${this.pos.x}\ny: ${this.pos.y}`, this.pos.x+50, this.pos.y);
+
     this.move();
-    this.draw_player_ui();
-    this.health = this.health - 0.1;
+    // this.draw_player_ui();
+    // this.health -= 0.1;
 
     for (let map of world_data.maps) {
       this.raycast(map);

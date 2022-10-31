@@ -4,8 +4,6 @@ function map_init() {
 
   let m1 = new Map("engine/level/levels/map1.obj");
 
-
-
   map_handler.add(m1);
 
 
