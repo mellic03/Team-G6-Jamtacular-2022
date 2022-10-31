@@ -19,7 +19,7 @@ class Player {
 
   sprite;
   w = 50; h = 50;
-  speed = 3;
+  speed = 1;
 
   grounded = false;
 
@@ -33,7 +33,7 @@ class Player {
 
   // PLAYER SPECIFICATION
   //------------------------------------------------------------------------------------------------
-  health;
+  health = 100;
   damage;
 
   /** @type {Vector2} */ pos = new Vector2(0, 0);
@@ -80,24 +80,22 @@ class Player {
   }
   //------------------------------------------------------------------------------------------------
 
+  /** Determine the intsection point of two lines
+   * @param {Vector2} a1 first point of the first line
+   * @param {Vector2} a2 second point of the first line
+   * @param {Vector2} b1 first point of the second line
+   * @param {Vector2} b2 second point of the second line
+   * @return {number} the distance between a1 and the interesection
+   * if an intersection occurs, infinity if no intersection occurs.
+   */
   line_line_intersect(a1, a2, b1, b2) {
-  
-    let x1 = a1.x;
-    let y1 = a1.y;
-    let x2 = a2.x;
-    let y2 = a2.y
 
-    let x3 = b1.x;
-    let y3 = b1.y;
-    let x4 = b2.x;
-    let y4 = b2.y;
+    let d = (a1.x-a2.x)*(b1.y-b2.y) - (a1.y-a2.y)*(b1.x-b2.x);
 
-    let d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
+    let t = ((a1.x-b1.x)*(b1.y-b2.y) - (a1.y-b1.y)*(b1.x-b2.x)) / d;
+    let u = ((a1.x-b1.x)*(a1.y-a2.y) - (a1.y-b1.y)*(a1.x-a2.x)) / d;
 
-    let t = ((x1-x3)*(y3-y4) - (y1-y3)*(x3-x4)) / d;
-    let u = ((x1-x3)*(y1-y2) - (y1-y3)*(x1-x2)) / d;
-
-    let intersect = new Vector2(x1 + t*(x2-x1), y1 + t*(y2-y1));
+    let intersect = new Vector2(a1.x + t*(a2.x-a1.x), a1.y + t*(a2.y-a1.y));
     if (0 <= t && t <= 1 && 0 <= u && u <= 1) {
       fill(0, 255, 0)
       circle(intersect.x, intersect.y, 10);
@@ -112,7 +110,6 @@ class Player {
    * @param {Array} partition
    */
   raycast(partition) {
-
 
     let ray_left = new Vector2(-SCREEN_WIDTH, this.h/2);
     ray_left.add(this.pos);
@@ -170,6 +167,8 @@ class Player {
 	move() {
 
     this.vel.y += 0.3;
+    if (this.grounded)
+      this.vel.x *= 0.9;
     this.pos.add(this.vel);
 
     this.sprite.position.x = this.pos.x;
@@ -180,13 +179,19 @@ class Player {
     if (keyIsDown(keycodes.LEFT)) {
       this.sprite.mirrorX(-1);
       this.sprite.changeAnimation("player_run");
-      this.pos.x -= this.speed;
+      if (this.grounded)
+        this.vel.x -= this.speed;
+      else
+        this.vel.x -= this.speed/8;
     }
 
     if (keyIsDown(keycodes.RIGHT)) {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("player_run");
-      this.pos.x += this.speed;
+      if (this.grounded)
+        this.vel.x += this.speed;
+      else
+        this.vel.x += this.speed/8;
     }
     
     if (keyIsDown(keycodes.UP)) {
@@ -207,14 +212,6 @@ class Player {
     camera.position.x = this.pos.x;
     camera.position.y = this.pos.y;
 
-		this.playerOutOfBounds();
-	}
-
-	playerOutOfBounds() {
-    // this.pos.x = (this.pos.x > 0) ? this.pos.x : 0;
-    // this.pos.x = (this.pos.x < SCREEN_WIDTH) ? this.pos.x : SCREEN_WIDTH;
-    // this.pos.y = (this.pos.y > 0) ? this.pos.y : 0;
-    // this.pos.y = (this.pos.y < SCREEN_HEIGHT) ? this.pos.y : SCREEN_HEIGHT;
 	}
 
 }

@@ -19,11 +19,11 @@ function setup() {
   enemy_handler.setup();
   player_handler.setup();
   map_handler.setup();
-
 }
 
 
 let world_data = {
+  players: player_handler._players,
   enemies: enemy_handler._enemies,
   maps: map_handler._maps
 };
@@ -33,9 +33,9 @@ function draw() {
 
 	drawSprites();
 
-  enemy_handler.draw();
+  enemy_handler.draw(world_data);
   player_handler.draw(world_data);
-  map_handler.draw();
+  map_handler.draw(world_data);
 
 }
 

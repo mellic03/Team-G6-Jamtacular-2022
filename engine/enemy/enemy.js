@@ -14,7 +14,14 @@ class Enemy {
     this.sprite = createSprite();
   }
 
-  draw() {
+  draw(world_data) {
 
   }
+
+
+  seek_player() {
+
+  }
+
+
 }
