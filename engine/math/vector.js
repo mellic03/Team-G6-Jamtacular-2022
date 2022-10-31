@@ -35,6 +35,11 @@ class Vector2 {
     this.x /= mag;
     this.y /= mag;
   }
+
+  get_normalised() {
+    let mag = this.mag();
+    return new Vector2(this.x/mag, this.y/mag);
+  }
   
   rotate(theta) {
     let mag = this.mag();
