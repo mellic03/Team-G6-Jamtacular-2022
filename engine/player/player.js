@@ -135,39 +135,45 @@ class Player {
     for (let edge of partition.edges) {
 
       dist = this.line_line_intersect(this.pos, ray_up, edge.p1, edge.p2);
-      if (dist <= this.h/4) {
+      if (dist < this.h/4) {
         let overlap = this.h/4 - dist;
         this.vel.y = (this.vel.y < 0) ? -0.5*this.vel.y : this.vel.y;
         this.pos.y += overlap/2;
       }
 
       dist = this.line_line_intersect(this.pos, ray_down, edge.p1, edge.p2);
-      if (dist <= this.h) {
+      if (dist < this.h) {
         let overlap = this.h - dist;
-        this.vel.y *= 0.5;
-        this.pos.y -= overlap/2;
+        this.vel.y -= this.vel.y/2;
+        this.pos.y -= overlap*1.5;
         this.grounded = true;
       }
 
-      dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_left, edge.p1, edge.p2);
-      if (dist <= this.w/2) {
-        let overlap = this.w/2 - dist;
-        this.vel.x = 0;
-        this.pos.x += overlap/2;
+      if (vector2_dot(new Vector2(-1, 0), edge.face_normal) < -0.9) {
+        dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_left, edge.p1, edge.p2);
+        if (dist < this.w/2) {
+          let overlap = this.w/2 - dist;
+          this.vel.x -= this.vel.x/2;
+          this.pos.x += overlap/2;
+        }
       }
-
-      dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_right, edge.p1, edge.p2);
-      if (dist <= this.w/2) {
-        let overlap = this.w/2 - dist;
-        this.vel.x = 0;
-        this.pos.x -= overlap/2;
+      
+      if (vector2_dot(new Vector2(+1, 0), edge.face_normal) < -0.9) {
+        dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_right, edge.p1, edge.p2);
+        if (dist < this.w/2) {
+          let overlap = this.w/2 - dist;
+          this.vel.x -= this.vel.x/2;
+          this.pos.x -= overlap/2;
+        }
       }
     }
   }
 
 	move() {
 
-    this.vel.y += 0.3;
+    console.log(this.vel.y)
+
+    this.vel.y += GRAV_CONSTANT;
     if (this.grounded)
       this.vel.x *= 0.9;
     this.pos.add(this.vel);

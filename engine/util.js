@@ -1,6 +1,8 @@
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 600;
 
+const GRAV_CONSTANT = 0.1;
+
 const keycodes = {
   
   LEFT: 37, RIGHT: 39,
