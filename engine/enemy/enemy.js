@@ -167,11 +167,6 @@ class Enemy {
     this.sprite.position.y = this.pos.y;
 
     this.sprite.changeAnimation("enemy1_idle");
-
-
-
-
-
     
   }
 
