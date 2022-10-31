@@ -6,12 +6,12 @@ class Vector2 {
     this.y = y;
   }
 
-  add(v1) {
-    this.x += v1.x, this.y += v1.y;
+  add(v2) {
+    this.x += v2.x, this.y += v2.y;
   }
 
-  sub(v1) {
-    this.x -= v1.x, this.y -= v1.y;
+  sub(v2) {
+    this.x -= v2.x, this.y -= v2.y;
   }
 
   scale(alpha) {
@@ -22,8 +22,8 @@ class Vector2 {
     this.x += x, this.y += y, this.z += z;
   }
 
-  dot(vec) {
-    return this.x*vec.x + this.y*vec.y;
+  dot(v2) {
+    return this.x*v2.x + this.y*v2.y;
   }
 
   mag() {

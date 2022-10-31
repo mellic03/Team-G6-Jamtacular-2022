@@ -65,14 +65,9 @@ class Player {
 
   /**
    * @param {Object} world_data Javascript object in the following format:
-   * {
-   *    maps: [],
-   *    enemies: []
-   * }
+   * { players: [], maps: [], enemies: [] }
    */
   draw(world_data) {
-
-    text(`x: ${this.pos.x}\ny: ${this.pos.y}`, this.pos.x+50, this.pos.y);
 
     this.move();
     // this.draw_player_ui();

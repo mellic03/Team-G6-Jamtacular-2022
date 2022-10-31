@@ -46,28 +46,27 @@ class Polygon {
 
   draw() {
 
+    for (let edge of this.edges) {
+      edge.draw();
+      edge.draw_normals();
+    }
 
-    // for (let edge of this.edges) {
-    //   edge.draw();
-    //   edge.draw_normals();
-    // }
+    // let v0 = new Vector2(this.verts[0].x-camera.position.x + SCREEN_WIDTH/2, this.verts[0].y-camera.position.y + SCREEN_HEIGHT/2);
+    // let v1 = new Vector2(this.verts[1].x-camera.position.x + SCREEN_WIDTH/2, this.verts[1].y-camera.position.y + SCREEN_HEIGHT/2);
+    // let v2 = new Vector2(this.verts[2].x-camera.position.x + SCREEN_WIDTH/2, this.verts[2].y-camera.position.y + SCREEN_HEIGHT/2);
 
-    let v0 = new Vector2(this.verts[0].x-camera.position.x + SCREEN_WIDTH/2, this.verts[0].y-camera.position.y + SCREEN_HEIGHT/2);
-    let v1 = new Vector2(this.verts[1].x-camera.position.x + SCREEN_WIDTH/2, this.verts[1].y-camera.position.y + SCREEN_HEIGHT/2);
-    let v2 = new Vector2(this.verts[2].x-camera.position.x + SCREEN_WIDTH/2, this.verts[2].y-camera.position.y + SCREEN_HEIGHT/2);
+    // let xmin = Math.floor(MIN(v0.x, MIN(v1.x, v2.x)));
+    // let xmax = Math.floor(MAX(v0.x, MAX(v1.x, v2.x)));
+    // let ymin = Math.floor(MIN(v0.y, MIN(v1.y, v2.y)));
+    // let ymax = Math.floor(MAX(v0.y, MAX(v1.y, v2.y)));
 
-    let xmin = Math.floor(MIN(v0.x, MIN(v1.x, v2.x)));
-    let xmax = Math.floor(MAX(v0.x, MAX(v1.x, v2.x)));
-    let ymin = Math.floor(MIN(v0.y, MIN(v1.y, v2.y)));
-    let ymax = Math.floor(MAX(v0.y, MAX(v1.y, v2.y)));
-
-    xmin = MAX(xmin, 0); xmin = MIN(xmin, SCREEN_WIDTH);
-    xmax = MAX(xmax, 0); xmax = MIN(xmax, SCREEN_WIDTH);
-    ymin = MAX(ymin, 0); ymin = MIN(ymin, SCREEN_HEIGHT);
-    ymax = MAX(ymax, 0); ymax = MIN(ymax, SCREEN_HEIGHT);
+    // xmin = MAX(xmin, 0); xmin = MIN(xmin, SCREEN_WIDTH);
+    // xmax = MAX(xmax, 0); xmax = MIN(xmax, SCREEN_WIDTH);
+    // ymin = MAX(ymin, 0); ymin = MIN(ymin, SCREEN_HEIGHT);
+    // ymax = MAX(ymax, 0); ymax = MIN(ymax, SCREEN_HEIGHT);
 
 
-    let denom = (v1.y-v2.y)*(v0.x-v2.x) + (v2.x-v1.x)*(v0.y-v2.y);
+    // let denom = (v1.y-v2.y)*(v0.x-v2.x) + (v2.x-v1.x)*(v0.y-v2.y);
     
     // fill(0, 200, 0);
     // triangle(this.verts[0].x, this.verts[0].y, this.verts[1].x, this.verts[1].y, this.verts[2].x, this.verts[2].y);
@@ -75,28 +74,28 @@ class Polygon {
     // iterate over bounding box of triangle
     
 
-    for (let x=xmin; x<=xmax; x++) {
-      for (let y=ymin; y<=ymax; y++) {
+    // for (let x=xmin; x<=xmax; x++) {
+    //   for (let y=ymin; y<=ymax; y++) {
 
-        let weights = calculate_barycentric(x, y, v0, v1, v2, denom);
+    //     let weights = calculate_barycentric(x, y, v0, v1, v2, denom);
 
-        if (weights[0] >= 0 && weights[1] >= 0 && weights[2] >= 0) {
+    //     if (weights[0] >= 0 && weights[1] >= 0 && weights[2] >= 0) {
 
-          let u = abs(Math.floor((weights[0]*this.uvs[0].x + weights[1]*this.uvs[1].x + weights[2]*this.uvs[2].x)*128)) % 128;
-          let v = abs(Math.floor((weights[0]*this.uvs[0].y + weights[1]*this.uvs[1].y + weights[2]*this.uvs[2].y)*128)) % 128;
+    //       let u = abs(Math.floor((weights[0]*this.uvs[0].x + weights[1]*this.uvs[1].x + weights[2]*this.uvs[2].x)*356)) % 356;
+    //       let v = abs(Math.floor((weights[0]*this.uvs[0].y + weights[1]*this.uvs[1].y + weights[2]*this.uvs[2].y)*350)) % 350;
 
 
-          let r = this.texture_data[(4*128*v + 4*u+0)];
-          let g = this.texture_data[(4*128*v + 4*u+1)];
-          let b = this.texture_data[(4*128*v + 4*u+2)];
+    //       let r = this.texture_data[(4*356*v + 4*u+0)];
+    //       let g = this.texture_data[(4*356*v + 4*u+1)];
+    //       let b = this.texture_data[(4*356*v + 4*u+2)];
 
-          pixels[(4*SCREEN_WIDTH*y + 4*x+0)] = r;
-          pixels[(4*SCREEN_WIDTH*y + 4*x+1)] = g;
-          pixels[(4*SCREEN_WIDTH*y + 4*x+2)] = b;
-          pixels[(4*SCREEN_WIDTH*y + 4*x+3)] = 255;
-        }
-      }
-    }
+    //       pixels[(4*SCREEN_WIDTH*y + 4*x+0)] = r;
+    //       pixels[(4*SCREEN_WIDTH*y + 4*x+1)] = g;
+    //       pixels[(4*SCREEN_WIDTH*y + 4*x+2)] = b;
+    //       pixels[(4*SCREEN_WIDTH*y + 4*x+3)] = 255;
+    //     }
+    //   }
+    // }
   }
 
   scale(alpha) {
@@ -149,7 +148,7 @@ class Map {
     let normals = [];
     let uvs = [];
 
-    loadImage("engine/level/levels/brick.bmp", (img) => {
+    loadImage("engine/level/levels/mouth.jpg", (img) => {
       img.loadPixels();
       this.texture_width = img.width;
       for (let i=0; i<img.pixels.length; i++) {
@@ -166,12 +165,8 @@ class Map {
           vertices.push(new Vector2(+tokens[1], -tokens[2]));
         }
 
-        if (tokens[0]?.charAt(0) == 'v' && tokens[0]?.charAt(1) == 'n') {
-          normals.push(new Vector2(+tokens[1], -tokens[2]));
-        }
-
         if (tokens[0]?.charAt(0) == 'v' && tokens[0]?.charAt(1) == 't') {
-          uvs.push(new Vector2(+tokens[1], +tokens[2]));
+          uvs.push(new Vector2(1-tokens[1], 1-tokens[2]));
         }
         
         if (tokens[0]?.charAt(0) == 'f' && tokens[0]?.length == 1) {
@@ -234,11 +229,11 @@ class Map {
   }
 
   draw() {
-    loadPixels();
+    // loadPixels();
     for (let polygon of this.polygons) {
       polygon.draw();
     }
-    updatePixels();
+    // updatePixels();
   }
 
   scale(alpha) {
