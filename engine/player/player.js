@@ -232,9 +232,11 @@ class Player {
     rectMode(CORNERS);
     textSize(20); 
     text('HP', this.pos.x, this.pos.y - 50);
+    fill(150,150,150,150);
+    rect(this.pos.x+51, this.pos.y -51, this.pos.x -51, this.pos.y-34);
     noStroke();
     fill(0,250,0);
-    rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-25);
+    rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-35);
 
   }
 
