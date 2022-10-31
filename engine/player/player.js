@@ -229,10 +229,10 @@ class Player {
   draw_player_health() {
     rectMode(CORNERS);
     textSize(20); 
-    text('HP', camera.position.x, camera.position.y - 50);
+    text('HP', this.pos.x, this.pos.y - 50);
     //noStroke();
     fill(0,250,0);
-    rect(camera.position.x-50, camera.position.y - 50,this.pos.x + this.health , this.pos.y-25);
+    rect(this.pos.x +50*(this.health/100) , this.pos.y - 50, this.pos.x-50 , this.pos.y-35);
 
   }
 
