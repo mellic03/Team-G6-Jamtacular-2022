@@ -29,10 +29,11 @@ class EnemyHandler {
   /** Add an enemy to the EnemyHandler */
   add(enemy) {
     let validity = is_valid_enemy(enemy);
+    
     if (validity == true)
       this._enemies.push(enemy);
+    
     else {
-
       console.log(`%cERROR: enemy does not fit enemy specification`, "color: red;");
       for (let reason of validity)
         console.log(`REASON: ${reason}`);
@@ -59,9 +60,9 @@ class EnemyHandler {
   }
 
   /** Execute the draw() function of all enemies in this._enemies[] */
-  draw() {
+  draw(world_data) {
     for (let enemy of this._enemies)
-      enemy.draw();
+      enemy.draw(world_data);
   }
 }
 

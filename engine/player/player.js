@@ -78,6 +78,13 @@ class Player {
   }
   //------------------------------------------------------------------------------------------------
 
+  /** Determine the intsection point of two lines
+   * @param {Vector2} a1 first point of the first line
+   * @param {Vector2} a2 second point of the first line
+   * @param {Vector2} b1 first point of the second line
+   * @param {Vector2} b2 second point of the second line
+   * @return {number} number if intersection occurs, infinity if no intersection occurs
+   */
   line_line_intersect(a1, a2, b1, b2) {
   
     let x1 = a1.x;
@@ -110,7 +117,6 @@ class Player {
    * @param {Array} partition
    */
   raycast(partition) {
-
 
     let ray_left = new Vector2(-SCREEN_WIDTH, this.h/2);
     ray_left.add(this.pos);
@@ -205,14 +211,6 @@ class Player {
     camera.position.x = this.pos.x;
     camera.position.y = this.pos.y;
 
-		this.playerOutOfBounds();
-	}
-
-	playerOutOfBounds() {
-    // this.pos.x = (this.pos.x > 0) ? this.pos.x : 0;
-    // this.pos.x = (this.pos.x < SCREEN_WIDTH) ? this.pos.x : SCREEN_WIDTH;
-    // this.pos.y = (this.pos.y > 0) ? this.pos.y : 0;
-    // this.pos.y = (this.pos.y < SCREEN_HEIGHT) ? this.pos.y : SCREEN_HEIGHT;
 	}
 
 }
