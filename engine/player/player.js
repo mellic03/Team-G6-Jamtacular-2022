@@ -73,7 +73,6 @@ class Player {
 
     this.move();
     this.draw_player_ui();
-    this.health = this.health - 0.1;
 
     for (let map of world_data.maps) {
       this.raycast(map);
