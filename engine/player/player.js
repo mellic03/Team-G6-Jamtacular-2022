@@ -43,7 +43,7 @@ class Player {
   preload() {
     player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
     player_idle_anim = loadAnimation(player_idle_sprites);
-    player_idle_anim.frameDelay = 8;
+    player_idle_anim.frameDelay =8;
     player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
     player_run_anim = loadAnimation(player_run_sprites);
     player_run_anim.frameDelay = 9;
@@ -60,6 +60,7 @@ class Player {
 		this.sprite.addAnimation('player_idle', player_idle_anim);
 		this.sprite.addAnimation('player_run', player_run_anim);
 		this.sprite.addAnimation('player_climb', player_climb_anim);
+    this.font1 = loadFont("fonts/PressStart2P-Regular.ttf"); 
   }
 
   /**
@@ -73,6 +74,7 @@ class Player {
 
     this.move();
     this.draw_player_ui();
+    this.health = this.health - 0.1;
 
     for (let map of world_data.maps) {
       this.raycast(map);
@@ -229,16 +231,15 @@ class Player {
 
   draw_player_health() {
     rectMode(CORNERS);
-    textSize(20); 
-    text('HP', this.pos.x, this.pos.y - 50);
+    textSize(15);
+    textFont(this.font1);
     fill(150,150,150,150);
     rect(this.pos.x+51, this.pos.y -51, this.pos.x -51, this.pos.y-34);
     noStroke();
     fill(0,250,0);
     rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-35);
-
+    fill(0,0,0,150);
+    text('HP', this.pos.x-50, this.pos.y - 34);
   }
-
-
 }
 
