@@ -46,8 +46,10 @@ class Player {
     player_idle_anim.frameDelay = 8;
     player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
     player_run_anim = loadAnimation(player_run_sprites);
+    player_run_anim.frameDelay = 9;
     player_climb_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_climb.png', 48, 48, 6);
     player_climb_anim = loadAnimation(player_climb_sprites);
+    player_climb_anim.frameDelay = 9;
   }
 
   setup() {
