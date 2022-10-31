@@ -99,8 +99,8 @@ class Player {
 
     let intersect = new Vector2(a1.x + t*(a2.x-a1.x), a1.y + t*(a2.y-a1.y));
     if (0 <= t && t <= 1 && 0 <= u && u <= 1) {
-      fill(0, 255, 0)
-      circle(intersect.x, intersect.y, 10);
+      // fill(0, 255, 0)
+      // circle(intersect.x, intersect.y, 10);
       return vector2_dist(a1, intersect);
     }
     else {
@@ -125,47 +125,49 @@ class Player {
     let ray_down = new Vector2(0, SCREEN_HEIGHT);
     ray_down.add(this.pos);
 
-    stroke(0);
-    line(this.pos.x, this.pos.y+this.h/2, ray_left.x, ray_left.y);
-    line(this.pos.x, this.pos.y+this.h/2, ray_right.x, ray_right.y);
-    line(this.pos.x, this.pos.y, ray_up.x, ray_up.y);
-    line(this.pos.x, this.pos.y, ray_down.x, ray_down.y);
+    // stroke(0);
+    // line(this.pos.x, this.pos.y+this.h/2, ray_left.x, ray_left.y);
+    // line(this.pos.x, this.pos.y+this.h/2, ray_right.x, ray_right.y);
+    // line(this.pos.x, this.pos.y, ray_up.x, ray_up.y);
+    // line(this.pos.x, this.pos.y, ray_down.x, ray_down.y);
     
 
     let dist;
 
-    for (let edge of partition.edges) {
-
-      dist = this.line_line_intersect(this.pos, ray_up, edge.p1, edge.p2);
-      if (dist < this.h/4) {
-        let overlap = this.h/4 - dist;
-        this.vel.y = (this.vel.y < 0) ? -0.5*this.vel.y : this.vel.y;
-        this.pos.y += overlap/2;
-      }
-
-      dist = this.line_line_intersect(this.pos, ray_down, edge.p1, edge.p2);
-      if (dist < this.h) {
-        let overlap = this.h - dist;
-        this.vel.y -= this.vel.y/2;
-        this.pos.y -= overlap*1.5;
-        this.grounded = true;
-      }
-
-      if (vector2_dot(new Vector2(-1, 0), edge.face_normal) < -0.9) {
-        dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_left, edge.p1, edge.p2);
-        if (dist < this.w/2) {
-          let overlap = this.w/2 - dist;
-          this.vel.x -= this.vel.x/2;
-          this.pos.x += overlap/2;
+    for (let polygon of partition.polygons) {
+      for (let edge of polygon.edges) {
+        
+        dist = this.line_line_intersect(this.pos, ray_up, edge.p1, edge.p2);
+        if (dist < this.h/4) {
+          let overlap = this.h/4 - dist;
+          this.vel.y = (this.vel.y < 0) ? -0.5*this.vel.y : this.vel.y;
+          this.pos.y += overlap/2;
         }
-      }
-      
-      if (vector2_dot(new Vector2(+1, 0), edge.face_normal) < -0.9) {
-        dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_right, edge.p1, edge.p2);
-        if (dist < this.w/2) {
-          let overlap = this.w/2 - dist;
-          this.vel.x -= this.vel.x/2;
-          this.pos.x -= overlap/2;
+        
+        dist = this.line_line_intersect(this.pos, ray_down, edge.p1, edge.p2);
+        if (dist < this.h) {
+          let overlap = this.h - dist;
+          this.vel.y -= this.vel.y/2;
+          this.pos.y -= overlap*1.5;
+          this.grounded = true;
+        }
+        
+        if (vector2_dot(new Vector2(-1, 0), edge.face_normal) < -0.9) {
+          dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_left, edge.p1, edge.p2);
+          if (dist < this.w/2) {
+            let overlap = this.w/2 - dist;
+            this.vel.x -= this.vel.x/2;
+            this.pos.x += overlap/2;
+          }
+        }
+        
+        if (vector2_dot(new Vector2(+1, 0), edge.face_normal) < -0.9) {
+          dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_right, edge.p1, edge.p2);
+          if (dist < this.w/2) {
+            let overlap = this.w/2 - dist;
+            this.vel.x -= this.vel.x/2;
+            this.pos.x -= overlap/2;
+          }
         }
       }
     }
@@ -230,7 +232,7 @@ class Player {
     rectMode(CORNERS);
     textSize(20); 
     text('HP', this.pos.x, this.pos.y - 50);
-    //noStroke();
+    noStroke();
     fill(0,250,0);
     rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-25);
 

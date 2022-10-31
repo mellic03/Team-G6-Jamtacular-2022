@@ -24,6 +24,18 @@ class Edge {
 
 }
 
+class Polygon {
+
+  edges = [];
+
+  draw() {
+    for (let edge of this.edges) {
+      edge.draw();
+    }
+  }
+
+}
+
 class Map {
 
   obj_filepath;
@@ -58,6 +70,8 @@ class Map {
 
         if (tokens[0]?.charAt(0) == 'f' && tokens[0]?.length == 1) {
 
+          let poly = new Polygon();
+
           let edge1 = new Edge();
           let edge2 = new Edge();
           let edge3 = new Edge();
@@ -80,16 +94,24 @@ class Map {
           edge4.p1 = new Vector2(vertices[+tok4[0]-1].x, vertices[+tok4[0]-1].y);
           edge4.p2 = new Vector2(vertices[+tok1[0]-1].x, vertices[+tok1[0]-1].y);
           
-          this.edges.push(edge1, edge2, edge3, edge4);
+          poly.edges[0] = edge1;
+          poly.edges[1] = edge2;
+          poly.edges[2] = edge3;
+          poly.edges[3] = edge4;
+
+          // this.edges.push(edge1, edge2, edge3, edge4);
+          this.polygons.push(poly);
         }
       }
       // console.log(this.edges);
 
       // Calculate surface normals
-      for (let edge of this.edges) {
-        edge.face_normal = vector2_sub(edge.p2, edge.p1);
-        edge.face_normal.normalise();
-        edge.face_normal.rotate(1.57);
+      for (let polygon of this.polygons) {
+        for (let edge of polygon.edges) {
+          edge.face_normal = vector2_sub(edge.p2, edge.p1);
+          edge.face_normal.normalise();
+          edge.face_normal.rotate(1.57);
+        }
       }
 
       // console.log(this.edges);
@@ -102,27 +124,30 @@ class Map {
   }
 
   draw() {
-    for (let edge of this.edges) {
-      edge.draw();
-      edge.draw_normals();
+    for (let polygon of this.polygons) {
+      polygon.draw();
     }
   }
 
   scale(alpha) {
-    for (let edge of this.edges) {
-      edge.p1.x *= alpha;
-      edge.p1.y *= alpha;
-      edge.p2.x *= alpha;
-      edge.p2.y *= alpha;
+    for (let polygon of this.polygons) {
+      for (let edge of polygon.edges) {
+        edge.p1.x *= alpha;
+        edge.p1.y *= alpha;
+        edge.p2.x *= alpha;
+        edge.p2.y *= alpha;
+      }
     }
   }
 
   translate(x, y) {
-    for (let edge of this.edges) {
-      edge.p1.x += x;
-      edge.p1.y += y;
-      edge.p2.x += x;
-      edge.p2.y += y;
+    for (let polygon of this.polygons) {
+      for (let edge of polygon.edges) {
+        edge.p1.x += x;
+        edge.p1.y += y;
+        edge.p2.x += x;
+        edge.p2.y += y;
+      }
     }
   }
 
