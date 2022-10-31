@@ -73,6 +73,7 @@ class Player {
 
     this.move();
     this.draw_player_ui();
+    this.health = this.health - 0.1;
 
     for (let map of world_data.maps) {
       this.raycast(map);
@@ -229,10 +230,9 @@ class Player {
     rectMode(CORNERS);
     textSize(20); 
     text('HP', camera.position.x, camera.position.y - 50);
-
     //noStroke();
     fill(0,250,0);
-    rect(camera.position.x-50, camera.position.y - 50,camera.position.x + 50 , camera.position.y-25);
+    rect(camera.position.x-50, camera.position.y - 50,this.pos.x + this.health , this.pos.y-25);
 
   }
 
