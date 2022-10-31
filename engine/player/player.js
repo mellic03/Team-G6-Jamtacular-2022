@@ -72,6 +72,7 @@ class Player {
   draw(world_data) {
 
     this.move();
+    this.draw_player_ui();
 
     for (let map of world_data.maps) {
       this.raycast(map);
@@ -205,7 +206,7 @@ class Player {
     }
 
     if (keyIsDown(keycodes.SPACE) && this.grounded) {
-      this.grounded = false;
+      this.grounded =  false;
       this.vel.y = -7;
     }
 
@@ -213,6 +214,23 @@ class Player {
     camera.position.y = this.pos.y;
 
 	}
+
+  draw_player_ui() {
+    this.draw_player_health()
+
+  }
+
+  draw_player_health() {
+    rectMode(CORNERS);
+    textSize(20); 
+    text('HP', camera.position.x, camera.position.y - 50);
+
+    //noStroke();
+    fill(0,250,0);
+    rect(camera.position.x-50, camera.position.y - 50,camera.position.x + 50 , camera.position.y-25);
+
+  }
+
 
 }
 
