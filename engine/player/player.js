@@ -33,7 +33,7 @@ class Player {
 
   // PLAYER SPECIFICATION
   //------------------------------------------------------------------------------------------------
-  health;
+  health = 100;
   damage;
 
   /** @type {Vector2} */ pos = new Vector2(0, 0);
