@@ -70,9 +70,9 @@ class Player {
    * { players: [], maps: [], enemies: [] }
    */
   draw(world_data) {
-    if (frameCount % 60 == 0)
-      this.ff = frameRate();
-    text(this.ff, this.pos.x, this.pos.y-50);
+    // if (frameCount % 60 == 0)
+    //   this.ff = frameRate();
+    // text(this.ff, this.pos.x, this.pos.y-50);
 
     this.move();
     // this.draw_player_ui();
