@@ -232,7 +232,7 @@ class Player {
     text('HP', this.pos.x, this.pos.y - 50);
     //noStroke();
     fill(0,250,0);
-    rect(this.pos.x-40, this.pos.y-50, this.pos.x + 40*(this.health/100), this.pos.y-40);
+    rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-25);
 
   }
 
