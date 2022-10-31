@@ -19,7 +19,7 @@ class Player {
 
   sprite;
   w = 50; h = 50;
-  speed = 1;
+  speed = 0.5;
 
   grounded = false;
 
@@ -43,7 +43,7 @@ class Player {
   preload() {
     player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
     player_idle_anim = loadAnimation(player_idle_sprites);
-    player_idle_anim.frameDelay =8;
+    player_idle_anim.frameDelay = 8;
     player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
     player_run_anim = loadAnimation(player_run_sprites);
     player_run_anim.frameDelay = 9;
@@ -63,11 +63,16 @@ class Player {
     this.font1 = loadFont("fonts/PressStart2P-Regular.ttf"); 
   }
 
+  ff = 0;
+
   /**
    * @param {Object} world_data Javascript object in the following format:
    * { players: [], maps: [], enemies: [] }
    */
   draw(world_data) {
+    if (frameCount % 60 == 0)
+      this.ff = frameRate();
+    text(this.ff, this.pos.x, this.pos.y-50);
 
     this.move();
     // this.draw_player_ui();
@@ -174,8 +179,7 @@ class Player {
 	move() {
 
     this.vel.y += GRAV_CONSTANT;
-    if (this.grounded)
-      this.vel.x *= 0.9;
+    this.vel.x = (this.grounded) ? this.vel.x*0.9 : this.vel.x*0.95;
     this.pos.add(this.vel);
 
     this.sprite.position.x = this.pos.x;
@@ -189,7 +193,7 @@ class Player {
       if (this.grounded)
         this.vel.x -= this.speed;
       else
-        this.vel.x -= this.speed/8;
+        this.vel.x -= this.speed/2;
     }
 
     if (keyIsDown(keycodes.RIGHT)) {
@@ -198,7 +202,7 @@ class Player {
       if (this.grounded)
         this.vel.x += this.speed;
       else
-        this.vel.x += this.speed/8;
+        this.vel.x += this.speed/2;
     }
     
     if (keyIsDown(keycodes.UP)) {

@@ -4,12 +4,14 @@
 
 let enemy_handler = enemy_init();
 let player_handler = player_init();
-let map_handler = map_init();
+let ui_handler = ui_init();
+let map_handler = map_init(); 
 
 
 function preload() {
   enemy_handler.preload();
   player_handler.preload();
+  ui_handler.preload();
   map_handler.preload();
 }
 
@@ -18,6 +20,7 @@ function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   enemy_handler.setup();
   player_handler.setup();
+  ui_handler.setup();
   map_handler.setup();
 }
 
@@ -36,6 +39,7 @@ function draw() {
   enemy_handler.draw(world_data);
   map_handler.draw(world_data);
   player_handler.draw(world_data);
+  ui_handler.draw(world_data);
 
 
 

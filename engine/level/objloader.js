@@ -24,20 +24,24 @@ class Edge {
 
 }
 
-
-function calculate_barycentric(x, y, v1, v2, v3, denom)
+function f_xy(x, y, v2, v3, denom)
 {
-  let w0 = ((v2.y-v3.y)*(x-v3.x) + (v3.x-v2.x)*(y-v3.y)) / denom;
-  let w1 = ((v3.y-v1.y)*(x-v3.x) + (v1.x-v3.x)*(y-v3.y)) / denom;
-  let w2 = 1 - w0 - w1;
+  return ((v2.y-v3.y)*(x-v3.x) + (v3.x-v2.x)*(y-v3.y)) / denom;
+}
 
-  return [w0, w1, w2];
+function g_xy(x, y, v1, v3, denom)
+{
+  return ((v3.y-v1.y)*(x-v3.x) + (v1.x-v3.x)*(y-v3.y)) / denom;
+}
+
+function q_xy(f_xy, g_xy)
+{
+  return 1 - f_xy - g_xy;
 }
 
 class Polygon {
 
-  texture_data = [];
-  texture_width;
+  texture = [];
 
   verts = [];
   edges = [];
@@ -46,56 +50,63 @@ class Polygon {
 
   draw() {
 
-    for (let edge of this.edges) {
-      edge.draw();
-      edge.draw_normals();
-    }
-
-    // let v0 = new Vector2(this.verts[0].x-camera.position.x + SCREEN_WIDTH/2, this.verts[0].y-camera.position.y + SCREEN_HEIGHT/2);
-    // let v1 = new Vector2(this.verts[1].x-camera.position.x + SCREEN_WIDTH/2, this.verts[1].y-camera.position.y + SCREEN_HEIGHT/2);
-    // let v2 = new Vector2(this.verts[2].x-camera.position.x + SCREEN_WIDTH/2, this.verts[2].y-camera.position.y + SCREEN_HEIGHT/2);
-
-    // let xmin = Math.floor(MIN(v0.x, MIN(v1.x, v2.x)));
-    // let xmax = Math.floor(MAX(v0.x, MAX(v1.x, v2.x)));
-    // let ymin = Math.floor(MIN(v0.y, MIN(v1.y, v2.y)));
-    // let ymax = Math.floor(MAX(v0.y, MAX(v1.y, v2.y)));
-
-    // xmin = MAX(xmin, 0); xmin = MIN(xmin, SCREEN_WIDTH);
-    // xmax = MAX(xmax, 0); xmax = MIN(xmax, SCREEN_WIDTH);
-    // ymin = MAX(ymin, 0); ymin = MIN(ymin, SCREEN_HEIGHT);
-    // ymax = MAX(ymax, 0); ymax = MIN(ymax, SCREEN_HEIGHT);
-
-
-    // let denom = (v1.y-v2.y)*(v0.x-v2.x) + (v2.x-v1.x)*(v0.y-v2.y);
-    
-    // fill(0, 200, 0);
-    // triangle(this.verts[0].x, this.verts[0].y, this.verts[1].x, this.verts[1].y, this.verts[2].x, this.verts[2].y);
-
-    // iterate over bounding box of triangle
-    
-
-    // for (let x=xmin; x<=xmax; x++) {
-    //   for (let y=ymin; y<=ymax; y++) {
-
-    //     let weights = calculate_barycentric(x, y, v0, v1, v2, denom);
-
-    //     if (weights[0] >= 0 && weights[1] >= 0 && weights[2] >= 0) {
-
-    //       let u = abs(Math.floor((weights[0]*this.uvs[0].x + weights[1]*this.uvs[1].x + weights[2]*this.uvs[2].x)*356)) % 356;
-    //       let v = abs(Math.floor((weights[0]*this.uvs[0].y + weights[1]*this.uvs[1].y + weights[2]*this.uvs[2].y)*350)) % 350;
-
-
-    //       let r = this.texture_data[(4*356*v + 4*u+0)];
-    //       let g = this.texture_data[(4*356*v + 4*u+1)];
-    //       let b = this.texture_data[(4*356*v + 4*u+2)];
-
-    //       pixels[(4*SCREEN_WIDTH*y + 4*x+0)] = r;
-    //       pixels[(4*SCREEN_WIDTH*y + 4*x+1)] = g;
-    //       pixels[(4*SCREEN_WIDTH*y + 4*x+2)] = b;
-    //       pixels[(4*SCREEN_WIDTH*y + 4*x+3)] = 255;
-    //     }
-    //   }
+    // for (let edge of this.edges) {
+    //   edge.draw();
+    //   edge.draw_normals();
     // }
+
+    let v0 = new Vector2(this.verts[0].x-camera.position.x + SCREEN_WIDTH/2, this.verts[0].y-camera.position.y + SCREEN_HEIGHT/2);
+    let v1 = new Vector2(this.verts[1].x-camera.position.x + SCREEN_WIDTH/2, this.verts[1].y-camera.position.y + SCREEN_HEIGHT/2);
+    let v2 = new Vector2(this.verts[2].x-camera.position.x + SCREEN_WIDTH/2, this.verts[2].y-camera.position.y + SCREEN_HEIGHT/2);
+
+    let xmin = Math.floor(MIN(v0.x, MIN(v1.x, v2.x)));
+    let xmax = Math.floor(MAX(v0.x, MAX(v1.x, v2.x)));
+    let ymin = Math.floor(MIN(v0.y, MIN(v1.y, v2.y)));
+    let ymax = Math.floor(MAX(v0.y, MAX(v1.y, v2.y)));
+
+    xmin = MAX(xmin, 0); xmin = MIN(xmin, SCREEN_WIDTH);
+    xmax = MAX(xmax, 0); xmax = MIN(xmax, SCREEN_WIDTH);
+    ymin = MAX(ymin, 0); ymin = MIN(ymin, SCREEN_HEIGHT);
+    ymax = MAX(ymax, 0); ymax = MIN(ymax, SCREEN_HEIGHT);
+
+    let denom = (v1.y-v2.y)*(v0.x-v2.x) + (v2.x-v1.x)*(v0.y-v2.y);
+    let u, v, red, green, blue;
+
+    const A1 = f_xy(xmin+1, ymin,   v1, v2, denom); let A2 = f_xy(xmin, ymin, v1, v2, denom);
+    const B1 = f_xy(xmin,   ymin+1, v1, v2, denom);
+    
+    const D1 = g_xy(xmin+1, ymin,   v0, v2, denom); let D2 = g_xy(xmin, ymin, v0, v2, denom);
+    const E1 = g_xy(xmin,   ymin+1, v0, v2, denom);
+  
+    const f_xstep = A1-A2,  g_xstep = D1-D2,  q_xstep = q_xy(A1, D1) - q_xy(A2, D2);
+    const f_ystep = B1-A2,  g_ystep = E1-D2,  q_ystep = q_xy(B1, E1) - q_xy(A2, D2);
+    
+    let og_q = q_xy(A2, D2);
+  
+    let f, g, q;
+
+    for (let x=xmin; x<=xmax; x++)
+    {
+      f = A2; g = D2; q = og_q;
+      for (let y=ymin; y<=ymax; y++)
+      {
+        if (f >= 0 && g >= 0 && q >= 0)
+        {
+          u = Math.floor(f*this.uvs[0].x + g*this.uvs[1].x + q*this.uvs[2].x) % this.texture.width;
+          v = Math.floor(f*this.uvs[0].y + g*this.uvs[1].y + q*this.uvs[2].y) % this.texture.height;
+
+          red = this.texture.pixels[(4*this.texture.width*v + 4*u+0)];
+          green = this.texture.pixels[(4*this.texture.width*v + 4*u+1)];
+          blue = this.texture.pixels[(4*this.texture.width*v + 4*u+2)];
+
+          pixels[(4*SCREEN_WIDTH*y + 4*x+0)] = red;
+          pixels[(4*SCREEN_WIDTH*y + 4*x+1)] = green;
+          pixels[(4*SCREEN_WIDTH*y + 4*x+2)] = blue;
+        }
+        f += f_ystep; g += g_ystep; q += q_ystep;
+      }
+      A2 += f_xstep; D2 += g_xstep; og_q += q_xstep;
+    }
   }
 
   scale(alpha) {
@@ -129,8 +140,7 @@ class Map {
 
   obj_filepath;
 
-  texture_data = [];
-  texture_width;
+  texture;
 
   polygons = [];
   edges = [];
@@ -148,12 +158,9 @@ class Map {
     let normals = [];
     let uvs = [];
 
-    loadImage("engine/level/levels/mouth.jpg", (img) => {
+    loadImage("engine/level/levels/brick.bmp", (img) => {
       img.loadPixels();
-      this.texture_width = img.width;
-      for (let i=0; i<img.pixels.length; i++) {
-        this.texture_data[i] = img.pixels[i];
-      }
+      this.texture = img;
     });
 
     loadStrings(this.obj_filepath, (file) => {
@@ -202,13 +209,9 @@ class Map {
           poly.uvs[1] = new Vector2(uvs[+tok2[1]-1].x, uvs[+tok2[1]-1].y);
           poly.uvs[2] = new Vector2(uvs[+tok3[1]-1].x, uvs[+tok3[1]-1].y);
 
-          poly.texture_data = this.texture_data;
-          poly.texture_width = this.texture_width;
-
           this.polygons.push(poly);
         }
       }
-      // console.log(this.edges);
 
       // Calculate surface normals
       for (let polygon of this.polygons) {
@@ -218,22 +221,29 @@ class Map {
           edge.face_normal.rotate(1.57);
         }
       }
-
-      // console.log(this.edges);
     });
   }
 
   setup() {
+
+    for (let polygon of this.polygons) {
+      polygon.texture = this.texture;
+      for (let uv of polygon.uvs) {
+        uv.x *= this.texture.width;
+        uv.y *= this.texture.height;
+      }
+    }
+
     this.scale(25);
-    this.translate(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+    this.translate(-100, SCREEN_HEIGHT/2);
   }
 
   draw() {
-    // loadPixels();
+    loadPixels();
     for (let polygon of this.polygons) {
       polygon.draw();
     }
-    // updatePixels();
+    updatePixels();
   }
 
   scale(alpha) {
