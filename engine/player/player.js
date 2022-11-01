@@ -3,11 +3,12 @@ class Player {
   health;
   damage;
 
-  speed = 0.5;
+  speed = 0.8;
   pos = new Vector2();
-  vel = new Vector2();
+  vel = new Vector2(0, 0);
   dir = new Vector2(-1, 0);
   plane = new Vector2(0, SCREEN_WIDTH/SCREEN_HEIGHT);
+  fist_offset = 0;
   dir_L; dir_R;
 
   fov = 3.14159/2;
@@ -53,6 +54,7 @@ class Player {
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
+    
     console.log(this.fist_R_sprite);
   }
 
@@ -94,13 +96,9 @@ class Player {
     // centre of tile to player and push player back
     if ((map.tilemap[(map.width*y + x)]) > 0) {
 
-
       let dir = vector2_sub(this.pos, new Vector2(x*map.width + 10, y*map.width + 10));
       dir.scale(0.5);
       this.pos.add(dir);
-
-      // fill(0, 255, 0);
-      // rect(x*map.width, y*map.width, 10, 10);
 
       fill(255, 0, 0)
       rect(750+x*10, y*10, 10, 10);
@@ -208,10 +206,8 @@ class Player {
       let drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
       if(drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
       
-      fill(r, g, b);
       stroke(r, g, b);
-      line(SCREEN_WIDTH-i, drawStart,
-      SCREEN_WIDTH-i, drawEnd )
+      line(SCREEN_WIDTH-i, drawStart, SCREEN_WIDTH-i, drawEnd);
       // rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
@@ -222,6 +218,10 @@ class Player {
   input() {
     if (keyIsDown(13))
       requestPointerLock();
+
+    this.vel.scale(0.9)
+    this.pos.add(this.vel);
+
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
@@ -242,61 +242,64 @@ class Player {
     }
 
 
+    this.fist_L_sprite.position.y = 900 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
+    this.fist_R_sprite.position.y = 900 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)));
+
+    this.fist_L_sprite.position.x = 250 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)));
+    this.fist_R_sprite.position.x = 750 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
+    
     if (keyIsDown(keycodes.SPACE)) {
-      this.fist_R_sprite.position.y = 700; 
-      // this.fist_R_sprite.velocity.y = -2;
+    this.fist_R_sprite.position.y = 700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
     }
-    else {
-      // this.fist_R_sprite.velocity.y = 0;
-      // this.fist_R_sprite.attractionPoint(1, 750, 900);
-      this.fist_R_sprite.position.y = 900;
-    }
+    // else {
+      // this.fist_R_sprite.position.y = 900;
+    // }
 
-    if (this.fist_L_sprite.position.x < 240) {
-      this.fist_L_sprite.velocity.x += 1.5;
-    }
+    // if (this.fist_L_sprite.position.x < 240) {
+    //   this.fist_L_sprite.velocity.x += 1.5;
+    // }
 
-    else if (this.fist_L_sprite.position.x > 260) {
-      this.fist_L_sprite.velocity.x -= 1.5;
-    }
+    // else if (this.fist_L_sprite.position.x > 260) {
+    //   this.fist_L_sprite.velocity.x -= 1.5;
+    // }
 
-    else {
-      this.fist_L_sprite.velocity.x = 0;
-    }
+    // else {
+    //   this.fist_L_sprite.velocity.x = 0;
+    // }
 
-    if (this.fist_R_sprite.position.x < 740) {
-      this.fist_R_sprite.velocity.x += 1.5;
-    }
+    // if (this.fist_R_sprite.position.x < 740) {
+    //   this.fist_R_sprite.velocity.x += 1.5;
+    // }
 
-    else if (this.fist_R_sprite.position.x > 760) {
-      this.fist_R_sprite.velocity.x -= 1.5;
-    }
+    // else if (this.fist_R_sprite.position.x > 760) {
+    //   this.fist_R_sprite.velocity.x -= 1.5;
+    // }
 
-    else {
-      this.fist_R_sprite.velocity.x = 0;
-    }
+    // else {
+    //   this.fist_R_sprite.velocity.x = 0;
+    // }
 
-    this.fist_R_sprite.velocity.x *= 0.9;
-    this.fist_L_sprite.velocity.x *= 0.9;
+    // this.fist_R_sprite.velocity.x *= 0.9;
+    // this.fist_L_sprite.velocity.x *= 0.9;
 
     if (keyIsDown(LEFT_ARROW)) {
-      this.plane.rotate(-0.02);
-      this.dir.rotate(-0.02);
+      this.plane.rotate(-0.04);
+      this.dir.rotate(-0.04);
 
-      if (this.fist_R_sprite.position.x < 800)
-        this.fist_R_sprite.velocity.x += 2;
-      if (this.fist_L_sprite.position.x < 300)
-        this.fist_L_sprite.velocity.x += 2;
+      // if (this.fist_R_sprite.position.x < 800)
+      //   this.fist_R_sprite.velocity.x += 2;
+      // if (this.fist_L_sprite.position.x < 300)
+      //   this.fist_L_sprite.velocity.x += 2;
     }
 
     if (keyIsDown(RIGHT_ARROW)) {
-      this.plane.rotate(+0.02);
-      this.dir.rotate(+0.02);
+      this.plane.rotate(+0.04);
+      this.dir.rotate(+0.04);
 
-      if (this.fist_R_sprite.position.x > 700)
-        this.fist_R_sprite.velocity.x -= 2;
-      if (this.fist_L_sprite.position.x > 200)
-        this.fist_L_sprite.velocity.x -= 2;
+      // if (this.fist_R_sprite.position.x > 700)
+      //   this.fist_R_sprite.velocity.x -= 2;
+      // if (this.fist_L_sprite.position.x > 200)
+      //   this.fist_L_sprite.velocity.x -= 2;
     }
       
     // if (keyIsDown(keycodes.DOWN)) {
