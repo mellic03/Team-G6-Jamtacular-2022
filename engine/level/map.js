@@ -1,13 +1,12 @@
 
-
 class Map {
 
   filepath;
 
   width;
-  data = [];
- 
-  
+  tilemap = [];
+  colourmap = [];
+
   constructor(filepath) {
     this.filepath = filepath;
   }
@@ -16,8 +15,11 @@ class Map {
     loadImage(this.filepath, (image) => {
       image.loadPixels();
       this.width = image.width;
+      for (let i=0; i<image.pixels.length; i+=4) {
+        this.tilemap[i] = image.pixels[i] | image.pixels[i+1] | image.pixels[i+2];
+      }
       for (let i=0; i<image.pixels.length; i+=1) {
-        this.data[i] = image.pixels[i];//>0 ? 1 : 0;
+        this.colourmap[i] = image.pixels[i];
       }
       console.log(image);
     });

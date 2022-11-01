@@ -18,7 +18,7 @@ function preload() {
 
 function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
-  frameRate(165);
+  frameRate(144);
   enemy_handler.setup();
   player_handler.setup();
   ui_handler.setup();
