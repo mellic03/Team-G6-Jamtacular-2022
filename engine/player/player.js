@@ -44,12 +44,12 @@ class Player {
     this.dir_L = this.dir.get_rotated(-0.785);
     this.dir_R = this.dir.get_rotated(+0.785);
     this.fist_R_sprite.position.x = 750;
-    this.fist_R_sprite.position.y = 950;
+    this.fist_R_sprite.position.y = 1000;
     this.fist_R_sprite.width = 200;
     this.fist_R_sprite.height = 200;
 
     this.fist_L_sprite.position.x = 250;
-    this.fist_L_sprite.position.y = 950;
+    this.fist_L_sprite.position.y = 1000;
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
@@ -64,7 +64,7 @@ class Player {
   march(map) {
     this.buffer = [];
 
-    for (let x=0; x<SCREEN_WIDTH; x+=4) {
+    for (let x=0; x<SCREEN_WIDTH; x+=2) {
 
       let camx = (2*x)/(SCREEN_WIDTH)-1;
 
@@ -145,7 +145,7 @@ class Player {
     rectMode(CENTER);
     noStroke();
   
-    for (let i=0; i<SCREEN_WIDTH; i+=4) {
+    for (let i=0; i<SCREEN_WIDTH; i+=2) {
 
       // fill(10000/this.buffer[i].dist);
       let r = this.buffer[i].colour[0];
@@ -158,7 +158,7 @@ class Player {
 
       fill(r, g, b);
       stroke(r, g, b);
-      rect(SCREEN_WIDTH-i, SCREEN_WIDTH/2, 3, SCREEN_HEIGHT/this.buffer[i].dist);
+      rect(SCREEN_WIDTH-i, SCREEN_WIDTH/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
     rectMode(CORNER);
@@ -193,7 +193,7 @@ class Player {
     }
     else {
       this.fist_R_sprite.velocity.y = 0;
-      this.fist_R_sprite.position.y = 950;
+      this.fist_R_sprite.position.y = 1000;
     }
 
 
