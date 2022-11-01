@@ -35,6 +35,10 @@ let world_data = {
 
 function draw() {
 	background(220);
+  fill(50, 100, 150);
+  rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
+  fill(100, 100, 150);
+  rect(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	drawSprites();
 

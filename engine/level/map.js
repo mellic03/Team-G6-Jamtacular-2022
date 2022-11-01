@@ -16,8 +16,8 @@ class Map {
     loadImage(this.filepath, (image) => {
       image.loadPixels();
       this.width = image.width;
-      for (let i=0; i<image.pixels.length; i+=4) {
-        this.data[i/4] = image.pixels[i]>0 ? 1 : 0;
+      for (let i=0; i<image.pixels.length; i+=1) {
+        this.data[i] = image.pixels[i];//>0 ? 1 : 0;
       }
       console.log(image);
     });

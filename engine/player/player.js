@@ -36,7 +36,6 @@ class Player {
     this.input();
   }
 
-
   march(map) {
     
     this.buffer = [];
@@ -84,6 +83,8 @@ class Player {
       let hit = 0;
       let side;
 
+      let colour = false;
+
       while (hit == 0) {
         if (sideDistX < sideDistY) {
           sideDistX += dx;
@@ -95,31 +96,39 @@ class Player {
           mapY += step_y;
           side = 1;
         }
-        if (point_in_cell(mapX, mapY, map)) {
+        colour = point_in_cell(mapX, mapY, map);
+        if (colour != false) {
           hit = 1;
         }
       }
 
       if (side == 0)
-        this.buffer[raynumber] = {dist: (sideDistX - dx)*angle, side: side, x: mapX, y: mapY};
+        this.buffer[raynumber] = {
+          dist: (sideDistX - dx)*angle,
+          side: side,
+          x: mapX,
+          y: mapY,
+          colour: colour
+        };
       else
-        this.buffer[raynumber] = {dist: (sideDistY - dy)*angle, side: side, x: mapX, y: mapY};
+        this.buffer[raynumber] = {
+          dist: (sideDistY - dy)*angle,
+          side: side,
+          x: mapX,
+          y: mapY,
+          colour: colour
+        };
     }
 
     rectMode(CENTER);
     noStroke();
   
     for (let i=0; i<this.scan_res; i++) {
-      let r=200, g=200, b=200;
 
       // fill(10000/this.buffer[i].dist);
-      r /= 0.01*this.buffer[i].dist;
-      g /= 0.01*this.buffer[i].dist;
-      b /= 0.01*this.buffer[i].dist;
-
-      r = (r > 200) ? 200 : r;
-      g = (g > 200) ? 200 : g;
-      b = (b > 200) ? 200 : b;
+      let r = this.buffer[i].colour[0];
+      let g = this.buffer[i].colour[1];
+      let b = this.buffer[i].colour[2];
 
       if (this.buffer[i].side) {
         r/=2, g/=2, b/=2;
@@ -171,7 +180,6 @@ class Player {
     if (keyIsDown(107))
       this.fov -= 0.01;
   }
-
 }
 
 function point_in_cell(x, y, grid) {
@@ -179,5 +187,16 @@ function point_in_cell(x, y, grid) {
   let xprime = Math.floor(x/grid.width);
   let yprime = Math.floor(y/grid.width);
 
-  return grid.data[grid.width*yprime + xprime];
+  if (grid.data[4*grid.width*yprime + 4*xprime] == 0) {
+    return false
+  }
+
+  else {
+    return [
+      grid.data[4*grid.width*yprime + 4*xprime+0],
+      grid.data[4*grid.width*yprime + 4*xprime+1],
+      grid.data[4*grid.width*yprime + 4*xprime+2]
+    ];
+  }
+
 }
