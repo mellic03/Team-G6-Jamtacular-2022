@@ -16,7 +16,9 @@ class Player {
   ray_width = SCREEN_WIDTH/this.scan_res;
   buffer = [];
 
-  fist_img;
+  fist_R_img
+  fist_L_sprite;
+  fist_R_sprite;
 
   constructor(x, y) {
     this.pos.x = x;
@@ -24,13 +26,34 @@ class Player {
   }
 
   preload() {
-    this.fist_img = loadImage("engine/player/fist.png");
+    this.fist_R_img = loadImage("engine/player/fist.png", () => {
+      this.fist_R_sprite = new Sprite()
+      this.fist_R_sprite.addImage("fist_R", this.fist_R_img);
+      this.fist_R_sprite.scale = 3;
+
+      this.fist_L_sprite = new Sprite()
+      this.fist_L_sprite.addImage("fist_R", this.fist_R_img);
+      this.fist_L_sprite.scale = 3;
+      this.fist_L_sprite.mirrorX(-1);
+
+    });
   }
 
   setup() {
     this.pos = new Vector2(50, 50);
     this.dir_L = this.dir.get_rotated(-0.785);
     this.dir_R = this.dir.get_rotated(+0.785);
+    this.fist_R_sprite.position.x = 750;
+    this.fist_R_sprite.position.y = 950;
+    this.fist_R_sprite.width = 200;
+    this.fist_R_sprite.height = 200;
+
+    this.fist_L_sprite.position.x = 250;
+    this.fist_L_sprite.position.y = 950;
+    this.fist_L_sprite.width = 200;
+    this.fist_L_sprite.height = 200;
+
+    console.log(this.fist_R_sprite);
   }
 
   draw(world_data) {
@@ -39,10 +62,9 @@ class Player {
   }
 
   march(map) {
-    
     this.buffer = [];
 
-    for (let x=0; x<SCREEN_WIDTH; x++) {
+    for (let x=0; x<SCREEN_WIDTH; x+=4) {
 
       let camx = (2*x)/(SCREEN_WIDTH)-1;
 
@@ -123,7 +145,7 @@ class Player {
     rectMode(CENTER);
     noStroke();
   
-    for (let i=0; i<SCREEN_WIDTH; i+=1) {
+    for (let i=0; i<SCREEN_WIDTH; i+=4) {
 
       // fill(10000/this.buffer[i].dist);
       let r = this.buffer[i].colour[0];
@@ -136,7 +158,7 @@ class Player {
 
       fill(r, g, b);
       stroke(r, g, b);
-      rect(SCREEN_WIDTH-i, SCREEN_WIDTH/2, 1, SCREEN_HEIGHT/this.buffer[i].dist);
+      rect(SCREEN_WIDTH-i, SCREEN_WIDTH/2, 3, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
     rectMode(CORNER);
@@ -167,8 +189,13 @@ class Player {
 
 
     if (keyIsDown(keycodes.SPACE)) {
-      image(this.fist_img, 3*SCREEN_WIDTH/5, 570, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
+      this.fist_R_sprite.position.y = 800; 
     }
+    else {
+      this.fist_R_sprite.velocity.y = 0;
+      this.fist_R_sprite.position.y = 950;
+    }
+
 
     if (keyIsDown(LEFT_ARROW)) {
       this.plane.rotate(-0.02);
@@ -205,5 +232,6 @@ function point_in_cell(x, y, grid) {
       grid.colourmap[4*(grid.width*yprime + xprime)+2]
     ];
   }
-
 }
+
+

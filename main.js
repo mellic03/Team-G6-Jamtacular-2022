@@ -42,12 +42,12 @@ function draw() {
   fill(100, 100, 150);
   rect(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
 
-	drawSprites();
 
   enemy_handler.draw(world_data);
   map_handler.draw(world_data);
   player_handler.draw(world_data);
   ui_handler.draw(world_data);
 
+	drawSprites();
 }
 
