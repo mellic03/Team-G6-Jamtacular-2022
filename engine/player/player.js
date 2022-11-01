@@ -65,6 +65,8 @@ class Player {
   }
 
   draw_minimap(map) {
+    fill(10);
+    rect(750, 0, 250, 250);
     for (let x=0; x<map.width; x++) {
       for (let y=0; y<map.width; y++) {
         if (map.tilemap[map.width*y + x] > 0) {
