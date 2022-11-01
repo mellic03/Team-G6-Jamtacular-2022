@@ -3,7 +3,7 @@ class Player {
   health;
   damage;
 
-  speed = 0.8;
+  speed = 0.4;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(-1, 0);
@@ -60,10 +60,9 @@ class Player {
 
   draw(world_data) {
     this.march(world_data.active_map);
-    this.input();
+    this.input(world_data.active_map);
 
     this.draw_minimap(world_data.active_map);
-    this.collision(world_data.active_map);
   }
 
   draw_minimap(map) {
@@ -84,25 +83,6 @@ class Player {
       }
     }
     circle(750+this.pos.x*10 / map.width, this.pos.y*10 / map.width, 10);
-  }
-
-  // world to grid: x' = x/map.width
-
-  collision(map) {
-    let x = Math.floor(this.pos.x / map.width);
-    let y = Math.floor(this.pos.y / map.width);
-
-    // If player overlaps tile, get vector from
-    // centre of tile to player and push player back
-    if ((map.tilemap[(map.width*y + x)]) > 0) {
-
-      let dir = vector2_sub(this.pos, new Vector2(x*map.width + 10, y*map.width + 10));
-      dir.scale(0.5);
-      this.pos.add(dir);
-
-      fill(255, 0, 0)
-      rect(750+x*10, y*10, 10, 10);
-    }
   }
 
   march(map) {
@@ -207,6 +187,7 @@ class Player {
       if(drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
       
       stroke(r, g, b);
+      strokeWeight(2)
       line(SCREEN_WIDTH-i, drawStart, SCREEN_WIDTH-i, drawEnd);
       // rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
@@ -214,31 +195,59 @@ class Player {
     rectMode(CORNER);
   }
 
-
-  input() {
+  input(map) {
     if (keyIsDown(13))
       requestPointerLock();
 
     this.vel.scale(0.9)
     this.pos.add(this.vel);
 
+    let x = Math.floor(this.pos.x / map.width);
+    let y = Math.floor(this.pos.y / map.width);
+
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-      this.pos.add(temp.get_scaled(this.speed));
+
+      let nextx = this.pos.x + temp.x;
+      let nexty = this.pos.y + temp.y;
+      let next_pos = new Vector2(nextx, nexty);
+      
+      if (!point_in_wall(next_pos, map)) {
+        this.pos.add(temp.get_scaled(this.speed));
+      }
     }
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-      this.pos.add(temp.get_scaled(this.speed));
+
+      let nextx = this.pos.x + temp.x;
+      let nexty = this.pos.y + temp.y;
+      let next_pos = new Vector2(nextx, nexty);
+
+      if (!point_in_wall(next_pos, map)) {
+        this.pos.add(temp.get_scaled(this.speed));
+      }
     }
 
     if (keyIsDown(keycodes.W)) {
-      this.pos.add(this.dir.get_scaled(this.speed));
+      let nextx = this.pos.x + this.dir.x;
+      let nexty = this.pos.y + this.dir.y;
+      let next_pos = new Vector2(nextx, nexty);
+
+      if (!point_in_wall(next_pos, map)) {
+        this.pos.add(this.dir.get_scaled(this.speed));
+      }
     }
    
     if (keyIsDown(keycodes.S)) {
-      this.pos.sub(this.dir.get_scaled(this.speed));
+      let nextx = this.pos.x - this.dir.x;
+      let nexty = this.pos.y - this.dir.y;
+      let next_pos = new Vector2(nextx, nexty);
+
+      if (!point_in_wall(next_pos, map)) {
+        this.pos.sub(this.dir.get_scaled(this.speed));
+      }
     }
 
 
@@ -283,8 +292,8 @@ class Player {
     // this.fist_L_sprite.velocity.x *= 0.9;
 
     if (keyIsDown(LEFT_ARROW)) {
-      this.plane.rotate(-0.04);
-      this.dir.rotate(-0.04);
+      this.plane.rotate(-0.02);
+      this.dir.rotate(-0.02);
 
       // if (this.fist_R_sprite.position.x < 800)
       //   this.fist_R_sprite.velocity.x += 2;
@@ -293,8 +302,8 @@ class Player {
     }
 
     if (keyIsDown(RIGHT_ARROW)) {
-      this.plane.rotate(+0.04);
-      this.dir.rotate(+0.04);
+      this.plane.rotate(+0.02);
+      this.dir.rotate(+0.02);
 
       // if (this.fist_R_sprite.position.x > 700)
       //   this.fist_R_sprite.velocity.x -= 2;
@@ -309,6 +318,24 @@ class Player {
     //   this.plane.scale(0.99);
     // }
   }
+}
+
+
+/** Determine if a point is inside a wall
+ * @param pos position of player
+ * @param grid tilemap
+ */
+function point_in_wall(pos, grid) {
+
+  let xprime = Math.floor(pos.x/grid.width);
+  let yprime = Math.floor(pos.y/grid.width);
+
+  if (grid.tilemap[grid.width*yprime + xprime] > 0) {
+    return true
+  }
+
+  return false;
+
 }
 
 function point_in_cell(x, y, grid) {
