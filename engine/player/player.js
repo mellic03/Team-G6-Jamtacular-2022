@@ -44,12 +44,12 @@ class Player {
     this.dir_L = this.dir.get_rotated(-0.785);
     this.dir_R = this.dir.get_rotated(+0.785);
     this.fist_R_sprite.position.x = 750;
-    this.fist_R_sprite.position.y = 1000;
+    this.fist_R_sprite.position.y = 900;
     this.fist_R_sprite.width = 200;
     this.fist_R_sprite.height = 200;
 
     this.fist_L_sprite.position.x = 250;
-    this.fist_L_sprite.position.y = 1000;
+    this.fist_L_sprite.position.y = 900;
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
@@ -189,11 +189,11 @@ class Player {
 
 
     if (keyIsDown(keycodes.SPACE)) {
-      this.fist_R_sprite.position.y = 800; 
+      this.fist_R_sprite.position.y = 700; 
     }
     else {
       this.fist_R_sprite.velocity.y = 0;
-      this.fist_R_sprite.position.y = 1000;
+      this.fist_R_sprite.position.y = 900;
     }
 
 
