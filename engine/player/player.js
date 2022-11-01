@@ -7,7 +7,7 @@ class Player {
   pos = new Vector2();
   vel = new Vector2();
   dir = new Vector2(-1, 0);
-  plane = new Vector2(0, 1);
+  plane = new Vector2(0, SCREEN_WIDTH/SCREEN_HEIGHT);
   dir_L; dir_R;
 
   fov = 3.14159/2;
@@ -57,8 +57,42 @@ class Player {
   }
 
   draw(world_data) {
+    this.collision(world_data.active_map);
     this.march(world_data.active_map);
     this.input();
+
+    this.draw_minimap(world_data.active_map);
+  }
+
+  draw_minimap(map) {
+    for (let x=0; x<map.width; x++) {
+      for (let y=0; y<map.width; y++) {
+        if (map.tilemap[map.width*y + x] > 0) {
+
+          fill(
+            map.colourmap[4*map.width*y + 4*x],
+            map.colourmap[4*map.width*y + 4*x+1],
+            map.colourmap[4*map.width*y + 4*x+2]
+          );
+
+          rect(750+x*10, y*10, 10, 10);
+        }
+      }
+    }
+    circle(750+this.pos.x*10 / map.width, this.pos.y*10 / map.width, 10);
+  }
+
+  collision(map) {
+    let x = Math.floor(this.pos.x / map.width);
+    let y = Math.floor(this.pos.y / map.width);
+
+    // If player overlaps tile, get vector from
+    // centre of tile to player and push player back
+    if ((map.tilemap[4*(map.width*y + x)])) {
+
+      console.log("REEEEEEEEEEEE");
+
+    }
   }
 
   march(map) {
@@ -158,7 +192,7 @@ class Player {
 
       fill(r, g, b);
       stroke(r, g, b);
-      rect(SCREEN_WIDTH-i, SCREEN_WIDTH/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
+      rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
     rectMode(CORNER);
@@ -221,7 +255,7 @@ function point_in_cell(x, y, grid) {
   let xprime = Math.floor(x/grid.width);
   let yprime = Math.floor(y/grid.width);
 
-  if (!(grid.tilemap[4*(grid.width*yprime + xprime)])) {
+  if (!(grid.tilemap[grid.width*yprime + xprime])) {
     return false
   }
 
