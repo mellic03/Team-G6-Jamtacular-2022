@@ -110,7 +110,7 @@ class Player {
   march(map) {
     this.buffer = [];
 
-    for (let x=0; x<SCREEN_WIDTH; x+=2) {
+    for (let x=0; x<SCREEN_WIDTH; x+=1) {
 
       let camx = (2*x)/(SCREEN_WIDTH)-1;
 
@@ -191,9 +191,8 @@ class Player {
     rectMode(CENTER);
     noStroke();
   
-    for (let i=0; i<SCREEN_WIDTH; i+=2) {
+    for (let i=0; i<SCREEN_WIDTH; i+=1) {
 
-      // fill(10000/this.buffer[i].dist);
       let r = this.buffer[i].colour[0];
       let g = this.buffer[i].colour[1];
       let b = this.buffer[i].colour[2];
@@ -202,9 +201,18 @@ class Player {
         r/=2, g/=2, b/=2;
       }
 
+      let lineHeight = SCREEN_HEIGHT/this.buffer[i].dist;
+
+      let drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
+      if(drawStart < 0) drawStart = 0;
+      let drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
+      if(drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
+      
       fill(r, g, b);
       stroke(r, g, b);
-      rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
+      line(SCREEN_WIDTH-i, drawStart,
+      SCREEN_WIDTH-i, drawEnd )
+      // rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
     rectMode(CORNER);
