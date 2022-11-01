@@ -18,6 +18,7 @@ function preload() {
 
 function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+  frameRate(165);
   enemy_handler.setup();
   player_handler.setup();
   ui_handler.setup();
@@ -28,6 +29,7 @@ function setup() {
 let world_data = {
   players: player_handler._players,
   enemies: enemy_handler._enemies,
+  active_map: map_handler.active_map,
   maps: map_handler._maps
 };
 
@@ -40,8 +42,6 @@ function draw() {
   map_handler.draw(world_data);
   player_handler.draw(world_data);
   ui_handler.draw(world_data);
-
-
 
 }
 

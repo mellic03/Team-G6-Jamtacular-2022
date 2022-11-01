@@ -1,246 +1,183 @@
-/// <reference path="../../lib/p5.min.js" />
-/// <reference path="../../lib/p5.play.js" />
-/// <reference path="../math/vector.js" />
-
-// Player Variables
-
-let px = 0, py = 0;
-
-// Player Spritesheet
-let player_idle_sprites;
-let player_idle_anim;
-let player_run_sprites;
-let player_run_anim;
-let player_climb_sprites;
-let player_climb_anim;
-
-
 class Player {
 
-  sprite;
-  w = 50; h = 50;
-  speed = 0.5;
-
-  grounded = false;
-
-  /**
-   * @param {*} x x position of player
-   * @param {*} y y position of player
-   */
-	constructor(x, y) {
-		this.pos = new Vector2(x, y);
-	}
-
-  // PLAYER SPECIFICATION
-  //------------------------------------------------------------------------------------------------
-  health = 100;
+  health;
   damage;
+  
+  pos = new Vector2();
+  vel = new Vector2();
+  dir = new Vector2(0, 1);
+  dir_L; dir_R;
 
-  /** @type {Vector2} */ pos = new Vector2(0, 0);
-  /** @type {Vector2} */ vel = new Vector2(0, 0);
-  /** @type {Vector2} */ dir = new Vector2(1, 0);
+  fov = 3.14159/3;
+  scan_res = SCREEN_WIDTH;
+
+  ray_width = SCREEN_WIDTH/this.scan_res;
+  buffer = [];
+
+  fist_img;
+
+  constructor(x, y) {
+    this.pos.x = x;
+    this.pos.y = y;
+  }
 
   preload() {
-    player_idle_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_idle.png', 48, 48, 4);
-    player_idle_anim = loadAnimation(player_idle_sprites);
-    player_idle_anim.frameDelay = 8;
-    player_run_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_run.png', 48, 48, 6);
-    player_run_anim = loadAnimation(player_run_sprites);
-    player_run_anim.frameDelay = 9;
-    player_climb_sprites = loadSpriteSheet('spritesheets/Standard Player/Player1_climb.png', 48, 48, 6);
-    player_climb_anim = loadAnimation(player_climb_sprites);
-    player_climb_anim.frameDelay = 9;
+    this.fist_img = loadImage("engine/player/fist.png");
   }
 
   setup() {
-    this.sprite = createSprite(this.x, this.y, this.w, this.h);
-    this.sprite.position.x = this.pos.x;
-    this.sprite.position.y = this.pos.y;
-		this.sprite.scale = 2;
-		this.sprite.addAnimation('player_idle', player_idle_anim);
-		this.sprite.addAnimation('player_run', player_run_anim);
-		this.sprite.addAnimation('player_climb', player_climb_anim);
-    this.font1 = loadFont("fonts/PressStart2P-Regular.ttf"); 
+    this.pos = new Vector2(50, 50);
+    this.dir_L = this.dir.get_rotated(-0.785);
+    this.dir_R = this.dir.get_rotated(+0.785);
   }
 
-  ff = 0;
-
-  /**
-   * @param {Object} world_data Javascript object in the following format:
-   * { players: [], maps: [], enemies: [] }
-   */
   draw(world_data) {
-    // if (frameCount % 60 == 0)
-    //   this.ff = frameRate();
-    // text(this.ff, this.pos.x, this.pos.y-50);
-
-    this.move();
-    // this.draw_player_ui();
-    // this.health -= 0.1;
-
-    for (let map of world_data.maps) {
-      this.raycast(map);
-    }
-
-  }
-  //------------------------------------------------------------------------------------------------
-
-  /** Determine the intsection point of two lines
-   * @param {Vector2} a1 first point of the first line
-   * @param {Vector2} a2 second point of the first line
-   * @param {Vector2} b1 first point of the second line
-   * @param {Vector2} b2 second point of the second line
-   * @return {number} the distance between a1 and the interesection
-   * if an intersection occurs, infinity if no intersection occurs.
-   */
-  line_line_intersect(a1, a2, b1, b2) {
-
-    let d = (a1.x-a2.x)*(b1.y-b2.y) - (a1.y-a2.y)*(b1.x-b2.x);
-
-    let t = ((a1.x-b1.x)*(b1.y-b2.y) - (a1.y-b1.y)*(b1.x-b2.x)) / d;
-    let u = ((a1.x-b1.x)*(a1.y-a2.y) - (a1.y-b1.y)*(a1.x-a2.x)) / d;
-
-    let intersect = new Vector2(a1.x + t*(a2.x-a1.x), a1.y + t*(a2.y-a1.y));
-    if (0 <= t && t <= 1 && 0 <= u && u <= 1) {
-      // fill(0, 255, 0)
-      // circle(intersect.x, intersect.y, 10);
-      return vector2_dist(a1, intersect);
-    }
-    else {
-      return Infinity;
-    }
+    this.march(world_data.active_map);
+    this.input();
   }
 
-  /** Raycast against all edges in a spatial partition
-   * @param {Array} partition
-   */
-  raycast(partition) {
 
-    let ray_left = new Vector2(-SCREEN_WIDTH, this.h/2);
-    ray_left.add(this.pos);
-
-    let ray_right = new Vector2(SCREEN_WIDTH, this.h/2);
-    ray_right.add(this.pos);
-
-    let ray_up = new Vector2(0, -SCREEN_HEIGHT);
-    ray_up.add(this.pos);
-
-    let ray_down = new Vector2(0, SCREEN_HEIGHT);
-    ray_down.add(this.pos);
-
-    // stroke(0);
-    // line(this.pos.x, this.pos.y+this.h/2, ray_left.x, ray_left.y);
-    // line(this.pos.x, this.pos.y+this.h/2, ray_right.x, ray_right.y);
-    // line(this.pos.x, this.pos.y, ray_up.x, ray_up.y);
-    // line(this.pos.x, this.pos.y, ray_down.x, ray_down.y);
+  march(map) {
     
+    this.buffer = [];
 
-    let dist;
+    this.dir_L = new Vector2(this.dir.x, this.dir.y);
+    this.dir_L.rotate(-this.fov/2);
 
-    for (let polygon of partition.polygons) {
-      for (let edge of polygon.edges) {
-        
-        dist = this.line_line_intersect(this.pos, ray_up, edge.p1, edge.p2);
-        if (dist < this.h/4) {
-          let overlap = this.h/4 - dist;
-          this.vel.y = (this.vel.y < 0) ? -0.5*this.vel.y : this.vel.y;
-          this.pos.y += overlap/2;
+    let step = this.fov / this.scan_res;
+
+    for (let raynumber=0; raynumber<this.scan_res; raynumber++) {
+
+      this.dir_L.rotate(step);
+
+      let angle = vector2_angle(this.dir, this.dir_L);
+
+      let dx = abs(1 / this.dir_L.x);
+      let dy = abs(1 / this.dir_L.y);
+
+      let step_x, step_y;
+
+
+      let mapX = Math.floor(this.pos.x);
+      let mapY = Math.floor(this.pos.y);
+
+      let sideDistX, sideDistY;
+
+      if (this.dir_L.x < 0) {
+        step_x = -1;
+        sideDistX = (this.pos.x - mapX) * dx;
+      }
+      else {
+        step_x = 1;
+        sideDistX = (mapX + 1.0 - this.pos.x) * dx;
+      }
+
+      if (this.dir_L.y < 0) {
+        step_y = -1;
+        sideDistY = (this.pos.y - mapY) * dy;
+      }
+      else {
+        step_y = 1;
+        sideDistY = (mapY + 1.0 - this.pos.y) * dy;
+      }
+
+      let hit = 0;
+      let side;
+
+      while (hit == 0) {
+        if (sideDistX < sideDistY) {
+          sideDistX += dx;
+          mapX += step_x;
+          side = 0;
         }
-        
-        dist = this.line_line_intersect(this.pos, ray_down, edge.p1, edge.p2);
-        if (dist < this.h) {
-          let overlap = this.h - dist;
-          this.vel.y -= this.vel.y/2;
-          this.pos.y -= overlap*1.5;
-          this.grounded = true;
+        else {
+          sideDistY += dy;
+          mapY += step_y;
+          side = 1;
         }
-        
-        if (vector2_dot(new Vector2(-1, 0), edge.face_normal) < -0.9) {
-          dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_left, edge.p1, edge.p2);
-          if (dist < this.w/2) {
-            let overlap = this.w/2 - dist;
-            this.vel.x -= this.vel.x/2;
-            this.pos.x += overlap/2;
-          }
-        }
-        
-        if (vector2_dot(new Vector2(+1, 0), edge.face_normal) < -0.9) {
-          dist = this.line_line_intersect(new Vector2(this.pos.x, this.pos.y+this.h/2), ray_right, edge.p1, edge.p2);
-          if (dist < this.w/2) {
-            let overlap = this.w/2 - dist;
-            this.vel.x -= this.vel.x/2;
-            this.pos.x -= overlap/2;
-          }
+        if (point_in_cell(mapX, mapY, map)) {
+          hit = 1;
         }
       }
-    }
-  }
 
-	move() {
-
-    this.vel.y += GRAV_CONSTANT;
-    this.vel.x = (this.grounded) ? this.vel.x*0.9 : this.vel.x*0.95;
-    this.pos.add(this.vel);
-
-    this.sprite.position.x = this.pos.x;
-    this.sprite.position.y = this.pos.y;
-
-    this.sprite.changeAnimation("player_idle");
-
-    if (keyIsDown(keycodes.LEFT)) {
-      this.sprite.mirrorX(-1);
-      this.sprite.changeAnimation("player_run");
-      if (this.grounded)
-        this.vel.x -= this.speed;
+      if (side == 0)
+        this.buffer[raynumber] = {dist: (sideDistX - dx)*angle, side: side, x: mapX, y: mapY};
       else
-        this.vel.x -= this.speed/2;
+        this.buffer[raynumber] = {dist: (sideDistY - dy)*angle, side: side, x: mapX, y: mapY};
     }
 
-    if (keyIsDown(keycodes.RIGHT)) {
-      this.sprite.mirrorX(1);
-      this.sprite.changeAnimation("player_run");
-      if (this.grounded)
-        this.vel.x += this.speed;
-      else
-        this.vel.x += this.speed/2;
-    }
-    
-    if (keyIsDown(keycodes.UP)) {
-      this.sprite.changeAnimation("player_climb");
-      this.pos.y -= this.speed;
-    }
-
-    if (keyIsDown(keycodes.DOWN)) {
-      this.sprite.changeAnimation("player_climb");
-      this.pos.y += this.speed;
-    }
-
-    if (keyIsDown(keycodes.SPACE) && this.grounded) {
-      this.grounded =  false;
-      this.vel.y = -7;
-    }
-
-    camera.position.x = this.pos.x;
-    camera.position.y = this.pos.y;
-
-	}
-
-  draw_player_ui() {
-    this.draw_player_health()
-
-  }
-
-  draw_player_health() {
-    rectMode(CORNERS);
-    textSize(15);
-    textFont(this.font1);
-    fill(150,150,150,150);
-    rect(this.pos.x+51, this.pos.y -51, this.pos.x -51, this.pos.y-34);
+    rectMode(CENTER);
     noStroke();
-    fill(0,250,0);
-    rect(this.pos.x-50, this.pos.y-50, this.pos.x + 50*(this.health/100), this.pos.y-35);
-    fill(0,0,0,150);
-    text('HP', this.pos.x-50, this.pos.y - 34);
+  
+    for (let i=0; i<this.scan_res; i++) {
+      let r=200, g=200, b=200;
+
+      // fill(10000/this.buffer[i].dist);
+      r /= 0.01*this.buffer[i].dist;
+      g /= 0.01*this.buffer[i].dist;
+      b /= 0.01*this.buffer[i].dist;
+
+      r = (r > 200) ? 200 : r;
+      g = (g > 200) ? 200 : g;
+      b = (b > 200) ? 200 : b;
+
+      if (this.buffer[i].side) {
+        r/=2, g/=2, b/=2;
+      }
+
+      fill(r, g, b);
+      stroke(r, g, b);
+      rect(i*this.ray_width, (SCREEN_WIDTH/2), this.ray_width+1, SCREEN_HEIGHT/(0.03*this.buffer[i].dist));
+    }
+    stroke(0);
+    rectMode(CORNER);
   }
+
+
+  input() {
+    if (keyIsDown(13))
+      requestPointerLock();
+
+    if (keyIsDown(65)) {
+      let temp = this.dir.get_rotated(-1.57);
+      this.pos.add(temp);
+    }
+    if (keyIsDown(68)) {
+      let temp = this.dir.get_rotated(+1.57);
+      this.pos.add(temp);
+    }
+    if (keyIsDown(87))
+      this.pos.add(this.dir);
+    if (keyIsDown(83))
+      this.pos.sub(this.dir);
+
+
+    if (keyIsDown(32)) {
+      image(this.fist_img, 3*RES_X/5, 570, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+      // this.plane.rotate(-0.02);
+      this.dir.rotate(-0.02);
+    }
+
+    if (keyIsDown(RIGHT_ARROW)) {
+      // this.plane.rotate(+0.02);
+      this.dir.rotate(+0.02);
+    }
+      
+    if (keyIsDown(109))
+      this.fov += 0.01;
+    if (keyIsDown(107))
+      this.fov -= 0.01;
+  }
+
 }
 
+function point_in_cell(x, y, grid) {
+
+  let xprime = Math.floor(x/grid.width);
+  let yprime = Math.floor(y/grid.width);
+
+  return grid.data[grid.width*yprime + xprime];
+}

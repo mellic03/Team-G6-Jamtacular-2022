@@ -1,7 +1,12 @@
 class MapHandler {
   
+  active_map;
+
   constructor() {
     this._maps = [];
+  }
+
+  set_active_map(map_name) {
   }
 
   add(map) {
@@ -17,7 +22,6 @@ class MapHandler {
       for (let reason of validity)
         console.log(`REASON: ${reason}`);
     }
-
   }
 
   remove() {
@@ -62,12 +66,6 @@ function is_valid_map(map) {
 
   if (map.draw == undefined)
     errors.push(`map.draw() is undefined.`);
-
-  if (!map.hasOwnProperty("polygons"))
-    errors.push(`property "polygons" does not exist.`);
-
-  if (!map.hasOwnProperty("edges"))
-    errors.push(`property "edges" does not exist.`);
 
   return (errors.length == 0) ? true : errors;
 }

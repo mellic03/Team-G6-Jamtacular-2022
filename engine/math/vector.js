@@ -110,7 +110,7 @@ function vector2_dot(v0, v1) {
 
 function vector2_angle(v0, v1) {
   // console.log(vector2_dot(v0, v1))
-  return Math.acos(vector2_dot(v0, v1)/(v0.mag()*v1.mag()));
+  return (vector2_dot(v0, v1)/(v0.mag()*v1.mag()));
 }
 
 function point_plane_dist(plane_normal, plane_pos, point_pos) {
