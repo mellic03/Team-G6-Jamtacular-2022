@@ -18,6 +18,10 @@ class Vector2 {
     this.x *= alpha, this.y *= alpha;
   }
 
+  get_scaled(alpha) {
+    return new Vector2(this.x*alpha, this.y*alpha);
+  }
+
   translate(x, y, z) {
     this.x += x, this.y += y, this.z += z;
   }
