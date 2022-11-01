@@ -243,12 +243,12 @@ class Player {
       this.dir.rotate(+0.02);
     }
       
-    if (keyIsDown(keycodes.DOWN)) {
-      this.plane.scale(1.01);
-    }
-    if (keyIsDown(keycodes.UP)) {
-      this.plane.scale(0.99);
-    }
+    // if (keyIsDown(keycodes.DOWN)) {
+    //   this.plane.scale(1.01);
+    // }
+    // if (keyIsDown(keycodes.UP)) {
+    //   this.plane.scale(0.99);
+    // }
   }
 }
 

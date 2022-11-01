@@ -1,5 +1,5 @@
-const SCREEN_WIDTH = 1000;
-const SCREEN_HEIGHT = 1000;
+const SCREEN_WIDTH = 700;
+const SCREEN_HEIGHT = 700;
 
 const GRAV_CONSTANT = 0.3;
 
