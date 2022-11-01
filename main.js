@@ -46,8 +46,10 @@ function draw() {
   enemy_handler.draw(world_data);
   map_handler.draw(world_data);
   player_handler.draw(world_data);
-  ui_handler.draw(world_data);
 
 	drawSprites();
+
+  ui_handler.draw(world_data);
+
 }
 
