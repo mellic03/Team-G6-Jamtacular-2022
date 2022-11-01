@@ -23,6 +23,7 @@ function setup() {
   player_handler.setup();
   ui_handler.setup();
   map_handler.setup();
+  console.log(world_data);
 }
 
 
@@ -33,12 +34,13 @@ let world_data = {
   maps: map_handler._maps
 };
 
+
 function draw() {
 	background(220);
   fill(50, 100, 150);
   rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
   fill(100, 100, 150);
-  rect(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT);
+  rect(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
 
 	drawSprites();
 

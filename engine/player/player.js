@@ -155,14 +155,14 @@ class Player {
       let temp = this.dir.get_rotated(+1.57);
       this.pos.add(temp);
     }
-    if (keyIsDown(87))
+    if (keyIsDown(87)) 
       this.pos.add(this.dir);
     if (keyIsDown(83))
       this.pos.sub(this.dir);
 
 
     if (keyIsDown(32)) {
-      image(this.fist_img, 3*SCREEN_WIDTH/5, 570, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
+      image(this.fist_img, 3*SCREEN_WIDTH/5, 730, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
     }
 
     if (keyIsDown(LEFT_ARROW)) {
@@ -175,9 +175,9 @@ class Player {
       this.dir.rotate(+0.02);
     }
       
-    if (keyIsDown(109))
-      this.fov += 0.01;
     if (keyIsDown(107))
+      this.fov += 0.01;
+    if (keyIsDown(109))
       this.fov -= 0.01;
   }
 }
