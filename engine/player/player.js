@@ -8,7 +8,7 @@ class Player {
   dir = new Vector2(0, 1);
   dir_L; dir_R;
 
-  fov = 3.14159/3;
+  fov = 3.14159/2;
   scan_res = SCREEN_WIDTH;
 
   ray_width = SCREEN_WIDTH/this.scan_res;
@@ -153,7 +153,7 @@ class Player {
 
 
     if (keyIsDown(32)) {
-      image(this.fist_img, 3*RES_X/5, 570, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
+      image(this.fist_img, 3*SCREEN_WIDTH/5, 570, 2.5*this.fist_img.width, 2.5*this.fist_img.height);
     }
 
     if (keyIsDown(LEFT_ARROW)) {
