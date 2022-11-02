@@ -44,7 +44,7 @@ class Zombie {
   pos = new Vector2(0, 0);
   pos_screen = new Vector2(0, SCREEN_HEIGHT/2);
   vel = new Vector2(0, 0);
-  dir = new Vector2(0, 0);
+  dir = new Vector2(-1, 0);
 
 
   preload() {
@@ -53,17 +53,39 @@ class Zombie {
     this.self_group.add(this.sprite);
   
     this.sheet_front = loadSpriteSheet(
-      this.directory + "/spritesheets/walkfront1-sheet.png",
-      40, 54, 4
+      this.directory + "/spritesheets/walkfront-sheet.png",
+      41, 54, 4
     );
+
+    this.sheet_back = loadSpriteSheet(
+      this.directory + "/spritesheets/walkback-sheet.png",
+      36, 54, 4
+    );
+
+    this.sheet_left = loadSpriteSheet(
+      this.directory + "/spritesheets/walkleft-sheet.png",
+      43, 55, 4
+    );
+
 
   }
 
   setup() {
     this.anim_front = loadAnimation(this.sheet_front);
     this.anim_front.frameDelay = 32;
-    this.sprite.addAnimation('test', this.anim_front);
-    this.sprite.changeAnimation('test');
+    this.sprite.addAnimation('walkfront', this.anim_front);
+    this.sprite.changeAnimation('walkfront');
+
+    this.anim_back = loadAnimation(this.sheet_back);
+    this.anim_back.frameDelay = 32;
+    this.sprite.addAnimation('walkback', this.anim_back);
+    this.sprite.changeAnimation('walkback');
+
+    this.anim_left = loadAnimation(this.sheet_left);
+    this.anim_left.frameDelay = 32;
+    this.sprite.addAnimation('walkleft', this.anim_left);
+    this.sprite.changeAnimation('walkleft');
+
 
     this.sprite.position.y = SCREEN_HEIGHT/2;
     this.sprite.scale = 1/54;
@@ -72,6 +94,30 @@ class Zombie {
 
   draw(world_data) {
 
+    let player_pos = world_data.players[0].pos;
+    let dir = vector2_sub(this.pos, player_pos);
+    dir.normalise();
+
+    let dot = vector2_dot(this.dir, dir);
+
+    if (dot < -0.5) {
+      this.sprite.changeAnimation("walkfront");
+    }
+    else if (dot > -0.5 && dot < 0.5) {
+      
+      if (vector2_dot(this.dir, dir.get_rotated(-1.57)) < 0) {
+        this.sprite.mirrorX(-1);
+        this.sprite.changeAnimation("walkleft");
+      }
+      else {
+        this.sprite.mirrorX(+1);
+        this.sprite.changeAnimation("walkleft");
+      }
+
+    }
+    else if (dot > 0.5 && dot < 1) {
+      this.sprite.changeAnimation("walkback");
+    }
 
   }
 
