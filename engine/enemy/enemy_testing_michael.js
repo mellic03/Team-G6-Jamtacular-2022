@@ -70,7 +70,7 @@ class Zombie {
 
     this.sheet_back_angle = loadSpriteSheet(
       this.directory + "/spritesheets/walkbackangle-sheet.png",
-      44, 54, 4
+      45, 54, 4
     );
 
 
@@ -131,22 +131,22 @@ class Zombie {
 
     console.log(theta);
 
-    if (theta > 157.5) {
+    if (theta > 144) {
       this.sprite.changeAnimation("walkfront");
     }
 
-    else if (theta > 135) {
+    else if (theta > 108) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
     }
 
-    else if (theta > 90) {
+    else if (theta > 72) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
     }
 
 
-    else if (theta > 45) {
+    else if (theta > 36) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkbackangle");
     }
