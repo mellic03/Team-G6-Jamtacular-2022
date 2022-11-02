@@ -123,30 +123,26 @@ class Zombie {
     dir.normalise();
 
     let dot = vector2_dot(this.dir, dir);
-    
     let side = vector2_dot(this.dir, dir.get_rotated(-1.57)) < 0 ? -1 : 1;
-
     let theta = (acos(dot)*180)/3.14159;
 
 
-    console.log(theta);
-
-    if (theta > 144) {
+    if (theta > 155.7) {
       this.sprite.changeAnimation("walkfront");
     }
 
-    else if (theta > 108) {
+    else if (theta > 112.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
     }
 
-    else if (theta > 72) {
+    else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
     }
 
 
-    else if (theta > 36) {
+    else if (theta > 22.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkbackangle");
     }
@@ -156,7 +152,6 @@ class Zombie {
     }
 
   }
-
 
 
 }
