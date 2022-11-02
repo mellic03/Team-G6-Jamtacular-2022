@@ -21,6 +21,11 @@ class Player {
   fist_L_sprite;
   fist_R_sprite;
 
+  mmap_x = 700;
+  mmap_width = 250;
+
+  ray_intersections = [];
+
   constructor(x, y) {
     this.pos.x = x;
     this.pos.y = y;
@@ -54,20 +59,18 @@ class Player {
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
-    
     console.log(this.fist_R_sprite);
   }
 
   draw(world_data) {
-    this.march(world_data.active_map);
     this.input(world_data.active_map);
-
+    this.march(world_data.active_map);
     this.draw_minimap(world_data.active_map);
   }
 
   draw_minimap(map) {
     fill(10);
-    rect(750, 0, 250, 250);
+    rect(this.mmap_x, 0, this.mmap_width, this.mmap_width);
     for (let x=0; x<map.width; x++) {
       for (let y=0; y<map.width; y++) {
         if (map.tilemap[map.width*y + x] > 0) {
@@ -78,11 +81,35 @@ class Player {
             map.colourmap[4*map.width*y + 4*x+2]
           );
 
-          rect(750+x*10, y*10, 10, 10);
+          rect(this.mmap_x+x*map.width/2, y*map.width/2, 10, 10);
         }
       }
     }
-    circle(750+this.pos.x*10 / map.width, this.pos.y*10 / map.width, 10);
+    stroke(255);
+    circle(this.mmap_x+this.pos.x/2, this.pos.y/2, 5);
+    
+
+    line(
+      this.mmap_x+this.pos.x/2,
+      this.pos.y/2,
+      this.mmap_x+this.ray_intersections[0].x/2,
+      this.ray_intersections[0].y/2
+    )
+    line(
+      this.mmap_x+this.pos.x/2,
+      this.pos.y/2,
+      this.mmap_x+this.ray_intersections[SCREEN_WIDTH-1].x/2,
+      this.ray_intersections[SCREEN_WIDTH-1].y/2
+    )
+
+    for (let i=1; i<this.ray_intersections.length-1; i+=10) {
+      circle(this.mmap_x+this.ray_intersections[i].x/2, this.ray_intersections[i].y/2, 2);
+    }
+
+    this.ray_intersections = [];
+
+    let dir_l = this.dir.get_rotated(-0.75);
+    let dir_r = this.dir.get_rotated(+0.75);
   }
 
   march(map) {
@@ -101,7 +128,6 @@ class Player {
       let dy = sqrt(1 + (dirx**2 / diry**2));
 
       let step_x, step_y;
-
 
       let mapX = Math.floor(this.pos.x);
       let mapY = Math.floor(this.pos.y);
@@ -145,6 +171,7 @@ class Player {
         colour = point_in_cell(mapX, mapY, map);
         if (colour != false) {
           hit = 1;
+          this.ray_intersections.push({x: mapX, y: mapY});
         }
       }
 
@@ -166,29 +193,30 @@ class Player {
         };
     }
 
-    rectMode(CENTER);
-    noStroke();
-  
+    
+    let r, g, b;
+    let line_height, line_start, line_end;
+
     for (let i=0; i<SCREEN_WIDTH; i+=1) {
 
-      let r = this.buffer[i].colour[0];
-      let g = this.buffer[i].colour[1];
-      let b = this.buffer[i].colour[2];
+      r = this.buffer[i].colour[0];
+      g = this.buffer[i].colour[1];
+      b = this.buffer[i].colour[2];
 
       if (this.buffer[i].side) {
         r/=2, g/=2, b/=2;
       }
 
-      let lineHeight = SCREEN_HEIGHT/this.buffer[i].dist;
+      line_height = SCREEN_HEIGHT/this.buffer[i].dist;
 
-      let drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
-      if(drawStart < 0) drawStart = 0;
-      let drawEnd = lineHeight / 2 + SCREEN_HEIGHT / 2;
-      if(drawEnd >= SCREEN_HEIGHT) drawEnd = SCREEN_HEIGHT - 1;
-      
+      line_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+      if(line_start < 0) line_start = 0;
+      line_end = line_height / 2 + SCREEN_HEIGHT / 2;
+      if(line_end >= SCREEN_HEIGHT) line_end = SCREEN_HEIGHT - 1;
+
+      // strokeWeight(2);
       stroke(r, g, b);
-      strokeWeight(2)
-      line(SCREEN_WIDTH-i, drawStart, SCREEN_WIDTH-i, drawEnd);
+      line(SCREEN_WIDTH-i, line_start, SCREEN_WIDTH-i-1, line_end);
       // rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
