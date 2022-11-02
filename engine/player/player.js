@@ -253,8 +253,8 @@ class Player {
         let newpos = vector2_sub(enemies_array[i].pos, this.pos);
         let invDet = 1 / (this.plane.x*this.dir.y - this.dir.x*this.plane.y);
 
-        let transformX = invDet * (-this.dir.y*newpos.x + this.dir.x*newpos.y);
-        let transformY = invDet * (-this.plane.y*newpos.x + this.plane.x*newpos.y);
+        let transformX = invDet * (this.dir.x*newpos.y - this.dir.y*newpos.x);
+        let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
 
         let spriteScreenX = (SCREEN_WIDTH/2) * (1 + transformX/transformY);
         enemies_array[i].sprite.position.x = spriteScreenX;

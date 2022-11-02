@@ -30,8 +30,13 @@ class Vector2 {
     return this.x*v2.x + this.y*v2.y;
   }
 
+  negate() {
+    this.x *= -1;
+    this.y *= -1;
+  }
+
   mag() {
-    return Math.sqrt(this.x**2 + this.y**2);
+    return sqrt(this.x**2 + this.y**2);
   }
 
   normalise() {

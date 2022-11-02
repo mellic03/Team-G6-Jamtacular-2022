@@ -3,12 +3,14 @@
 /// <reference path="../math/vector.js" />
 
 
+/*
+  This is ripped straight from doom
+*/
+
+
 class Zombie {
 
   speed = 1;
-
-  // SCREEN_HEIGHT/54 = sprite height
-  // sprite.scale(2 * SCREEN_HEIGHT/54);
 
   directory;
 
@@ -79,7 +81,6 @@ class Zombie {
       43, 55, 4
     );
 
-
   }
 
   setup() {
@@ -109,14 +110,42 @@ class Zombie {
     this.anim_left.frameDelay = 32;
     this.sprite.addAnimation('walkleft', this.anim_left);
     this.sprite.changeAnimation('walkleft');
-
-
-    this.sprite.position.y = SCREEN_HEIGHT/2;
-    this.sprite.scale = 1/54;
-    
   }
 
   draw(world_data) {
+
+    this.move_to_player(world_data);
+    this.correct_angle(world_data);
+  }
+
+  move_to_player(world_data) {
+
+    let dist = vector2_dist(world_data.players[0].pos, this.pos);
+
+    let dir_forwards = vector2_sub(world_data.players[0].pos, this.pos);
+    dir_forwards.normalise();
+    
+    let dir_backwards = vector2_sub(this.pos, world_data.players[0].pos);
+    dir_backwards.normalise();
+
+    this.dir.lerp(dir_backwards, 0.02);
+    this.dir.normalise();
+
+    dir_forwards.scale(0.2);
+
+    if (dist < 7) {
+      world_data.players[0].vel.add(dir_forwards);
+    }
+    if (dist > 20) {
+      this.pos.add(dir_forwards);
+    }
+  }
+
+  
+  /** Change active animation to ensure player sees enemy from correct angle
+   * @param {*} world_data 
+   */
+  correct_angle(world_data) {
 
     let player_pos = world_data.players[0].pos;
     let dir = vector2_sub(this.pos, player_pos);
@@ -150,8 +179,6 @@ class Zombie {
     else {
       this.sprite.changeAnimation("walkback");
     }
-
   }
-
 
 }
