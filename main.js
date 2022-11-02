@@ -47,9 +47,11 @@ function draw() {
   map_handler.draw(world_data);
   player_handler.draw(world_data);
 
-	drawSprites();
 
+  drawSprites();
   ui_handler.draw(world_data);
+
+
 
 }
 
