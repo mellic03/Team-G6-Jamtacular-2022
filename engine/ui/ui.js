@@ -23,18 +23,20 @@ class UI {
 
   framerate = 0;
 
-  draw() {
-    fill(0);
-    textSize(24);
+  draw(world_data) {
+    fill(255);
+    textSize(12);
     if (frameCount % 30 == 0)
       this.framerate = Math.floor(frameRate());
     //text(`FPS: ${this.framerate}`, 10, 30);
+    text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 45);
+
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     animation(this.chad_anim, SCREEN_WIDTH/2, SCREEN_HEIGHT-this.ui_banner.height/2);
     textFont(this.doom_font);
     textSize(80);
-    fill(200,0,0);
-    text('100', 360, 990);
+    fill(200, 0, 0);
+    text('100', 360,  990);
     textSize(200);
     textFont(this.doom_font2);
     //text('CO',375, 500)

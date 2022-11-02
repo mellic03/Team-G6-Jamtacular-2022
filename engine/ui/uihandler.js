@@ -20,9 +20,9 @@ class UIHandler {
     }
   }
 
-  draw() {
+  draw(world_data) {
     for (let ui_object of this._ui_objects) {
-      ui_object.draw();
+      ui_object.draw(world_data);
     }
   }
 

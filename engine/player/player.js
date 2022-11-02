@@ -6,8 +6,8 @@ class Player {
   speed = 0.4;
   pos = new Vector2();
   vel = new Vector2(0, 0);
-  dir = new Vector2(-1, 0);
-  plane = new Vector2(0, SCREEN_WIDTH/SCREEN_HEIGHT);
+  dir = new Vector2(1, 0);
+  plane = new Vector2(0, -SCREEN_WIDTH/SCREEN_HEIGHT);
   fist_offset = 0;
   dir_L; dir_R;
 
@@ -65,6 +65,8 @@ class Player {
   draw(world_data) {
     this.input(world_data.active_map);
     this.march(world_data.active_map);
+    this.render();
+    this.sprite_render(world_data.enemies);
     this.draw_minimap(world_data.active_map);
   }
 
@@ -88,7 +90,6 @@ class Player {
     stroke(255);
     circle(this.mmap_x+this.pos.x/2, this.pos.y/2, 5);
     
-
     line(
       this.mmap_x+this.pos.x/2,
       this.pos.y/2,
@@ -105,11 +106,7 @@ class Player {
     for (let i=1; i<this.ray_intersections.length-1; i+=10) {
       circle(this.mmap_x+this.ray_intersections[i].x/2, this.ray_intersections[i].y/2, 2);
     }
-
     this.ray_intersections = [];
-
-    let dir_l = this.dir.get_rotated(-0.75);
-    let dir_r = this.dir.get_rotated(+0.75);
   }
 
   march(map) {
@@ -192,8 +189,10 @@ class Player {
           colour: colour
         };
     }
+  }
 
-    
+  render() {
+        
     let r, g, b;
     let line_height, line_start, line_end;
 
@@ -217,10 +216,55 @@ class Player {
       // strokeWeight(2);
       stroke(r, g, b);
       line(SCREEN_WIDTH-i, line_start, SCREEN_WIDTH-i-1, line_end);
-      // rect(SCREEN_WIDTH-i, SCREEN_HEIGHT/2, 2, SCREEN_HEIGHT/this.buffer[i].dist);
     }
     stroke(0);
     rectMode(CORNER);
+  }
+
+  sprite_render(enemies_array) {
+    
+    // Sort sprites by distance, from furthest to nearest
+    let dist_i, dist_j;
+    for (let i=0; i<enemies_array.length; i++) {
+      for (let j=0; j<enemies_array.length; j++) {
+        if (i!=j) {
+          dist_i = vector2_dist(this.pos, enemies_array[i].pos);
+          dist_j = vector2_dist(this.pos, enemies_array[j].pos);
+          if (dist_i > dist_j) {
+            let temp = enemies_array[i];
+            enemies_array[i] = enemies_array[j];
+            enemies_array[j] = temp;            
+          }
+        }
+      }
+    }
+    
+    for (let i=0; i<enemies_array.length; i++) {
+
+      let player_to_sprite = vector2_sub(this.pos, enemies_array[i].pos);
+      player_to_sprite.normalise();
+      if (vector2_dot(this.dir, player_to_sprite) < -0.1) {
+        let newpos = vector2_sub(enemies_array[i].pos, this.pos);
+        let invDet = 1 / (this.plane.x*this.dir.y - this.dir.x*this.plane.y);
+
+        let transformX = invDet * (-this.dir.y*newpos.x + this.dir.x*newpos.y);
+        let transformY = invDet * (-this.plane.y*newpos.x + this.plane.x*newpos.y);
+
+        let spriteScreenX = (SCREEN_WIDTH/2) * (1 + transformX/transformY);
+        enemies_array[i].sprite.position.x = spriteScreenX;
+
+        let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
+        enemies_array[i].sprite.scale = sprite_height
+        enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
+      }
+
+      else {
+        enemies_array[i].sprite.scale = 0;
+        enemies_array[i].sprite.position.x = -100;
+      }
+
+    }
+
   }
 
   input(map) {
@@ -229,10 +273,6 @@ class Player {
 
     this.vel.scale(0.9)
     this.pos.add(this.vel);
-
-    let x = Math.floor(this.pos.x / map.width);
-    let y = Math.floor(this.pos.y / map.width);
-
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
@@ -288,63 +328,17 @@ class Player {
     if (keyIsDown(keycodes.SPACE)) {
     this.fist_R_sprite.position.y = 700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
     }
-    // else {
-      // this.fist_R_sprite.position.y = 900;
-    // }
-
-    // if (this.fist_L_sprite.position.x < 240) {
-    //   this.fist_L_sprite.velocity.x += 1.5;
-    // }
-
-    // else if (this.fist_L_sprite.position.x > 260) {
-    //   this.fist_L_sprite.velocity.x -= 1.5;
-    // }
-
-    // else {
-    //   this.fist_L_sprite.velocity.x = 0;
-    // }
-
-    // if (this.fist_R_sprite.position.x < 740) {
-    //   this.fist_R_sprite.velocity.x += 1.5;
-    // }
-
-    // else if (this.fist_R_sprite.position.x > 760) {
-    //   this.fist_R_sprite.velocity.x -= 1.5;
-    // }
-
-    // else {
-    //   this.fist_R_sprite.velocity.x = 0;
-    // }
-
-    // this.fist_R_sprite.velocity.x *= 0.9;
-    // this.fist_L_sprite.velocity.x *= 0.9;
 
     if (keyIsDown(LEFT_ARROW)) {
       this.plane.rotate(-0.02);
       this.dir.rotate(-0.02);
-
-      // if (this.fist_R_sprite.position.x < 800)
-      //   this.fist_R_sprite.velocity.x += 2;
-      // if (this.fist_L_sprite.position.x < 300)
-      //   this.fist_L_sprite.velocity.x += 2;
     }
 
     if (keyIsDown(RIGHT_ARROW)) {
       this.plane.rotate(+0.02);
       this.dir.rotate(+0.02);
-
-      // if (this.fist_R_sprite.position.x > 700)
-      //   this.fist_R_sprite.velocity.x -= 2;
-      // if (this.fist_L_sprite.position.x > 200)
-      //   this.fist_L_sprite.velocity.x -= 2;
     }
-      
-    // if (keyIsDown(keycodes.DOWN)) {
-    //   this.plane.scale(1.01);
-    // }
-    // if (keyIsDown(keycodes.UP)) {
-    //   this.plane.scale(0.99);
-    // }
+
   }
 }
 

@@ -1,15 +1,11 @@
-let lvl1_enemy = [];
 
 function enemy_init() {
 
   let enemy_handler = new EnemyHandler();
   
-  // lvl1_enemy[0] = new Enemy(-600, 100);
-  // enemy_handler.add(lvl1_enemy[0]);
+  let zombie = new Zombie(160, 60, "engine/enemy/zombie");
 
-  // lvl1_enemy[1] = new Enemy(150, 330);
-  // enemy_handler.add(lvl1_enemy[1]);
-
+  enemy_handler.add(zombie);
 
   return enemy_handler;
 }
