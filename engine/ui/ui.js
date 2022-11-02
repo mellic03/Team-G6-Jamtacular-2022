@@ -10,7 +10,7 @@ class UI {
   }
 
   setup() {
-
+    noSmooth();
     this.doom_font = loadFont('fonts/DOOM.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
 
