@@ -57,10 +57,22 @@ class Zombie {
       41, 54, 4
     );
 
+    this.sheet_front_angle = loadSpriteSheet(
+      this.directory + "/spritesheets/walkfrontangle-sheet.png",
+      37, 54, 4
+    );
+
+
     this.sheet_back = loadSpriteSheet(
       this.directory + "/spritesheets/walkback-sheet.png",
       36, 54, 4
     );
+
+    this.sheet_back_angle = loadSpriteSheet(
+      this.directory + "/spritesheets/walkbackangle-sheet.png",
+      44, 54, 4
+    );
+
 
     this.sheet_left = loadSpriteSheet(
       this.directory + "/spritesheets/walkleft-sheet.png",
@@ -76,10 +88,22 @@ class Zombie {
     this.sprite.addAnimation('walkfront', this.anim_front);
     this.sprite.changeAnimation('walkfront');
 
+    this.anim_front_angle = loadAnimation(this.sheet_front_angle);
+    this.anim_front_angle.frameDelay = 32;
+    this.sprite.addAnimation('walkfrontangle', this.anim_front_angle);
+    this.sprite.changeAnimation('walkfrontangle');
+
+
     this.anim_back = loadAnimation(this.sheet_back);
     this.anim_back.frameDelay = 32;
     this.sprite.addAnimation('walkback', this.anim_back);
     this.sprite.changeAnimation('walkback');
+
+    this.anim_back_angle = loadAnimation(this.sheet_back_angle);
+    this.anim_back_angle.frameDelay = 32;
+    this.sprite.addAnimation('walkbackangle', this.anim_back_angle);
+    this.sprite.changeAnimation('walkbackangle');
+
 
     this.anim_left = loadAnimation(this.sheet_left);
     this.anim_left.frameDelay = 32;
@@ -99,23 +123,35 @@ class Zombie {
     dir.normalise();
 
     let dot = vector2_dot(this.dir, dir);
+    
+    let side = vector2_dot(this.dir, dir.get_rotated(-1.57)) < 0 ? -1 : 1;
 
-    if (dot < -0.5) {
+    let theta = (acos(dot)*180)/3.14159;
+
+
+    console.log(theta);
+
+    if (theta > 157.5) {
       this.sprite.changeAnimation("walkfront");
     }
-    else if (dot > -0.5 && dot < 0.5) {
-      
-      if (vector2_dot(this.dir, dir.get_rotated(-1.57)) < 0) {
-        this.sprite.mirrorX(-1);
-        this.sprite.changeAnimation("walkleft");
-      }
-      else {
-        this.sprite.mirrorX(+1);
-        this.sprite.changeAnimation("walkleft");
-      }
 
+    else if (theta > 135) {
+      this.sprite.mirrorX(side);
+      this.sprite.changeAnimation("walkfrontangle");
     }
-    else if (dot > 0.5 && dot < 1) {
+
+    else if (theta > 90) {
+      this.sprite.mirrorX(side);
+      this.sprite.changeAnimation("walkleft");
+    }
+
+
+    else if (theta > 45) {
+      this.sprite.mirrorX(side);
+      this.sprite.changeAnimation("walkbackangle");
+    }
+
+    else {
       this.sprite.changeAnimation("walkback");
     }
 

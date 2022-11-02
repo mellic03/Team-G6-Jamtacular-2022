@@ -7,7 +7,6 @@ function enemy_init() {
   let zombie2 = new Zombie(200, 60, "engine/enemy/zombie");
   
   enemy_handler.add(zombie1);
-  enemy_handler.add(zombie2);
 
   return enemy_handler;
 }
