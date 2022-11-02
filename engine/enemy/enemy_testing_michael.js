@@ -13,6 +13,7 @@ class Zombie {
   directory;
 
   sprite;
+  self_group; // Each sprite is contained within it's own group for depth ordering
 
   sheet_back
   sheet_front;
@@ -48,7 +49,9 @@ class Zombie {
 
   preload() {
     this.sprite = new Sprite();
-
+    this.self_group = new Group();
+    this.self_group.add(this.sprite);
+  
     this.sheet_front = loadSpriteSheet(
       this.directory + "/spritesheets/walkfront1-sheet.png",
       40, 54, 4

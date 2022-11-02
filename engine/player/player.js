@@ -17,6 +17,8 @@ class Player {
   ray_width = SCREEN_WIDTH/this.scan_res;
   buffer = [];
 
+
+  self_group;
   fist_R_img
   fist_L_sprite;
   fist_R_sprite;
@@ -59,6 +61,10 @@ class Player {
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
+    this.self_group = new Group();
+    this.self_group.add(this.fist_L_sprite);
+    this.self_group.add(this.fist_R_sprite);
+
     console.log(this.fist_R_sprite);
   }
 
@@ -68,6 +74,7 @@ class Player {
     this.render();
     this.sprite_render(world_data.enemies);
     this.draw_minimap(world_data.active_map);
+    this.self_group.draw();
   }
 
   draw_minimap(map) {
@@ -240,7 +247,6 @@ class Player {
     }
     
     for (let i=0; i<enemies_array.length; i++) {
-
       let player_to_sprite = vector2_sub(this.pos, enemies_array[i].pos);
       player_to_sprite.normalise();
       if (vector2_dot(this.dir, player_to_sprite) < -0.1) {
@@ -256,6 +262,7 @@ class Player {
         let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
+        enemies_array[i].self_group.draw();
       }
 
       else {
