@@ -4,8 +4,8 @@ class Map {
   filepath;
 
   width;
-  tilemap = [];
-  colourmap = [];
+  tilemap = [];   // Raycasting and collisions against walls, 1/4 size of colourmap
+  colourmap = []; // coloured rendering
 
   constructor(filepath) {
     this.filepath = filepath;
