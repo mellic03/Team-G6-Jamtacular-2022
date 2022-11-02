@@ -28,7 +28,7 @@ class UI {
     textSize(12);
     if (frameCount % 30 == 0)
       this.framerate = Math.floor(frameRate());
-    //text(`FPS: ${this.framerate}`, 10, 30);
+    text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 45);
 
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
