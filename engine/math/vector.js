@@ -34,6 +34,10 @@ class Vector2 {
     this.x *= -1;
     this.y *= -1;
   }
+  
+  get_negated() {
+    return new Vector2(-this.x, -this.y);
+  }
 
   mag() {
     return sqrt(this.x**2 + this.y**2);

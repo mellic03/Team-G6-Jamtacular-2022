@@ -10,12 +10,11 @@
 
 class Zombie {
 
-  speed = 1;
-
   directory;
 
+  speed = 1;
+
   sprite;
-  self_group; // Each sprite is contained within it's own group for depth ordering
 
   sheet_back
   sheet_front;
@@ -114,31 +113,89 @@ class Zombie {
 
   draw(world_data) {
 
+    this.collide_against_enemies(world_data);
     this.move_to_player(world_data);
     this.correct_angle(world_data);
   }
+
+  collide_against_enemies(world_data) {
+    for (let i=0; i<world_data.enemies.length; i++) {
+      for (let j=0; j<world_data.enemies.length; j++) {
+        if (i!=j) {
+          let dist = vector2_dist(world_data.enemies[i].pos, world_data.enemies[j].pos);
+          if (dist < 10) {
+            
+            let dir = vector2_sub(world_data.enemies[i].pos, world_data.enemies[j].pos);
+            dir.normalise();
+            dir.scale(0.2);
+            world_data.enemies[i].pos.add(dir);
+          }
+        }
+      }
+    }
+  }
+
+  closest_dir = new Vector2(0, 0);
+  player_last_dist = 0;
+  player_delta_dist = 0;
 
   move_to_player(world_data) {
 
     let dist = vector2_dist(world_data.players[0].pos, this.pos);
 
-    let dir_forwards = vector2_sub(world_data.players[0].pos, this.pos);
-    dir_forwards.normalise();
-    
-    let dir_backwards = vector2_sub(this.pos, world_data.players[0].pos);
-    dir_backwards.normalise();
+    let enemy_to_player = vector2_sub(world_data.players[0].pos, this.pos);
+    enemy_to_player.normalise();
+    let player_to_enemy = vector2_sub(this.pos, world_data.players[0].pos);
 
-    this.dir.lerp(dir_backwards, 0.02);
-    this.dir.normalise();
 
-    dir_forwards.scale(0.2);
+    // Move towards the player at the nearest 45 degree angle,
+    // keep track of delta_dist, if delta_dist becomes negative, 
+    // recalculate nearest 45 degree angle
+
+    if (this.player_delta_dist < 0) {
+      let dirs = [
+        new Vector2(+sqrt(2), +sqrt(2)),
+        new Vector2(+sqrt(2), -sqrt(2)),
+        new Vector2(-sqrt(2), -sqrt(2)),
+        new Vector2(-sqrt(2), +sqrt(2))
+      ];
+      
+      let closest_dot = -1;
+      
+      for (let i=0; i<4; i++) {
+        let dot = vector2_dot(dirs[i], enemy_to_player);
+        if (dot > closest_dot) {
+          closest_dot = dot;
+          this.closest_dir = dirs[i];
+        }
+      }
+
+      this.closest_dir.normalise();
+      this.closest_dir.scale(0.02*deltaTime);
+    }
+
+
+    if (dist < 50) {
+      // this.dir = enemy_to_player.get_normalised();
+      this.dir.lerp(player_to_enemy, 0.002*deltaTime);
+      this.dir.normalise();
+      this.pos.add(this.dir.get_scaled(0.02*deltaTime));
+    }
+
+    else {
+      this.dir = this.closest_dir.get_normalised();
+      this.pos.add(this.closest_dir);
+    }
 
     if (dist < 7) {
-      world_data.players[0].vel.add(dir_forwards);
+      world_data.players[0].vel.add(this.dir.get_scaled(0.02*deltaTime));
     }
-    if (dist > 20) {
-      this.pos.add(dir_forwards);
-    }
+
+
+    
+    this.player_delta_dist = this.player_last_dist - dist;
+    this.player_last_dist = dist;
+
   }
 
   
@@ -151,8 +208,8 @@ class Zombie {
     let dir = vector2_sub(this.pos, player_pos);
     dir.normalise();
 
-    let dot = vector2_dot(this.dir, dir);
-    let side = vector2_dot(this.dir, dir.get_rotated(-1.57)) < 0 ? -1 : 1;
+    let dot = vector2_dot(this.dir.get_normalised(), dir);
+    let side = vector2_dot(this.dir.get_normalised(), dir.get_rotated(-1.57)) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
 
@@ -176,7 +233,7 @@ class Zombie {
       this.sprite.changeAnimation("walkbackangle");
     }
 
-    else {
+    else if (theta > 0) {
       this.sprite.changeAnimation("walkback");
     }
   }

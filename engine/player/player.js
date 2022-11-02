@@ -3,11 +3,14 @@ class Player {
   health;
   damage;
 
-  speed = 0.4;
+  rot_speed = 0.004;
+  mov_speed = 0.06;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
   plane = new Vector2(0, -SCREEN_WIDTH/SCREEN_HEIGHT);
+
+
   fist_offset = 0;
   dir_L; dir_R;
 
@@ -262,7 +265,7 @@ class Player {
         let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
-        enemies_array[i].self_group.draw();
+        drawSprite(enemies_array[i].sprite);
       }
 
       else {
@@ -289,7 +292,7 @@ class Player {
       let next_pos = new Vector2(nextx, nexty);
       
       if (!point_in_wall(next_pos, map)) {
-        this.pos.add(temp.get_scaled(this.speed));
+        this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
       }
     }
 
@@ -301,7 +304,7 @@ class Player {
       let next_pos = new Vector2(nextx, nexty);
 
       if (!point_in_wall(next_pos, map)) {
-        this.pos.add(temp.get_scaled(this.speed));
+        this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
       }
     }
 
@@ -311,7 +314,7 @@ class Player {
       let next_pos = new Vector2(nextx, nexty);
 
       if (!point_in_wall(next_pos, map)) {
-        this.pos.add(this.dir.get_scaled(this.speed));
+        this.pos.add(this.dir.get_scaled(this.mov_speed * deltaTime));
       }
     }
    
@@ -321,7 +324,7 @@ class Player {
       let next_pos = new Vector2(nextx, nexty);
 
       if (!point_in_wall(next_pos, map)) {
-        this.pos.sub(this.dir.get_scaled(this.speed));
+        this.pos.sub(this.dir.get_scaled(this.mov_speed * deltaTime));
       }
     }
 
@@ -337,13 +340,13 @@ class Player {
     }
 
     if (keyIsDown(LEFT_ARROW)) {
-      this.plane.rotate(-0.02);
-      this.dir.rotate(-0.02);
+      this.plane.rotate(-this.rot_speed * deltaTime);
+      this.dir.rotate(-this.rot_speed * deltaTime);
     }
 
     if (keyIsDown(RIGHT_ARROW)) {
-      this.plane.rotate(+0.02);
-      this.dir.rotate(+0.02);
+      this.plane.rotate(+this.rot_speed * deltaTime);
+      this.dir.rotate(+this.rot_speed * deltaTime);
     }
 
   }
