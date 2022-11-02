@@ -25,6 +25,7 @@ class UI {
 
   draw() {
     fill(0);
+    noStroke();
     textSize(24);
     if (frameCount % 30 == 0)
       this.framerate = Math.floor(frameRate());
@@ -34,12 +35,18 @@ class UI {
     textFont(this.doom_font);
     textSize(80);
     fill(200,0,0);
-    text('100', 360, 990);
+    text('100', 360, 980);
+    text('100', 10,980);
+    text('100', 600, 980);
+    textSize(35);
+    text('health', 360, 1010);
+    text('STAMINA', 10,1010);
+    text('ARMOR', 600, 1010);
     textSize(200);
     textFont(this.doom_font2);
-    //text('CO',375, 500)
-    textFont(this.doom_font)
-    //text('OM', 510, 500)
+    //text('CO',375, 500);
+    textFont(this.doom_font);
+    //text('OM', 510, 500);
   }
 
   
