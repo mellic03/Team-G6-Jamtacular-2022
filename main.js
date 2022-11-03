@@ -22,6 +22,7 @@ function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(144);
   pixelDensity(1);
+  noSmooth();
   enemy_handler.setup();
   player_handler.setup();
   ui_handler.setup();
@@ -50,5 +51,6 @@ function draw() {
   enemy_handler.draw(world_data);
   ui_handler.draw(world_data);
   prop_handler.draw(world_data);
+
 }
 

@@ -18,12 +18,30 @@ class UI {
     this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
     //this.chad_anim.resize(100,100);
     //this.chad.resize(100,100)
-    console.log(this.chad_anim);
   }
 
   framerate = 0;
 
-  draw() {
+  draw(world_data) {
+
+    for (let player of world_data.players) {
+      // do stuff regarding the player
+    }
+
+    /* Or like this to avoid executing the ui code multiple times:
+    
+      let player_pos;
+      let player_health;
+
+      for (let player of world_data.players) {
+        player_pos = player.pos;
+        player_health = player.health;
+      }
+
+
+    */
+
+
     fill(255);
     textSize(12);
     if (frameCount % 30 == 0)

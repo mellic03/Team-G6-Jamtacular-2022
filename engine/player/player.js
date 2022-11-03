@@ -18,8 +18,7 @@ class Player {
   scan_res = SCREEN_WIDTH;
 
   ray_width = SCREEN_WIDTH/this.scan_res;
-  buffer = [];
-
+  depth_buffer = [];
 
   self_group;
   fist_R_img
@@ -64,20 +63,18 @@ class Player {
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
 
-    this.self_group = new Group();
-    this.self_group.add(this.fist_L_sprite);
-    this.self_group.add(this.fist_R_sprite);
-
     console.log(this.fist_R_sprite);
   }
 
   draw(world_data) {
+    this.depth_buffer = [];
     this.input(world_data.active_map);
     this.march(world_data.active_map);
-    this.render();
+    this.world_render();
     this.sprite_render(world_data.enemies);
     this.draw_minimap(world_data.active_map);
-    this.self_group.draw();
+    drawSprite(this.fist_L_sprite);
+    drawSprite(this.fist_R_sprite);
   }
 
   draw_minimap(map) {
@@ -120,7 +117,7 @@ class Player {
   }
 
   march(map) {
-    this.buffer = [];
+    this.depth_buffer = [];
 
     for (let x=0; x<SCREEN_WIDTH; x+=1) {
 
@@ -183,7 +180,7 @@ class Player {
       }
 
       if (side == 0)
-        this.buffer[x] = {
+        this.depth_buffer[x] = {
           dist: ((sideDistX - dx)*angle) / 10,
           side: side,
           x: mapX,
@@ -191,7 +188,7 @@ class Player {
           colour: colour
         };
       else
-        this.buffer[x] = {
+        this.depth_buffer[x] = {
           dist: ((sideDistY - dy)*angle) / 10,
           side: side,
           x: mapX,
@@ -201,22 +198,22 @@ class Player {
     }
   }
 
-  render() {
+  world_render() {
         
     let r, g, b;
     let line_height, line_start, line_end;
 
     for (let i=0; i<SCREEN_WIDTH; i+=1) {
 
-      r = this.buffer[i].colour[0];
-      g = this.buffer[i].colour[1];
-      b = this.buffer[i].colour[2];
+      r = this.depth_buffer[i].colour[0];
+      g = this.depth_buffer[i].colour[1];
+      b = this.depth_buffer[i].colour[2];
 
-      if (this.buffer[i].side) {
+      if (this.depth_buffer[i].side) {
         r/=2, g/=2, b/=2;
       }
 
-      line_height = SCREEN_HEIGHT/this.buffer[i].dist;
+      line_height = SCREEN_HEIGHT/this.depth_buffer[i].dist;
 
       line_start = -line_height / 2 + SCREEN_HEIGHT / 2;
       if(line_start < 0) line_start = 0;
@@ -243,7 +240,7 @@ class Player {
           if (dist_i > dist_j) {
             let temp = enemies_array[i];
             enemies_array[i] = enemies_array[j];
-            enemies_array[j] = temp;            
+            enemies_array[j] = temp;
           }
         }
       }
@@ -265,7 +262,16 @@ class Player {
         let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
+
+        // Calculate occlusion, give occlusion effect by setting alpha to zero
+        // for the occluded rows.
+
+
+
         drawSprite(enemies_array[i].sprite);
+        enemies_array[i].reset_occlusion();
+
+        // Reset sprite by setting alpha back to one.
       }
 
       else {

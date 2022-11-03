@@ -21,7 +21,6 @@ class Map {
       for (let i=0; i<image.pixels.length; i+=1) {
         this.colourmap[i] = image.pixels[i];
       }
-      console.log(image);
     });
   }
 

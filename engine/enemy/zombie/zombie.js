@@ -1,6 +1,6 @@
-/// <reference path="../../lib/p5.min.js" />
-/// <reference path="../../lib/p5.play.js" />
-/// <reference path="../math/vector.js" />
+/// <reference path="../../../lib/p5.min.js" />
+/// <reference path="../../../lib/p5.play.js" />
+/// <reference path="../../math/vector.js" />
 
 
 /*
@@ -15,6 +15,8 @@ class Zombie {
   speed = 1;
 
   sprite;
+
+  img1;
 
   sheet_back
   sheet_front;
@@ -53,10 +55,15 @@ class Zombie {
     this.self_group = new Group();
     this.self_group.add(this.sprite);
   
-    this.sheet_front = loadSpriteSheet(
-      this.directory + "/spritesheets/walkfront-sheet.png",
-      41, 54, 4
-    );
+    loadImage("engine/enemy/zombie/spritesheets/walkfront-sheet.png", (img) => {
+      this.img1 = img;
+      this.sheet_front = loadSpriteSheet(
+        this.img1,
+        41, 54, 4
+      );
+    });
+
+
 
     this.sheet_front_angle = loadSpriteSheet(
       this.directory + "/spritesheets/walkfrontangle-sheet.png",
@@ -114,9 +121,38 @@ class Zombie {
   draw(world_data) {
 
     this.collide_against_enemies(world_data);
-    this.move_to_player(world_data);
+    // this.move_to_player(world_data);
     this.correct_angle(world_data);
   }
+
+  /** Make a portion of an spritesheet invisible.
+   *  Assumes the spritesheet has four frames.
+   * @param {*} img 
+   * @param {*} x1
+   * @param {*} x2
+   */
+  sprite_hide(img, x1, x2) {
+    let width = img.width;
+    let height = img.height;
+  
+    let row = 4*width;
+
+    img.loadPixels();
+    for (let x=x1; x<x2; x++) {
+      for (let y=0; y<height; y++) {
+        img.pixels[row*y + 4*x+width*0+3] = 0;
+        img.pixels[row*y + 4*x+width*1+3] = 0;
+        img.pixels[row*y + 4*x+width*2+3] = 0;
+        img.pixels[row*y + 4*x+width*3+3] = 0;
+      }
+    }
+    img.updatePixels();
+  }
+
+  reset_occlusion() {
+
+  }
+
 
   collide_against_enemies(world_data) {
     for (let i=0; i<world_data.enemies.length; i++) {
