@@ -186,6 +186,7 @@ class Player {
       if (side == 0)
         this.depth_buffer[x] = {
           dist: ((sideDistX - dx)*angle) / 10,
+          real_dist: (sideDistX - dx)*angle,
           side: side,
           x: mapX,
           y: mapY,
@@ -194,6 +195,7 @@ class Player {
       else
         this.depth_buffer[x] = {
           dist: ((sideDistY - dy)*angle) / 10,
+          real_dist: (sideDistY - dy)*angle,
           side: side,
           x: mapX,
           y: mapY,
@@ -272,7 +274,6 @@ class Player {
         // Calculate ocluded scan lines, give occlusion effect
         // by setting alpha to zero for those lines.
 
-        drawSprite(enemies_array[i].sprite);
       }
 
       else {
@@ -288,18 +289,33 @@ class Player {
     rectMode(CENTER);
     let occluded = false;
     for (let j=0; j<enemies.length; j++) {
-      let dist = vector2_dist(this.pos, enemies[j].pos);
+
+      let sprite_dist = vector2_dist(this.pos, enemies[j].pos);
+      let wall_dist = this.depth_buffer[floor(enemies[j].sprite.position.x)].dist*10
 
       let xmin = max(floor(enemies[j].sprite.position.x-this.width_buffer[j]/2), 0);
       let xmax = min(floor(enemies[j].sprite.position.x+this.width_buffer[j]/2), SCREEN_WIDTH);
 
-      for (let i=xmin; i<xmax; i++) {
+      console.log(`sprite: ${floor(sprite_dist)}, wall: ${floor(wall_dist)}`);
 
 
-        if (this.depth_buffer[i].dist < dist) {
-          rect(i, 500, 1, 25);
-        }
+      if (wall_dist < sprite_dist) {
+
       }
+      else {
+        drawSprite(enemies[j].sprite);
+      }
+      fill(0);
+      rect(floor(enemies[j].sprite.position.x), 500, 1, 500);
+
+      // for (let i=xmin; i<xmax; i++) {
+
+
+      //   if (dist < this.depth_buffer[i].real_dist) {
+      //     console.log(`dist: ${dist}, buffer: ${this.depth_buffer[i].real_dist}`);
+      //     rect(i, 500, 1, 25);
+      //   }
+      // }
     }
 
   }
