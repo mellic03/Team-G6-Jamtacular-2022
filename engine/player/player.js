@@ -74,6 +74,7 @@ class Player {
     this.march(world_data.active_map);
     this.world_render();
     this.sprite_render(world_data.enemies);
+    this.occlude_sprites(world_data.enemies);
     this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
@@ -264,19 +265,11 @@ class Player {
         let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
-
+        
         // Calculate ocluded scan lines, give occlusion effect
         // by setting alpha to zero for those lines.
-        for (let col=0; col<this.depth_buffer.length; col++) {
-          let sprite_screen_width = (enemies_array[i].active_img.width * sprite_height) / 4;
-          // console.log(sprite_screen_width)
-        }
-
 
         drawSprite(enemies_array[i].sprite);
-        // enemies_array[i].reset_occlusion();
-
-        // Reset sprite by setting alpha back to one.
       }
 
       else {
@@ -284,6 +277,17 @@ class Player {
         enemies_array[i].sprite.position.x = -100;
       }
 
+    }
+
+  }
+
+  occlude_sprites(enemies) {
+    rectMode(CENTER)
+    for (let enemy of enemies) {
+      let dist = vector2_dist(this.pos, enemy.pos);
+      for (let i=enemy.sprite.position.x-50; i<enemy.sprite.position.x+50; i++) {
+        rect(i, 500, 1, 100);
+      }
     }
 
   }
