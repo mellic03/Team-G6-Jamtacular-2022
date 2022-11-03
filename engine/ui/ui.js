@@ -62,20 +62,20 @@ class UI {
   
   }
 
-  player_health_ui() {
-    fill(250,150,150);
+  draw_health_ui() {
+    fill(250, 150, 150);
     textSize(40);
     text('HEALTH', 300, 1000);
     textSize(80);
     
     for(let player of world_data.players) {
-      text(player.health, 300,965);
+      text(player.health, 300, 965);
 
     }
 
   }
 
-  player_armor_ui() {
+  draw_armor_ui() {
     fill(150, 150, 250);
     textSize(40);
     text('ARMOR', 600, 1000);
@@ -85,7 +85,7 @@ class UI {
     }
   }
 
-  player_stamina_ui() {
+  draw_stamina_ui() {
     fill(150, 250, 150);
     textSize(40);
     text('STAMINA', 10, 1000);
