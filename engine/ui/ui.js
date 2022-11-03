@@ -56,9 +56,9 @@ class UI {
     noStroke();
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     animation(this.chad_anim, SCREEN_WIDTH/2, SCREEN_HEIGHT-this.ui_banner.height/2);
-    this.player_health_ui(world_data);
-    this.player_armor_ui(world_data);
-    this.player_stamina_ui(world_data);
+    this.draw_health_ui(world_data);
+    this.draw_armor_ui(world_data);
+    this.draw_stamina_ui(world_data);
   
   }
 
