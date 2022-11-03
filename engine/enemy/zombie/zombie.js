@@ -83,7 +83,6 @@ class Zombie {
       this.og_img_front = copy_image(img);
       this.img_front = img;
       this.active_img = this.img_front;
-      console.log(this.active_img)
       this.sheet_front = loadSpriteSheet(
         this.img_front,
         41, 54, 4
@@ -91,35 +90,40 @@ class Zombie {
     });
 
     loadImage(this.directory + "/spritesheets/walkback-sheet.png", (img) => {
-      this.og_img_back = img;
+      this.og_img_back = copy_image(img);
       this.img_back = img;
       this.sheet_back = loadSpriteSheet(
         this.img_back,
-        36, 54, 4
+        36, 51, 4
       );
     });
 
-    this.sheet_front_angle = loadSpriteSheet(
-      this.directory + "/spritesheets/walkfrontangle-sheet.png",
-      37, 54, 4
-    );
+    loadImage(this.directory + "/spritesheets/walkfrontangle-sheet.png", (img) => {
+      this.og_img_front_angle = copy_image(img);
+      this.img_front_angle = img;
+      this.sheet_front_angle = loadSpriteSheet(
+        this.img_front_angle,
+        37, 54, 4
+      );
+    });
 
+    loadImage(this.directory + "/spritesheets/walkbackangle-sheet.png", (img) => {
+      this.og_img_back_angle = copy_image(img);
+      this.img_back_angle = img;
+      this.sheet_back_angle = loadSpriteSheet(
+        this.img_back_angle,
+        45, 50, 4
+      );
+    });
 
-    this.sheet_back = loadSpriteSheet(
-      this.directory + "/spritesheets/walkback-sheet.png",
-      36, 54, 4
-    );
-
-    this.sheet_back_angle = loadSpriteSheet(
-      this.directory + "/spritesheets/walkbackangle-sheet.png",
-      45, 54, 4
-    );
-
-
-    this.sheet_left = loadSpriteSheet(
-      this.directory + "/spritesheets/walkleft-sheet.png",
-      43, 55, 4
-    );
+    loadImage(this.directory + "/spritesheets/walkleft-sheet.png", (img) => {
+      this.og_img_left = copy_image(img);
+      this.img_left = img;
+      this.sheet_left = loadSpriteSheet(
+        this.img_left,
+        43, 53, 4
+      );
+    });
 
   }
 
@@ -298,13 +302,13 @@ class Zombie {
     else if (theta > 112.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
-      this.active_img = this.img_front;
+      this.active_img = this.img_front_angle;
     }
 
     else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
-      this.active_img = this.img_front_angle;
+      this.active_img = this.img_left;
     }
 
 
