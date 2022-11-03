@@ -82,6 +82,7 @@ class Player {
 
   draw_minimap(map) {
     fill(10);
+    rectMode(CORNER)
     rect(this.mmap_x, 0, this.mmap_width, this.mmap_width);
     for (let x=0; x<map.width; x++) {
       for (let y=0; y<map.width; y++) {
@@ -266,6 +267,8 @@ class Player {
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
         
+        this.width_buffer = [];
+        this.width_buffer[i] = 14 * sprite_height * (enemies_array[i].active_img.width/enemies_array[i].active_img.height);
         // Calculate ocluded scan lines, give occlusion effect
         // by setting alpha to zero for those lines.
 
@@ -282,11 +285,20 @@ class Player {
   }
 
   occlude_sprites(enemies) {
-    rectMode(CENTER)
-    for (let enemy of enemies) {
-      let dist = vector2_dist(this.pos, enemy.pos);
-      for (let i=enemy.sprite.position.x-50; i<enemy.sprite.position.x+50; i++) {
-        rect(i, 500, 1, 100);
+    rectMode(CENTER);
+    let occluded = false;
+    for (let j=0; j<enemies.length; j++) {
+      let dist = vector2_dist(this.pos, enemies[j].pos);
+
+      let xmin = max(floor(enemies[j].sprite.position.x-this.width_buffer[j]/2), 0);
+      let xmax = min(floor(enemies[j].sprite.position.x+this.width_buffer[j]/2), SCREEN_WIDTH);
+
+      for (let i=xmin; i<xmax; i++) {
+
+
+        if (this.depth_buffer[i].dist < dist) {
+          rect(i, 500, 1, 25);
+        }
       }
     }
 
