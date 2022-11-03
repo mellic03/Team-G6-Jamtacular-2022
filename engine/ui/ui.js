@@ -70,9 +70,7 @@ class UI {
     
     for(let player of world_data.players) {
       text(player.health, 300, 965);
-
     }
-
   }
 
   draw_armor_ui() {
