@@ -11,7 +11,7 @@ class UI {
 
   setup() {
     noSmooth();
-    this.doom_font = loadFont('fonts/minecraft.ttf');
+    this.doom_font = loadFont('fonts/DOOM.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     console.log(world_data.players);
     textFont(this.doom_font);
