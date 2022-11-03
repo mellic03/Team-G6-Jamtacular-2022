@@ -3,10 +3,28 @@
 /// <reference path="../../math/vector.js" />
 
 
+function copy_image(src) {
+  
+  let width = src.width;
+  let height = src.height;
+  let new_image = createImage(width, height);
+  
+  let row = 4*width;
+
+  src.loadPixels();
+  new_image.loadPixels();
+  for (let i=0; i<src.pixels.length; i++) {
+    new_image.pixels[i] = src.pixels[i];
+  }
+  new_image.updatePixels();
+
+  return new_image;
+}
+
+
 /*
   This is ripped straight from doom
 */
-
 
 class Zombie {
 
@@ -16,7 +34,13 @@ class Zombie {
 
   sprite;
 
-  img1;
+  active_img;
+
+  img_front;        og_img_front;
+  img_back;         og_img_back;
+  img_left;         og_img_left;
+  img_front_angle;  og_img_front_angle;
+  img_back_angle;   og_img_back_angle;
 
   sheet_back
   sheet_front;
@@ -55,15 +79,25 @@ class Zombie {
     this.self_group = new Group();
     this.self_group.add(this.sprite);
   
-    loadImage("engine/enemy/zombie/spritesheets/walkfront-sheet.png", (img) => {
-      this.img1 = img;
+    loadImage(this.directory + "/spritesheets/walkfront-sheet.png", (img) => {
+      this.og_img_front = copy_image(img);
+      this.img_front = img;
+      this.active_img = this.img_front;
+      console.log(this.active_img)
       this.sheet_front = loadSpriteSheet(
-        this.img1,
+        this.img_front,
         41, 54, 4
       );
     });
 
-
+    loadImage(this.directory + "/spritesheets/walkback-sheet.png", (img) => {
+      this.og_img_back = img;
+      this.img_back = img;
+      this.sheet_back = loadSpriteSheet(
+        this.img_back,
+        36, 54, 4
+      );
+    });
 
     this.sheet_front_angle = loadSpriteSheet(
       this.directory + "/spritesheets/walkfrontangle-sheet.png",
@@ -93,33 +127,26 @@ class Zombie {
     this.anim_front = loadAnimation(this.sheet_front);
     this.anim_front.frameDelay = 32;
     this.sprite.addAnimation('walkfront', this.anim_front);
-    this.sprite.changeAnimation('walkfront');
 
     this.anim_front_angle = loadAnimation(this.sheet_front_angle);
     this.anim_front_angle.frameDelay = 32;
     this.sprite.addAnimation('walkfrontangle', this.anim_front_angle);
-    this.sprite.changeAnimation('walkfrontangle');
 
 
     this.anim_back = loadAnimation(this.sheet_back);
     this.anim_back.frameDelay = 32;
     this.sprite.addAnimation('walkback', this.anim_back);
-    this.sprite.changeAnimation('walkback');
 
     this.anim_back_angle = loadAnimation(this.sheet_back_angle);
     this.anim_back_angle.frameDelay = 32;
     this.sprite.addAnimation('walkbackangle', this.anim_back_angle);
-    this.sprite.changeAnimation('walkbackangle');
-
 
     this.anim_left = loadAnimation(this.sheet_left);
     this.anim_left.frameDelay = 32;
     this.sprite.addAnimation('walkleft', this.anim_left);
-    this.sprite.changeAnimation('walkleft');
   }
 
   draw(world_data) {
-
     this.collide_against_enemies(world_data);
     // this.move_to_player(world_data);
     this.correct_angle(world_data);
@@ -137,20 +164,34 @@ class Zombie {
   
     let row = 4*width;
 
-    img.loadPixels();
     for (let x=x1; x<x2; x++) {
       for (let y=0; y<height; y++) {
-        img.pixels[row*y + 4*x+width*0+3] = 0;
-        img.pixels[row*y + 4*x+width*1+3] = 0;
-        img.pixels[row*y + 4*x+width*2+3] = 0;
-        img.pixels[row*y + 4*x+width*3+3] = 0;
+        img.pixels[row*y + 4*x+0*width+3] = 0;
+        img.pixels[row*y + 4*x+1*width+3] = 0;
+        img.pixels[row*y + 4*x+2*width+3] = 0;
+        img.pixels[row*y + 4*x+3*width+3] = 0;
       }
     }
     img.updatePixels();
   }
 
-  reset_occlusion() {
+  reset_occlusion(dest, src, x1, x2) {
 
+    let width = dest.width;
+    let height = dest.height;
+
+    let row = 4*width;
+
+    for (let x=x1; x<x2; x++) {
+      for (let y=0; y<height; y++) {
+        dest.pixels[row*y + 4*x+0*width+3] = src.pixels[row*y + 4*x+0*width+3];
+        dest.pixels[row*y + 4*x+1*width+3] = src.pixels[row*y + 4*x+1*width+3];
+        dest.pixels[row*y + 4*x+2*width+3] = src.pixels[row*y + 4*x+2*width+3];
+        dest.pixels[row*y + 4*x+3*width+3] = src.pixels[row*y + 4*x+3*width+3];
+      }
+    }
+
+    dest.updatePixels();
   }
 
 
@@ -251,26 +292,31 @@ class Zombie {
 
     if (theta > 155.7) {
       this.sprite.changeAnimation("walkfront");
+      this.active_img = this.img_front;
     }
 
     else if (theta > 112.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
+      this.active_img = this.img_front;
     }
 
     else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
+      this.active_img = this.img_front_angle;
     }
 
 
     else if (theta > 22.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkbackangle");
+      this.active_img = this.img_back_angle;
     }
 
     else if (theta > 0) {
       this.sprite.changeAnimation("walkback");
+      this.active_img = this.img_back;
     }
   }
 

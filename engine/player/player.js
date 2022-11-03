@@ -265,13 +265,16 @@ class Player {
         enemies_array[i].sprite.scale = sprite_height
         enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
 
-        // Calculate occlusion, give occlusion effect by setting alpha to zero
-        // for the occluded rows.
-
+        // Calculate ocluded scan lines, give occlusion effect
+        // by setting alpha to zero for those lines.
+        for (let col=0; col<this.depth_buffer.length; col++) {
+          let sprite_screen_width = (enemies_array[i].active_img.width * sprite_height) / 4;
+          // console.log(sprite_screen_width)
+        }
 
 
         drawSprite(enemies_array[i].sprite);
-        enemies_array[i].reset_occlusion();
+        // enemies_array[i].reset_occlusion();
 
         // Reset sprite by setting alpha back to one.
       }
