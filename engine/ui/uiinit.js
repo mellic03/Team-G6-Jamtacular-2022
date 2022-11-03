@@ -5,5 +5,4 @@ function ui_init() {
   ui_handler.add(new UI());
 
   return ui_handler;
-
 }

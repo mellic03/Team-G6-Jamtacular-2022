@@ -1,5 +1,4 @@
-
-function enemy_init() {
+function enemy_init(map_handler) {
 
   let enemy_handler = new EnemyHandler();
   

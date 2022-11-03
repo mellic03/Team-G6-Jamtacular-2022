@@ -45,7 +45,6 @@ class UI {
 
     */
 
-
     fill(255);
     textSize(60);
     if (frameCount % 30 == 0)
@@ -69,7 +68,7 @@ class UI {
     textSize(160);
     
     for(let player of world_data.players) {
-      text(player.health, 300, 965);
+      text(floor(player.health), 300, 965);
 
     }
 
@@ -81,7 +80,7 @@ class UI {
     text('ARMOR', 600, 1000);
     textSize(160);
     for(let player of world_data.players) {
-      text(player.armor, 600, 965);
+      text(floor(player.armor), 600, 965);
     }
   }
 
@@ -91,7 +90,7 @@ class UI {
     text('STAMINA', 0, 1000);
     textSize(160);
     for(let player of world_data.players) {
-      text(player.stamina, 10, 965);
+      text(floor(player.stamina), 10, 965);
     }
   }
  

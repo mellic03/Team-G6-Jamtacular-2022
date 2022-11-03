@@ -2,26 +2,6 @@
 /// <reference path="../../../lib/p5.play.js" />
 /// <reference path="../../math/vector.js" />
 
-
-function copy_image(src) {
-  
-  let width = src.width;
-  let height = src.height;
-  let new_image = createImage(width, height);
-  
-  let row = 4*width;
-
-  src.loadPixels();
-  new_image.loadPixels();
-  for (let i=0; i<src.pixels.length; i++) {
-    new_image.pixels[i] = src.pixels[i];
-  }
-  new_image.updatePixels();
-
-  return new_image;
-}
-
-
 /*
   This is ripped straight from doom
 */
@@ -135,7 +115,6 @@ class Zombie {
     this.anim_front_angle = loadAnimation(this.sheet_front_angle);
     this.anim_front_angle.frameDelay = 32;
     this.sprite.addAnimation('walkfrontangle', this.anim_front_angle);
-
 
     this.anim_back = loadAnimation(this.sheet_back);
     this.anim_back.frameDelay = 32;

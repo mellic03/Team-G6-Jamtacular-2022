@@ -7,6 +7,12 @@ class MapHandler {
   }
 
   set_active_map(map_name) {
+    for (let map of this._maps) {
+      if (map.name == map_name) {
+        this.active_map = map;
+        break;
+      }
+    }
   }
 
   add(map) {
@@ -66,6 +72,9 @@ function is_valid_map(map) {
 
   if (map.draw == undefined)
     errors.push(`map.draw() is undefined.`);
+
+  if (!map.hasOwnProperty("name"))
+    errors.push(`property "name" does not exist.`);
 
   return (errors.length == 0) ? true : errors;
 }

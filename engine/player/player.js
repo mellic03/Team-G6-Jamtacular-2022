@@ -5,13 +5,12 @@ class Player {
   stamina = 100;
   damage;
 
-  rot_speed = 0.004;
+  rot_speed = 0.003;
   mov_speed = 0.06;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
   plane = new Vector2(0, -SCREEN_WIDTH/SCREEN_HEIGHT);
-
 
   fist_offset = 0;
   dir_L; dir_R;
@@ -21,6 +20,8 @@ class Player {
 
   ray_width = SCREEN_WIDTH/this.scan_res;
   depth_buffer = [];
+  sprite_buffer = []; // buffer of sprites waiting for occlusion test
+  sprite_width_buffer = []; // screen width of each sprite waiting for occlusion test
 
   self_group;
   fist_R_img
@@ -69,12 +70,15 @@ class Player {
   }
 
   draw(world_data) {
+
+    this.health -= 0.001;
+
     this.depth_buffer = [];
     this.input(world_data.active_map);
     this.march(world_data.active_map);
     this.world_render();
-    this.sprite_render(world_data.enemies);
-    this.occlude_sprites(world_data.enemies);
+    this.sprite_render(world_data.enemies.concat(world_data.props));
+    this.occlude_sprites(this.sprite_buffer);
     this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
@@ -234,90 +238,80 @@ class Player {
     rectMode(CORNER);
   }
 
-  sprite_render(enemies_array) {
+  sprite_render(sprite_array) {
     
     // Sort sprites by distance, from furthest to nearest
     let dist_i, dist_j;
-    for (let i=0; i<enemies_array.length; i++) {
-      for (let j=0; j<enemies_array.length; j++) {
+    for (let i=0; i<sprite_array.length; i++) {
+      for (let j=0; j<sprite_array.length; j++) {
         if (i!=j) {
-          dist_i = vector2_dist(this.pos, enemies_array[i].pos);
-          dist_j = vector2_dist(this.pos, enemies_array[j].pos);
+          dist_i = vector2_dist(this.pos, sprite_array[i].pos);
+          dist_j = vector2_dist(this.pos, sprite_array[j].pos);
           if (dist_i > dist_j) {
-            let temp = enemies_array[i];
-            enemies_array[i] = enemies_array[j];
-            enemies_array[j] = temp;
+            let temp = sprite_array[i];
+            sprite_array[i] = sprite_array[j];
+            sprite_array[j] = temp;
           }
         }
       }
     }
     
-    for (let i=0; i<enemies_array.length; i++) {
-      let player_to_sprite = vector2_sub(this.pos, enemies_array[i].pos);
+    for (let i=0; i<sprite_array.length; i++) {
+      let player_to_sprite = vector2_sub(this.pos, sprite_array[i].pos);
       player_to_sprite.normalise();
       if (vector2_dot(this.dir, player_to_sprite) < -0.1) {
-        let newpos = vector2_sub(enemies_array[i].pos, this.pos);
+
+        this.sprite_buffer.push(sprite_array[i]);
+        
+        let newpos = vector2_sub(sprite_array[i].pos, this.pos);
         let invDet = 1 / (this.plane.x*this.dir.y - this.dir.x*this.plane.y);
 
         let transformX = invDet * (this.dir.x*newpos.y - this.dir.y*newpos.x);
         let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
 
         let spriteScreenX = (SCREEN_WIDTH/2) * (1 + transformX/transformY);
-        enemies_array[i].sprite.position.x = spriteScreenX;
+        sprite_array[i].sprite.position.x = spriteScreenX;
 
-        let sprite_height = (1/3) * abs((SCREEN_HEIGHT/2) / (transformY));
-        enemies_array[i].sprite.scale = sprite_height
-        enemies_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 15*sprite_height;
+        let sprite_height = abs(SCREEN_HEIGHT / transformY);
+        let scaling_factor = 10*sprite_height / sprite_array[i].active_img.height;
+        sprite_array[i].sprite.scale = scaling_factor;
+        sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 2*sprite_height;
         
-        this.width_buffer = [];
-        this.width_buffer[i] = 14 * sprite_height * (enemies_array[i].active_img.width/enemies_array[i].active_img.height);
-        // Calculate ocluded scan lines, give occlusion effect
-        // by setting alpha to zero for those lines.
-
+        this.sprite_width_buffer[i] = sprite_height * (sprite_array[i].active_img.width/sprite_array[i].active_img.height);
       }
 
       else {
-        enemies_array[i].sprite.scale = 0;
-        enemies_array[i].sprite.position.x = -100;
+        sprite_array[i].sprite.scale = 0;
+        sprite_array[i].sprite.position.x = -100;
       }
-
     }
-
   }
 
-  occlude_sprites(enemies) {
+  occlude_sprites(sprite_buffer) {
     rectMode(CENTER);
     let occluded = false;
-    for (let j=0; j<enemies.length; j++) {
 
-      let sprite_dist = vector2_dist(this.pos, enemies[j].pos);
-      let wall_dist = this.depth_buffer[floor(enemies[j].sprite.position.x)].dist*10
+    for (let j=0; j<this.sprite_buffer.length; j++) {
 
-      let xmin = max(floor(enemies[j].sprite.position.x-this.width_buffer[j]/2), 0);
-      let xmax = min(floor(enemies[j].sprite.position.x+this.width_buffer[j]/2), SCREEN_WIDTH);
-
-      console.log(`sprite: ${floor(sprite_dist)}, wall: ${floor(wall_dist)}`);
-
-
-      if (wall_dist < sprite_dist) {
-
+      if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH) {
+        continue;
       }
-      else {
-        drawSprite(enemies[j].sprite);
+
+      let sprite_dist = vector2_dist(this.pos, this.sprite_buffer[j].pos);
+      let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].dist*10
+
+      // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
+      // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
+
+
+      // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(enemies[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
+
+      if (wall_dist > sprite_dist) {
+        drawSprite(this.sprite_buffer[j].sprite);
       }
-      fill(0);
-      rect(floor(enemies[j].sprite.position.x), 500, 1, 500);
-
-      // for (let i=xmin; i<xmax; i++) {
-
-
-      //   if (dist < this.depth_buffer[i].real_dist) {
-      //     console.log(`dist: ${dist}, buffer: ${this.depth_buffer[i].real_dist}`);
-      //     rect(i, 500, 1, 25);
-      //   }
-      // }
     }
 
+    this.sprite_buffer = [];
   }
 
   input(map) {

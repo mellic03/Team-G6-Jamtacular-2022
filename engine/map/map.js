@@ -1,13 +1,16 @@
 
 class Map {
 
+  name;
+
   filepath;
 
   width;
   tilemap = [];   // Raycasting and collisions against walls, 1/4 size of colourmap
   colourmap = []; // coloured rendering
 
-  constructor(filepath) {
+  constructor(name, filepath) {
+    this.name = name;
     this.filepath = filepath;
   }
 
@@ -29,13 +32,7 @@ class Map {
   }
 
   draw() {
-    // let ratio = this.width / RES_X;
-    // let rect_size = 1/ratio;
-
-    // for (let i=0; i<this.width; i++)
-    //   for (let j=0; j<this.width; j++)
-    //     if (map1.data[this.width*j + i] == 1)
-    //       rect(i/ratio, j/ratio, rect_size, rect_size);
+  
   }
 
 }

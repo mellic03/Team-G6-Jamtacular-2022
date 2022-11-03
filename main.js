@@ -2,11 +2,12 @@
 
 "use strict";
 
-let enemy_handler = enemy_init();
+let map_handler = map_init();
+
+let prop_handler = prop_init(map_handler);
+let enemy_handler = enemy_init(map_handler);
 let player_handler = player_init();
 let ui_handler = ui_init();
-let map_handler = map_init(); 
-let prop_handler = prop_init(); 
 
 
 function preload() {

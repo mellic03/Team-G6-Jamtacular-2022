@@ -17,3 +17,21 @@ const keycodes = {
   U: 85, V: 86, W: 87, X: 88,
   Y: 89, Z: 90,
 };
+
+function copy_image(src) {
+  
+  let width = src.width;
+  let height = src.height;
+  let new_image = createImage(width, height);
+  
+  let row = 4*width;
+
+  src.loadPixels();
+  new_image.loadPixels();
+  for (let i=0; i<src.pixels.length; i++) {
+    new_image.pixels[i] = src.pixels[i];
+  }
+  new_image.updatePixels();
+
+  return new_image;
+}
