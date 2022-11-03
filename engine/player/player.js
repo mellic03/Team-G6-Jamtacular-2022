@@ -1,6 +1,8 @@
 class Player {
 
-  health;
+  health = 100;
+  armor = 100;
+  stamina = 100;
   damage;
 
   rot_speed = 0.004;

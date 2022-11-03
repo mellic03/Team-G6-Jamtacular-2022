@@ -4,8 +4,8 @@ class UI {
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
-    this.chad = loadSpriteSheet('engine/ui/work.png', 80,100,5);
-    this.chad_anim = loadAnimation(this.chad)
+    this.chad = loadSpriteSheet('engine/ui/work.png', 80, 100, 5);
+    this.chad_anim = loadAnimation(this.chad);
     this.chad_anim.frameDelay = 80
   }
 
@@ -13,11 +13,12 @@ class UI {
     noSmooth();
     this.doom_font = loadFont('fonts/DOOM.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
+    console.log(world_data.players);
 
 
     this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
-    //this.chad_anim.resize(100,100);
-    //this.chad.resize(100,100)
+    //this.chad_anim.resize(100, 100);
+    //this.chad.resize(100, 100);
   }
 
   framerate = 0;
@@ -25,6 +26,7 @@ class UI {
   draw(world_data) {
 
     for (let player of world_data.players) {
+
       // do stuff regarding the player
     }
 
@@ -55,19 +57,41 @@ class UI {
     textFont(this.doom_font);
     textSize(80);
     fill(200,0,0);
-    text('100', 360, 980);
-    text('100', 10,980);
-    text('100', 600, 980);
-    textSize(35);
-    text('health', 360, 1010);
-    text('STAMINA', 10,1010);
-    text('ARMOR', 600, 1010);
-    textSize(200);
-    textFont(this.doom_font2);
-    //text('CO',375, 500);
-    textFont(this.doom_font);
-    //text('OM', 510, 500);
+    this.player_health_ui(world_data);
+    this.player_armor_ui(world_data);
+    this.player_stamina_ui(world_data);
+  
   }
 
+  player_health_ui() {
+    textSize(35);
+    text('health', 360, 1010);
+    textSize(80);
+    
+    for(let player of world_data.players) {
+      text(player.health, 360,980);
+
+    }
+
+  }
+
+  player_armor_ui() {
+    textSize(35);
+    text('ARMOR', 600, 1010);
+    textSize(80);
+    for(let player of world_data.players) {
+      text(player.armor, 600, 980);
+    }
+  }
+
+  player_stamina_ui() {
+    textSize(35);
+    text('STAMINA', 10, 1010);
+    textSize(80);
+    for(let player of world_data.players) {
+      text(player.stamina, 10, 980);
+    }
+  }
+ 
   
 }
