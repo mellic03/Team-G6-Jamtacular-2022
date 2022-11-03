@@ -11,7 +11,7 @@ class UI {
 
   setup() {
     noSmooth();
-    this.doom_font = loadFont('fonts/DOOM.ttf');
+    this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     console.log(world_data.players);
     textFont(this.doom_font);
@@ -47,7 +47,7 @@ class UI {
 
 
     fill(255);
-    textSize(30);
+    textSize(60);
     if (frameCount % 30 == 0)
       this.framerate = Math.floor(frameRate());
     text(`FPS: ${this.framerate}`, 10, 30);
@@ -64,20 +64,22 @@ class UI {
 
   draw_health_ui() {
     fill(250, 150, 150);
-    textSize(40);
-    text('HEALTH', 300, 1000);
     textSize(80);
+    text('HEALTH', 300, 1000);
+    textSize(160);
     
     for(let player of world_data.players) {
       text(player.health, 300, 965);
+
     }
+
   }
 
   draw_armor_ui() {
     fill(150, 150, 250);
-    textSize(40);
-    text('ARMOR', 600, 1000);
     textSize(80);
+    text('ARMOR', 600, 1000);
+    textSize(160);
     for(let player of world_data.players) {
       text(player.armor, 600, 965);
     }
@@ -85,9 +87,9 @@ class UI {
 
   draw_stamina_ui() {
     fill(150, 250, 150);
-    textSize(40);
-    text('STAMINA', 10, 1000);
     textSize(80);
+    text('STAMINA', 0, 1000);
+    textSize(160);
     for(let player of world_data.players) {
       text(player.stamina, 10, 965);
     }
