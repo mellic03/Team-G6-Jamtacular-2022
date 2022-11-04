@@ -8,6 +8,7 @@ let prop_handler = prop_init(map_handler);
 let enemy_handler = enemy_init(map_handler.active_map.enemies);
 let player_handler = player_init(map_handler);
 let ui_handler = ui_init();
+let test;
 
 
 function preload() {
@@ -16,6 +17,7 @@ function preload() {
   ui_handler.preload();
   map_handler.preload();
   prop_handler.preload();
+  test = loadSound('/sound/track1.mp3');
 }
 
 
@@ -29,6 +31,7 @@ function setup() {
   ui_handler.setup();
   map_handler.setup();
   prop_handler.setup();
+  //test.loop();
 }
 
 
