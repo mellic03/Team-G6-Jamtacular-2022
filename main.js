@@ -5,8 +5,8 @@
 let map_handler = map_init();
 
 let prop_handler = prop_init(map_handler);
-let enemy_handler = enemy_init(map_handler);
-let player_handler = player_init();
+let enemy_handler = enemy_init(map_handler.active_map.enemies);
+let player_handler = player_init(map_handler);
 let ui_handler = ui_init();
 
 

@@ -65,14 +65,11 @@ class Player {
     this.fist_L_sprite.position.y = 900;
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
-
-    console.log(this.fist_R_sprite);
   }
 
   draw(world_data) {
 
     this.health -= 0.001;
-
     this.depth_buffer = [];
     this.input(world_data.active_map);
     this.march(world_data.active_map);
@@ -85,6 +82,10 @@ class Player {
   }
 
   draw_minimap(map) {
+
+    if (this.ray_intersections.length == 0)
+      return;
+
     fill(10);
     rectMode(CORNER)
     rect(this.mmap_x, 0, this.mmap_width, this.mmap_width);
@@ -93,9 +94,9 @@ class Player {
         if (map.tilemap[map.width*y + x] > 0) {
 
           fill(
-            map.colourmap[4*map.width*y + 4*x],
-            map.colourmap[4*map.width*y + 4*x+1],
-            map.colourmap[4*map.width*y + 4*x+2]
+            map.colourmap[map.width*y + x],
+            map.colourmap[map.width*y + x+1],
+            map.colourmap[map.width*y + x+2]
           );
 
           rect(this.mmap_x+x*map.width/2, y*map.width/2, 10, 10);
@@ -417,11 +418,7 @@ function point_in_cell(x, y, grid) {
   }
 
   else {
-    return [
-      grid.colourmap[4*(grid.width*yprime + xprime)+0],
-      grid.colourmap[4*(grid.width*yprime + xprime)+1],
-      grid.colourmap[4*(grid.width*yprime + xprime)+2]
-    ];
+    return grid.colourmap[grid.width*yprime + xprime];
   }
 }
 

@@ -1,12 +1,9 @@
-function enemy_init(map_handler) {
+function enemy_init(enemies_array) {
 
   let enemy_handler = new EnemyHandler();
   
-  let zombie1 = new Zombie(160, 60, "engine/enemy/zombie");
-  let zombie2 = new Zombie(200, 60, "engine/enemy/zombie");
-  
-  enemy_handler.add(zombie1);
-  // enemy_handler.add(zombie2);
+  console.log("E")
+  console.log(enemies_array);
 
   return enemy_handler;
 }

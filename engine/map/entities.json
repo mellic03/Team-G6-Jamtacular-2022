@@ -1,0 +1,19 @@
+{
+
+  "props": [],
+  
+  "pickups": [],
+
+  "enemies": {
+
+    "zombie": {
+      "directory": "engine/enemy/zombie"
+    },
+
+    "other": {
+      "directory": "engine/enemy/zombie"
+    }
+
+  }
+
+}

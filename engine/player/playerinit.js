@@ -1,4 +1,4 @@
-function player_init() {
+function player_init(map_handler) {
   
   let player_handler = new PlayerHandler();
 
