@@ -8,7 +8,7 @@
 
 class Zombie {
 
-  directory;
+  directory; // folder to retrieve assets from
 
   speed = 1;
 
@@ -18,7 +18,7 @@ class Zombie {
 
   img_front;        og_img_front;
   img_back;         og_img_back;
-  img_left;         og_img_left;
+  img_side;         og_img_side;
   img_front_angle;  og_img_front_angle;
   img_back_angle;   og_img_back_angle;
 
@@ -55,9 +55,7 @@ class Zombie {
 
 
   preload() {
-    this.sprite = new Sprite();
-    this.self_group = new Group();
-    this.self_group.add(this.sprite);
+    console.log("preloading enemy")
   
     loadImage(this.directory + "/spritesheets/walkfront-sheet.png", (img) => {
       this.og_img_front = copy_image(img);
@@ -96,11 +94,11 @@ class Zombie {
       );
     });
 
-    loadImage(this.directory + "/spritesheets/walkleft-sheet.png", (img) => {
-      this.og_img_left = copy_image(img);
-      this.img_left = img;
+    loadImage(this.directory + "/spritesheets/walkside-sheet.png", (img) => {
+      this.og_img_side = copy_image(img);
+      this.img_side = img;
       this.sheet_left = loadSpriteSheet(
-        this.img_left,
+        this.img_side,
         43, 53, 4
       );
     });
@@ -108,6 +106,7 @@ class Zombie {
   }
 
   setup() {
+    this.sprite = new Sprite();
     this.anim_front = loadAnimation(this.sheet_front);
     this.anim_front.frameDelay = 32;
     this.sprite.addAnimation('walkfront', this.anim_front);
@@ -130,7 +129,7 @@ class Zombie {
   }
 
   draw(world_data) {
-    this.collide_against_enemies(world_data);
+    this.collide_against_enemies(world_data.active_map.enemies);
     // this.move_to_player(world_data);
     this.correct_angle(world_data);
   }
@@ -141,7 +140,7 @@ class Zombie {
    * @param {*} x1
    * @param {*} x2
    */
-  sprite_hide(img, x1, x2) {
+  set_occlusion(img, x1, x2) {
     let width = img.width;
     let height = img.height;
   
@@ -178,17 +177,17 @@ class Zombie {
   }
 
 
-  collide_against_enemies(world_data) {
-    for (let i=0; i<world_data.enemies.length; i++) {
-      for (let j=0; j<world_data.enemies.length; j++) {
+  collide_against_enemies(enemies) {
+    for (let i=0; i<enemies.length; i++) {
+      for (let j=0; j<enemies.length; j++) {
         if (i!=j) {
-          let dist = vector2_dist(world_data.enemies[i].pos, world_data.enemies[j].pos);
+          let dist = vector2_dist(enemies[i].pos, enemies[j].pos);
           if (dist < 10) {
             
-            let dir = vector2_sub(world_data.enemies[i].pos, world_data.enemies[j].pos);
+            let dir = vector2_sub(enemies[i].pos, enemies[j].pos);
             dir.normalise();
             dir.scale(0.2);
-            world_data.enemies[i].pos.add(dir);
+            enemies[i].pos.add(dir);
           }
         }
       }
@@ -287,7 +286,7 @@ class Zombie {
     else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
-      this.active_img = this.img_left;
+      this.active_img = this.img_side;
     }
 
 

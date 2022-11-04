@@ -98,6 +98,10 @@ class Vector2 {
 
 }
 
+function vector2_add(v0, v1) {
+  return new Vector2(v0.x+v1.x, v0.y+v1.y);
+}
+
 function vector2_sub(v0, v1) {
   return new Vector2(v0.x-v1.x, v0.y-v1.y);
 }

@@ -59,10 +59,6 @@ class PlayerHandler {
 
   /** Execute the draw() function of all players in this._players[] */
   draw(world_data) {
-    if (world_data == undefined || !world_data.hasOwnProperty("maps") || !world_data.hasOwnProperty("enemies")) {
-      console.log(`%cERROR: world_data does not fit specification`, "color: red;");
-      return;
-    }
     for (let player of this._players)
       player.draw(world_data);
   }

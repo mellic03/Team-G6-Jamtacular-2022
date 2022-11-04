@@ -8,6 +8,8 @@ class Map {
   pickups = [];
   enemies = [];
 
+  player;
+
   width = 25;
   tilemap = [];   // Raycasting and collisions against walls, 1/4 size of colourmap
   colourmap = []; // coloured rendering
@@ -40,6 +42,12 @@ class Map {
           this.colourmap[i] = [+color[0], +color[1], +color[2], 255];
         }
 
+        else if (tokens[0] == "SPAWN") {
+          this.player = new Player((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
+          this.player.preload();
+          player_handler.add(this.player);
+        }
+
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
 
@@ -47,39 +55,47 @@ class Map {
 
         else if (tokens[0] == "PICKUP:") {
           let pickup_name = tokens[1];
-
         }
 
         else if (tokens[0] == "ENEMY:") {
           let enemy_name = tokens[1];
-          let enemy = entity_data.enemies[enemy_name];
-          enemy.x = floor(i/25) * 25;
-          enemy.y = i%25 * 25;
-          this.enemies.push(entity_data.enemies[enemy_name]);
+          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5,  entity_data.enemies[enemy_name].directory);
+          this.enemies.push(enemy);
         }
       }
-      console.log(this.enemies);
+
+      for (let enemy of this.enemies) {
+        enemy.preload();
+      }
 
     });
-
-    // loadImage(this.filepath, (image) => {
-    //   image.loadPixels();
-    //   this.width = image.width;
-    //   for (let i=0; i<image.pixels.length; i+=4) {
-    //     this.tilemap[i/4] = image.pixels[i] | image.pixels[i+1] | image.pixels[i+2];
-    //   }
-    //   for (let i=0; i<image.pixels.length; i+=1) {
-    //     this.colourmap[i] = image.pixels[i];
-    //   }
-    // });
   }
 
   setup() {
-
+    for (let enemy of this.enemies) {
+      enemy.setup();
+    }
   }
 
-  draw() {
+  draw(world_data) {
+    for (let enemy of this.enemies) {
+      enemy.draw(world_data);
+    }
+  }
+
+
+  point_in_grid(pos) {
+
+    let xprime = Math.floor(pos.x/this.width);
+    let yprime = Math.floor(pos.y/this.width);
   
+    if (this.tilemap[this.width*yprime + xprime] > 0) {
+      return true
+    }
+  
+    return false;
   }
+  
+
 
 }

@@ -47,9 +47,9 @@ class MapHandler {
     }
   }
 
-  draw() {
+  draw(world_data) {
     for (let map of this._maps) {
-      map.draw();
+      map.draw(world_data);
     }
   }
 
