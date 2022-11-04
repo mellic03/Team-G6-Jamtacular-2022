@@ -48,12 +48,10 @@ class Player {
       this.fist_L_sprite.addImage("fist_R", this.fist_R_img);
       this.fist_L_sprite.scale = 3;
       this.fist_L_sprite.mirrorX(-1);
-
     });
   }
 
   setup() {
-    this.pos = new Vector2(50, 50);
     this.dir_L = this.dir.get_rotated(-0.785);
     this.dir_R = this.dir.get_rotated(+0.785);
     this.fist_R_sprite.position.x = 750;
@@ -68,13 +66,13 @@ class Player {
   }
 
   draw(world_data) {
-
-    this.health -= 0.001;
     this.depth_buffer = [];
     this.input(world_data.active_map);
     this.march(world_data.active_map);
     this.world_render();
-    this.sprite_render(world_data.enemies.concat(world_data.props));
+    // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
+    // console.log(world_data.active_map.enemies);
+    this.sprite_render(world_data.active_map.enemies);
     this.occlude_sprites(this.sprite_buffer);
     this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
@@ -304,7 +302,6 @@ class Player {
       // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
       // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
 
-
       // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(enemies[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
 
       if (wall_dist > sprite_dist) {
@@ -405,7 +402,6 @@ function point_in_wall(pos, grid) {
   }
 
   return false;
-
 }
 
 function point_in_cell(x, y, grid) {
