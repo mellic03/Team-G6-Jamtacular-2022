@@ -16,8 +16,9 @@ function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(144); pixelDensity(1); noSmooth();
   
-  player_handler.setup();
   map_handler.setup();
+  player_handler.setup();
+  ui_handler.setup();
 }
 
 let world_data = {

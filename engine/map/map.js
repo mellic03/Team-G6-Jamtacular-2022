@@ -89,7 +89,7 @@ class Map {
     let xprime = Math.floor(pos.x/this.width);
     let yprime = Math.floor(pos.y/this.width);
   
-    if (this.tilemap[this.width*yprime + xprime] > 0) {
+    if (this.tilemap[this.width*yprime + xprime] ==1) {
       return true
     }
   
