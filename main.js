@@ -5,11 +5,13 @@
 let player_handler = player_init();
 let map_handler = map_init();
 let ui_handler = ui_init();
+let audio_handler = audio_init();
 
 function preload() {
   map_handler.preload();
   player_handler.preload();
   ui_handler.preload();
+  audio_handler.preload();
 }
 
 function setup() {
@@ -19,12 +21,13 @@ function setup() {
   map_handler.setup();
   player_handler.setup();
   ui_handler.setup();
+  audio_handler.setup();
 }
 
 let world_data = {
   players: player_handler._players,
   active_map: map_handler.active_map,
-  maps: map_handler._maps,
+  maps: map_handler._maps
 };
 
 function draw() {
@@ -34,6 +37,6 @@ function draw() {
   map_handler.draw(world_data);
   player_handler.draw(world_data);
   ui_handler.draw(world_data);
-
+  audio_handler.draw(world_data);
 }
 
