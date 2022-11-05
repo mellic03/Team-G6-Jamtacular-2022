@@ -35,7 +35,7 @@ let world_data = {
 
 function draw() {
 	//dbackground(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
-  image(sky_box,0,0);
+  image(sky_box, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   //rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
 
   map_handler.draw(world_data);

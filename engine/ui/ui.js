@@ -54,11 +54,11 @@ class UI {
   draw_health_ui() {
     fill(250, 150, 150);
     textSize(80);
-    text('HEALTH', 300, 1000);
+    text('HEALTH', 300 * (SCREEN_WIDTH / 1000), 1000);
     textSize(160);
     
     for(let player of world_data.players) {
-      text(floor(player.health), 300, 965);
+      text(floor(player.health), 300 * (SCREEN_WIDTH / 1000), 965);
 
     }
 
@@ -67,20 +67,20 @@ class UI {
   draw_armor_ui() {
     fill(150, 150, 250);
     textSize(80);
-    text('ARMOR', 600, 1000);
+    text('ARMOR', 600 * (SCREEN_WIDTH / 1000), 1000);
     textSize(160);
     for(let player of world_data.players) {
-      text(floor(player.armor), 600, 965);
+      text(floor(player.armor), 600 * (SCREEN_WIDTH / 1000), 965);
     }
   }
 
   draw_stamina_ui() {
     fill(150, 250, 150);
     textSize(80);
-    text('STAMINA', 0, 1000);
+    text('STAMINA', 0 * (SCREEN_WIDTH / 1000), 1000);
     textSize(160);
     for(let player of world_data.players) {
-      text(floor(player.stamina), 10, 965);
+      text(floor(player.stamina), 10 * (SCREEN_WIDTH / 1000), 965);
     }
   }
  
