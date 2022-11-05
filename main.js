@@ -13,7 +13,7 @@ function preload() {
   player_handler.preload();
   ui_handler.preload();
   audio_handler.preload();
-  sky_box = loadImage('engine/environment/skybox/skybox.png');
+  sky_box = loadImage('engine/environment/skybox/skybox.jpg');
 
 }
 
@@ -34,7 +34,7 @@ let world_data = {
 };
 
 function draw() {
-	//dbackground(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
+	//background(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
   image(sky_box, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   //rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
 

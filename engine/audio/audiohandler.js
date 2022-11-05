@@ -37,6 +37,7 @@ class AudioHandler {
     {
       if (this.audio_lock == false) {
         this.tracks.map1_track1.loop();
+        this.tracks.map1_track1.setVolume(0);
         this.audio_lock = true;
       }
     }

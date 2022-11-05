@@ -1,6 +1,6 @@
 class Player {
 
-  health = 100;
+  health = 10;
   armor = 100;
   stamina = 100;
   damage;
