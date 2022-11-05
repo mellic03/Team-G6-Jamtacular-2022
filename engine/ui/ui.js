@@ -48,6 +48,10 @@ class UI {
     else if (keyIsDown(keycodes.RIGHT)) {
       console.log("right");
     }
+    else {
+      // display the middle face at relevant damage
+      // middle_faces[floor(player.health/20)];
+    }
 
     noStroke();
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);

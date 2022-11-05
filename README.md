@@ -44,3 +44,16 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     }
     ```
 4. The new enemy can now be placed in the map editor by typing the enemy name in the "enemy" field
+
+
+&nbsp;
+
+# Planning For The Future
+
+## TODO
+- Cocaine
+- Chad looks left or right with player rotation
+- More props, enemy sprites
+- Enemy behaviour scripting
+- Boss
+- Weapons -shiv, needle?

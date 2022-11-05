@@ -29,6 +29,7 @@
 
     "zombie": {
       "directory": "engine/enemy/zombie",
+      "behavour_scripts": ["follow_player"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,
