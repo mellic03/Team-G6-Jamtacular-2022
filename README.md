@@ -30,12 +30,8 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     - walkfront-sheet.png
     - walkfrontangle-sheet.png
     - walkside-sheet.png
-
-    - attackback-sheet.png
-    - attackbackangle-sheet.png
     - attackfront-sheet.png
-    - attackfrontangle-sheet.png
-    - attackside-sheet.png
+
 3. Create a new entry in /engine/map/entities.json
     ```json
     "example_enemy": {

@@ -255,9 +255,14 @@ class EnemyType_1 {
     }
 
     else if (dist > 20) {
-      this.dir.lerp(player_to_enemy, 0.002*deltaTime);
+      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
       this.dir.normalise();
       this.pos.add(this.dir.get_scaled(0.02*deltaTime));
+    }
+
+    else {
+      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
+      this.dir.normalise();
     }
 
     if (dist < 7) {
