@@ -59,6 +59,17 @@ class UI {
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
 
+    if (keyIsDown(keycodes.LEFT)) {
+      console.log("left");
+    }
+    else if (keyIsDown(keycodes.RIGHT)) {
+      console.log("right");
+    }
+    else {
+      // display the middle face at relevant damage
+      // middle_faces[floor(player.health/20)];
+    }
+
     noStroke();
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     this.draw_health_ui(world_data);

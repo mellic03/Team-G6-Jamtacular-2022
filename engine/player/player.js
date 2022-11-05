@@ -336,12 +336,11 @@ class Player {
     if (keyIsDown(13))
       requestPointerLock();
 
-    this.vel.scale(0.9)
+    this.vel.scale(0.9);
     this.pos.add(this.vel);
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-
       let nextx = this.pos.x + temp.x;
       let nexty = this.pos.y + temp.y;
       let next_pos = new Vector2(nextx, nexty);
@@ -353,7 +352,6 @@ class Player {
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-
       let nextx = this.pos.x + temp.x;
       let nexty = this.pos.y + temp.y;
       let next_pos = new Vector2(nextx, nexty);

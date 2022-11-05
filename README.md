@@ -30,19 +30,30 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     - walkfront-sheet.png
     - walkfrontangle-sheet.png
     - walkside-sheet.png
-
-    - attackback-sheet.png
-    - attackbackangle-sheet.png
     - attackfront-sheet.png
-    - attackfrontangle-sheet.png
-    - attackside-sheet.png
+
 3. Create a new entry in /engine/map/entities.json
     ```json
     "example_enemy": {
       "directory": "engine/enemy/example_enemy",
+      "height": 0.2,
+      "vertical_offset": 6000,
       "health": 100,
       "damage": 10,
       "speed": 2
     }
     ```
 4. The new enemy can now be placed in the map editor by typing the enemy name in the "enemy" field
+
+
+&nbsp;
+
+# Planning For The Future
+
+## TODO
+- Cocaine
+- Chad looks left or right with player rotation
+- More props, enemy sprites
+- Enemy behaviour scripting
+- Boss
+- Weapons -shiv, needle?

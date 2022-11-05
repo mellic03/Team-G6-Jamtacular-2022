@@ -4,8 +4,8 @@
     "pillar": {
       "directory": "engine/environment/pillar",
       "collision_radius": 1,
-      "height": 0.1,
-      "vertical_offset": 20
+      "height": 0.05,
+      "vertical_offset": 6000
     }
 
   },
@@ -29,6 +29,7 @@
 
     "zombie": {
       "directory": "engine/enemy/zombie",
+      "behavour_scripts": ["follow_player"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,

@@ -62,7 +62,7 @@ class EnemyType_1 {
       this.active_img = this.img_front;
       this.sheet_front = loadSpriteSheet(
         this.img_front,
-        41, 108, 4
+        41, 110, 4
       );
     });
 
@@ -89,7 +89,7 @@ class EnemyType_1 {
       this.img_back_angle = img;
       this.sheet_back_angle = loadSpriteSheet(
         this.img_back_angle,
-        45, 100, 4
+        45, 110, 4
       );
     });
 
@@ -98,7 +98,7 @@ class EnemyType_1 {
       this.img_side = img;
       this.sheet_left = loadSpriteSheet(
         this.img_side,
-        43, 106, 4
+        43, 110, 4
       );
     });
 
@@ -135,9 +135,8 @@ class EnemyType_1 {
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
     }
 
-
     this.collide_against_enemies(world_data.active_map.enemies);
-    // this.move_to_player(world_data);
+    this.move_to_player(world_data);
     this.correct_angle(world_data);
   }
 
@@ -202,15 +201,18 @@ class EnemyType_1 {
   }
 
   dirs = [
-    new Vector2(+sqrt(2), +sqrt(2)),
-    new Vector2(+sqrt(2), -sqrt(2)),
-    new Vector2(-sqrt(2), -sqrt(2)),
-    new Vector2(-sqrt(2), +sqrt(2))
+    new Vector2(+sqrt(2)/2, +sqrt(2)/2),
+    new Vector2(+sqrt(2)/2, -sqrt(2)/2),
+    new Vector2(-sqrt(2)/2, -sqrt(2)/2),
+    new Vector2(-sqrt(2)/2, +sqrt(2)/2)
   ];
 
   closest_dir = this.dirs[0];
   player_last_dist = 0;
   player_delta_dist = 0;
+
+  time1 = Math.floor((new Date()).getTime() / 1000);
+  time2 = Math.floor((new Date()).getTime() / 1000) + 19;
 
   move_to_player(world_data) {
 
@@ -225,31 +227,41 @@ class EnemyType_1 {
     // keep track of delta_dist, if delta_dist becomes negative, 
     // recalculate nearest 45 degree angle
 
-    if (this.player_delta_dist < 0) {
+    if (this.time2 - this.time1 > 2) {
+      this.time1 = Math.floor((new Date()).getTime() / 1000);
       let closest_dot = -1;
       
       for (let i=0; i<4; i++) {
         let dot = vector2_dot(this.dirs[i], enemy_to_player);
         if (dot > closest_dot) {
           closest_dot = dot;
-          this.closest_dir = this.dirs[i];
+          this.closest_dir = new Vector2(this.dirs[i].x, this.dirs[i].y);
         }
       }
-
       this.closest_dir.normalise();
-      // this.closest_dir.scale(0.02*deltaTime);
+      this.dir = this.closest_dir;
     }
 
     if (dist > 50) {
-      this.dir = this.closest_dir;
-      if (world_data.active_map.point_in_grid(vector2_add(this.pos, this.dir.get_scaled(0.02*deltaTime))) == false)
-        this.pos.add(this.dir.get_scaled(0.02*deltaTime));      
+      if (world_data.active_map.point_in_grid(vector2_add(this.pos, this.dir.get_scaled(4))) == false)
+        this.pos.add(this.dir.get_scaled(0.02*deltaTime));
+      
+      else {
+        this.dir.rotate(0.78);
+        this.pos.add(this.dir.get_scaled(2));
+        this.time1 = Math.floor((new Date()).getTime() / 1000) + 3
+      }
     }
 
     else if (dist > 20) {
-      this.dir.lerp(player_to_enemy, 0.002*deltaTime);
+      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
       this.dir.normalise();
       this.pos.add(this.dir.get_scaled(0.02*deltaTime));
+    }
+
+    else {
+      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
+      this.dir.normalise();
     }
 
     if (dist < 7) {
@@ -257,9 +269,7 @@ class EnemyType_1 {
     }
 
     
-    this.player_delta_dist = this.player_last_dist - dist;
-    this.player_last_dist = dist;
-
+    this.time2 = Math.floor((new Date()).getTime() / 1000);
   }
 
   
@@ -276,8 +286,8 @@ class EnemyType_1 {
     let side = vector2_dot(this.dir.get_normalised(), dir.get_rotated(-1.57)) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
-
     if (theta > 155.7) {
+      this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkfront");
       this.active_img = this.img_front;
     }
@@ -302,6 +312,7 @@ class EnemyType_1 {
     }
 
     else if (theta > 0) {
+      this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkback");
       this.active_img = this.img_back;
     }

@@ -1,3 +1,19 @@
+let behaviour_scripts = {
+
+
+
+  follow_player(enemy, world_data) {
+    console.log("E");
+
+    if (world_data.player.pos.x < 25) {
+      enemy.pos.x += 1;
+    }
+  }
+
+
+
+};
+
 
 class Map {
   

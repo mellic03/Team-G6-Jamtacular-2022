@@ -35,3 +35,4 @@ function copy_image(src) {
 
   return new_image;
 }
+

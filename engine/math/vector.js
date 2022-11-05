@@ -130,6 +130,17 @@ function vector2_angle(v0, v1) {
   return (vector2_dot(v0, v1)/(v0.mag()*v1.mag()));
 }
 
+function vector2_scale(v0, alpha) {
+  return new Vector2(v0.x*alpha, v0.y*alpha);
+}
+
+/** Reflect v0 about v1
+ */
+function vector2_reflect(v0, v1) {
+  return vector2_sub(v0, vector2_scale(v1, 2*vector2_dot(v0, v1)));
+}
+
 function point_plane_dist(plane_normal, plane_pos, point_pos) {
   return vector2_dot(plane_normal, vector2_sub(point_pos, plane_pos));
 }
+
