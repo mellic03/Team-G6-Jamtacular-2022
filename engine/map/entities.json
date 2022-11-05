@@ -4,8 +4,8 @@
     "pillar": {
       "directory": "engine/environment/pillar",
       "collision_radius": 1,
-      "height": 0.1,
-      "vertical_offset": 20
+      "height": 0.05,
+      "vertical_offset": 6000
     }
 
   },

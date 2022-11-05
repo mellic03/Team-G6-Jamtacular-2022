@@ -341,7 +341,6 @@ class Player {
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-
       let nextx = this.pos.x + temp.x;
       let nexty = this.pos.y + temp.y;
       let next_pos = new Vector2(nextx, nexty);
@@ -353,7 +352,6 @@ class Player {
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-
       let nextx = this.pos.x + temp.x;
       let nexty = this.pos.y + temp.y;
       let next_pos = new Vector2(nextx, nexty);

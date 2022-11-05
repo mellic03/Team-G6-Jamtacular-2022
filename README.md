@@ -40,6 +40,8 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     ```json
     "example_enemy": {
       "directory": "engine/enemy/example_enemy",
+      "height": 0.2,
+      "vertical_offset": 6000,
       "health": 100,
       "damage": 10,
       "speed": 2
