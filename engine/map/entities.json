@@ -3,7 +3,8 @@
   "static_props": {
     "pillar": {
       "directory": "engine/environment/pillar",
-      "height": 15
+      "height": 15,
+      "collision_radius": 1
     }
   },
 
