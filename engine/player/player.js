@@ -74,7 +74,7 @@ class Player {
     // console.log(world_data.active_map.enemies);
     this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props));
     this.occlude_sprites(this.sprite_buffer);
-    this.draw_minimap(world_data.active_map);
+    // this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
   }
@@ -168,7 +168,10 @@ class Player {
 
       let colour = false;
 
-      while (hit == 0) {
+      let steps = 0;
+
+      while (hit == 0 && steps < 1000000) {
+        steps++;
         if (sideDistX < sideDistY) {
           sideDistX += dx;
           mapX += step_x;
@@ -279,10 +282,9 @@ class Player {
         sprite_array[i].sprite.scale = scale*scaling_factor;
         sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 + (sprite_array[i].active_img.height*scaling_factor)/2;
 
-        console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
-        
+        // console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
 
-        this.sprite_width_buffer[i] = sprite_height * (sprite_array[i].active_img.width/sprite_array[i].active_img.height);
+        this.sprite_width_buffer[i] = scale*sprite_height;// * (sprite_array[i].active_img.width/sprite_array[i].active_img.height);
       }
 
       else {
@@ -302,17 +304,22 @@ class Player {
         continue;
       }
 
-      let sprite_dist = vector2_dist(this.pos, this.sprite_buffer[j].pos);
+
+      // let sprite_dist = vector2_dist(this.pos, this.sprite_buffer[j].pos);
+      let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
       let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].dist*10
 
       // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
       // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
 
-      // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(enemies[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
+      // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(this.sprite_buffer[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
 
       if (wall_dist > sprite_dist) {
         drawSprite(this.sprite_buffer[j].sprite);
       }
+
+      // stroke(0, 255, 0);
+      // rect(this.sprite_buffer[j].sprite.position.x, 500, 1, this.sprite_width_buffer[j]);
     }
 
     this.sprite_buffer = [];
@@ -370,14 +377,14 @@ class Player {
     }
 
 
-    this.fist_L_sprite.position.y = 900 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
-    this.fist_R_sprite.position.y = 900 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)));
+    this.fist_L_sprite.position.y = (900 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    this.fist_R_sprite.position.y = (900 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
 
-    this.fist_L_sprite.position.x = 250 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)));
-    this.fist_R_sprite.position.x = 750 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
+    this.fist_L_sprite.position.x = (250 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    this.fist_R_sprite.position.x = (750 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_WIDTH/1000);
     
     if (keyIsDown(keycodes.SPACE)) {
-    this.fist_R_sprite.position.y = 700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)));
+    this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
     }
 
     if (keyIsDown(LEFT_ARROW)) {
@@ -389,7 +396,6 @@ class Player {
       this.plane.rotate(+this.rot_speed * deltaTime);
       this.dir.rotate(+this.rot_speed * deltaTime);
     }
-
   }
 }
 

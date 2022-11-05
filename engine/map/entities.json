@@ -17,7 +17,7 @@
 
     "zombie": {
       "directory": "engine/enemy/zombie",
-      "height": 10,
+      "height": 15,
       "health": 100,
       "damage": 10,
       "speed": 2
