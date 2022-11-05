@@ -62,7 +62,7 @@ class EnemyType_1 {
       this.active_img = this.img_front;
       this.sheet_front = loadSpriteSheet(
         this.img_front,
-        41, 54, 4
+        41, 108, 4
       );
     });
 
@@ -71,7 +71,7 @@ class EnemyType_1 {
       this.img_back = img;
       this.sheet_back = loadSpriteSheet(
         this.img_back,
-        36, 51, 4
+        36, 110, 4
       );
     });
 
@@ -80,7 +80,7 @@ class EnemyType_1 {
       this.img_front_angle = img;
       this.sheet_front_angle = loadSpriteSheet(
         this.img_front_angle,
-        37, 54, 4
+        37, 108, 4
       );
     });
 
@@ -89,7 +89,7 @@ class EnemyType_1 {
       this.img_back_angle = img;
       this.sheet_back_angle = loadSpriteSheet(
         this.img_back_angle,
-        45, 50, 4
+        45, 100, 4
       );
     });
 
@@ -98,7 +98,7 @@ class EnemyType_1 {
       this.img_side = img;
       this.sheet_left = loadSpriteSheet(
         this.img_side,
-        43, 53, 4
+        43, 106, 4
       );
     });
 
