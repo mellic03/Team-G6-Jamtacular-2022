@@ -269,18 +269,20 @@ class Player {
         let invDet = 1 / (this.plane.x*this.dir.y - this.dir.x*this.plane.y);
 
         let transformX = invDet * (this.dir.x*newpos.y - this.dir.y*newpos.x);
-        let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
 
-        let spriteScreenX = (SCREEN_WIDTH/2) * (1 + transformX/transformY);
-        sprite_array[i].sprite.position.x = spriteScreenX;
+        let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
 
+        sprite_array[i].sprite.position.x = (SCREEN_WIDTH/2) * (1 + transformX/dist);
+        
         let scale = sprite_array[i].height;
-        let sprite_height = abs(SCREEN_HEIGHT / transformY);
+        
+        let sprite_height = scale*abs(SCREEN_HEIGHT / dist);
+
         let scaling_factor = sprite_height / sprite_array[i].active_img.height;
         
 
-        sprite_array[i].sprite.scale = scale*scaling_factor;
-        sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 + (sprite_array[i].active_img.height*scaling_factor)/2;
+        sprite_array[i].sprite.scale = scaling_factor;
+        sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 - sprite_height/2;
 
         // console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
 

@@ -1,24 +1,34 @@
 {
-
   "static_props": {
+
     "pillar": {
       "directory": "engine/environment/pillar",
       "height": 15,
       "collision_radius": 1
     }
+
   },
+
 
   "directional_props": {
     
   },
   
-  "pickups": {},
+
+  "pickups": {
+    
+    "health": {
+      "directory": "engine/whatever/health",
+      "attribute": "health"
+    }
+  },
+
 
   "enemies": {
 
     "zombie": {
       "directory": "engine/enemy/zombie",
-      "height": 15,
+      "height": 10,
       "health": 100,
       "damage": 10,
       "speed": 2
@@ -29,5 +39,4 @@
     }
 
   }
-
 }
