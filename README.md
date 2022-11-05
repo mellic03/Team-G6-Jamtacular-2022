@@ -36,6 +36,7 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     ```json
     "example_enemy": {
       "directory": "engine/enemy/example_enemy",
+      "behaviour_scripts": ["follow_player"],
       "height": 0.2,
       "vertical_offset": 6000,
       "health": 100,
@@ -45,15 +46,33 @@ On Windows, .map files can be dragged onto the mapedit executable to import them
     ```
 4. The new enemy can now be placed in the map editor by typing the enemy name in the "enemy" field
 
+## Enemy Behaviour Scripts
+Scripts can be assigned to an enemy by adding the name of the script to the behaviour_scripts array of the enemy in entities.json. Behaviour scripts are defined in /engine/enemy/behaviour.js as properties of the behaviour_scripts object.
+
+Example behaviour script:
+```JavaScript
+const behaviour_scripts = {
+
+  follow_player(enemy, world_data) {
+    let dir = vector2_sub(world_data.player.pos, enemy.pos);
+    dir.normalise();
+    enemy.pos.add(dir);
+  }
+
+}
+```
+- Behaviour scripts must take the enemy as the first parameter and world_data as the second.
+- Multiple scripts can be added to the behaviour_scripts array in entities.json.
+- Each script will be executed once per frame.
 
 &nbsp;
 
 # Planning For The Future
 
 ## TODO
-- Cocaine
-- Chad looks left or right with player rotation
-- More props, enemy sprites
-- Enemy behaviour scripting
-- Boss
-- Weapons -shiv, needle?
+- [ ] Cocaine
+- [x] Chad looks left or right with player rotation
+- [ ] More props, enemy sprites
+- [x] Enemy behaviour scripting
+- [ ] Boss
+- [ ] Weapons -shiv, needle?

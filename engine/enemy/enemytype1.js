@@ -9,6 +9,8 @@ class EnemyType_1 {
 
   directory; // folder to retrieve assets from
 
+  behaviour_scripts = []; // Array of functions to be executed in draw()
+
   speed = 1;
 
   sprite;
@@ -62,7 +64,7 @@ class EnemyType_1 {
       this.active_img = this.img_front;
       this.sheet_front = loadSpriteSheet(
         this.img_front,
-        41, 110, 4
+        img.width/4, img.height, 4
       );
     });
 
@@ -71,7 +73,7 @@ class EnemyType_1 {
       this.img_back = img;
       this.sheet_back = loadSpriteSheet(
         this.img_back,
-        36, 110, 4
+        img.width/4, img.height, 4
       );
     });
 
@@ -80,7 +82,7 @@ class EnemyType_1 {
       this.img_front_angle = img;
       this.sheet_front_angle = loadSpriteSheet(
         this.img_front_angle,
-        37, 108, 4
+        img.width/4, img.height, 4
       );
     });
 
@@ -89,7 +91,7 @@ class EnemyType_1 {
       this.img_back_angle = img;
       this.sheet_back_angle = loadSpriteSheet(
         this.img_back_angle,
-        45, 110, 4
+        img.width/4, img.height, 4
       );
     });
 
@@ -98,7 +100,7 @@ class EnemyType_1 {
       this.img_side = img;
       this.sheet_left = loadSpriteSheet(
         this.img_side,
-        43, 110, 4
+        img.width/4, img.height, 4
       );
     });
 
@@ -125,7 +127,7 @@ class EnemyType_1 {
   }
 
   draw(world_data) {
-    
+
     if (frameCount % floor(frameRate()) == 0) {
       let frame_delay = floor( 2/9 * ceil(frameRate()));
       this.sprite.animations.walkback.frameDelay        = frame_delay;
@@ -138,6 +140,12 @@ class EnemyType_1 {
     this.collide_against_enemies(world_data.active_map.enemies);
     this.move_to_player(world_data);
     this.correct_angle(world_data);
+
+
+    for (let i=0; i<this.behaviour_scripts.length; i++) {
+      this.behaviour_scripts[i](this, world_data);
+    }
+
   }
 
   /** Make a portion of an spritesheet invisible.

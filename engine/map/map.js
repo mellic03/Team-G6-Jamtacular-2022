@@ -1,19 +1,3 @@
-let behaviour_scripts = {
-
-
-
-  follow_player(enemy, world_data) {
-    console.log("E");
-
-    if (world_data.player.pos.x < 25) {
-      enemy.pos.x += 1;
-    }
-  }
-
-
-
-};
-
 
 class Map {
   
@@ -67,7 +51,7 @@ class Map {
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
           let obj = entity_data.static_props[prop_name];
-          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
+          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, prop_name);
           prop.height = obj.height;
           prop.voffset = obj.vertical_offset;
           this.props.push(prop);
@@ -80,9 +64,17 @@ class Map {
         else if (tokens[0] == "ENEMY:") {
           let enemy_name = tokens[1];
           let obj = entity_data.enemies[enemy_name];
+
           let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
+
+          for (let script of obj.behaviour_scripts) {
+            enemy.behaviour_scripts.push(behaviour_scripts[script]);
+          }
+
           enemy.height = obj.height;
           enemy.voffset = obj.vertical_offset;
+
+
           this.enemies.push(enemy);
         }
       }
