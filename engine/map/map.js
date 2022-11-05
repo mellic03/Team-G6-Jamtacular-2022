@@ -51,7 +51,7 @@ class Map {
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
           let obj = entity_data.static_props[prop_name];
-          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, prop_name);
+          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
           prop.height = obj.height;
           prop.voffset = obj.vertical_offset;
           this.props.push(prop);
