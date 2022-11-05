@@ -16,10 +16,9 @@ class Prop {
 
   pos = new Vector2(0, 0);
   
-  constructor(x, y, scale, directory) {
+  constructor(x, y, directory) {
     this.pos.x = x;
     this.pos.y = y;
-    this.height *= scale;
     this.directory = directory;
   }
 

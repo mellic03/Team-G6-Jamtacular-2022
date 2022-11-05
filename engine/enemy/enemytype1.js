@@ -9,11 +9,9 @@ class EnemyType_1 {
 
   directory; // folder to retrieve assets from
 
-  height = 1;
   speed = 1;
 
   sprite;
-
 
   active_img;
 
@@ -39,9 +37,8 @@ class EnemyType_1 {
    * @param {*} x x position of enemy
    * @param {*} y y position of enemy
    */
-  constructor(x, y, scale, directory) {
+  constructor(x, y, directory) {
     this.pos = new Vector2(x, y);
-    this.height *= scale;
     this.directory = directory;
   }
 

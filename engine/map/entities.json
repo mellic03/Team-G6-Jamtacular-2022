@@ -3,7 +3,6 @@
 
     "pillar": {
       "directory": "engine/environment/pillar",
-      "height": 15,
       "collision_radius": 1
     }
 
@@ -28,7 +27,6 @@
 
     "zombie": {
       "directory": "engine/enemy/zombie",
-      "height": 10,
       "health": 100,
       "damage": 10,
       "speed": 2

@@ -51,7 +51,7 @@ class Map {
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
           let obj = entity_data.static_props[prop_name];
-          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.height, obj.directory);
+          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
           this.props.push(prop);
         }
 
@@ -62,7 +62,7 @@ class Map {
         else if (tokens[0] == "ENEMY:") {
           let enemy_name = tokens[1];
           let obj = entity_data.enemies[enemy_name];
-          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.height, obj.directory);
+          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
           this.enemies.push(enemy);
         }
       }
