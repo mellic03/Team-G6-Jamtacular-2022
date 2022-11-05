@@ -2,6 +2,11 @@ class UI {
 
   face_sprites = {};
 
+  faces_middle = [];
+  faces_left = [];
+  faces_right = [];
+  state;
+
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
@@ -16,8 +21,28 @@ class UI {
     this.chad_anim4 = loadAnimation(this.face_sprites.chad_state_4);
     this.chad_anim5 = loadAnimation(this.face_sprites.chad_state_5);
 
+    this.faces_middle[0] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
+    this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_high.png');
+    this.faces_middle[2] = loadImage('engine/ui/faces_middle/chad_middle_mid.png')
+    this.faces_middle[3] = loadImage('engine/ui/faces_middle/chad_middle_low.png');
+    this.faces_middle[4] = loadImage('engine/ui/faces_middle/chad_middle_healthy.png');
 
-    this.chad_anim.frameDelay = 80;
+    this.faces_right[0] = loadImage('engine/ui/faces_right/chad_right_severe.png');
+    this.faces_right[1] = loadImage('engine/ui/faces_right/chad_right_high.png');
+    this.faces_right[2] = loadImage('engine/ui/faces_right/chad_right_mid.png');
+    this.faces_right[3] = loadImage('engine/ui/faces_right/chad_right_low.png');
+    this.faces_right[4] = loadImage('engine/ui/faces_right/chad_right_healthy.png');
+
+    this.faces_left[0] = loadImage('engine/ui/faces_left/chad_left_severe.png');
+    this.faces_left[1] = loadImage('engine/ui/faces_left/chad_left_high.png');
+    this.faces_left[2] = loadImage('engine/ui/faces_left/chad_left_mid.png');
+    this.faces_left[3] = loadImage('engine/ui/faces_left/chad_left_low.png');
+    this.faces_left[4] = loadImage('engine/ui/faces_left/chad_left_healthy.png');
+
+
+
+
+
     this.chad_anim2.frameDelay = 80;
 
   }
@@ -28,7 +53,7 @@ class UI {
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     textFont(this.doom_font);
-    console.log(this.face_sprites);
+    console.log(this.faces_middle);
 
 
 
@@ -58,34 +83,43 @@ class UI {
       this.framerate = Math.floor(frameRate());
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
+    image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
 
-    if (keyIsDown(keycodes.LEFT)) {
-      console.log("left");
-    }
-    else if (keyIsDown(keycodes.RIGHT)) {
-      console.log("right");
-    }
-    else {
-      // display the middle face at relevant damage
-      // middle_faces[floor(player.health/20)];
-    }
+
+    
 
     noStroke();
-    image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
+
     this.draw_health_ui(world_data);
     this.draw_armor_ui(world_data);
     this.draw_stamina_ui(world_data);
     this.draw_face_state(world_data);
+
   
   }
 
   draw_face_state(world_data) {
     for (let player of world_data.players) {
-      if (player.health === 100) {
-        animation(this.chad_anim, SCREEN_WIDTH/2, SCREEN_HEIGHT-this.ui_banner.height/2);
-      } else {
-        animation(this.chad_anim2, SCREEN_WIDTH/2, SCREEN_HEIGHT-this.ui_banner.height/2);
+      console.log(floor(player.health/20)-1);
+
+      this.state = floor(player.health/20);
+      if (keyIsDown(keycodes.LEFT)) {
+        console.log("left");
+        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
+
+  
       }
+      else if (keyIsDown(keycodes.RIGHT)) {
+        console.log("right");
+        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
+  
+      }
+      else {
+        // display the middle face at relevant damage
+        // middle_faces[floor(player.health/20)];
+        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
+      }
+      console.log(player.health/20);
     }
   }
 
