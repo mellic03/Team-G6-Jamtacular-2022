@@ -6,12 +6,15 @@ let player_handler = player_init();
 let map_handler = map_init();
 let ui_handler = ui_init();
 let audio_handler = audio_init();
+let sky_box
 
 function preload() {
   map_handler.preload();
   player_handler.preload();
   ui_handler.preload();
   audio_handler.preload();
+  sky_box = loadImage('engine/environment/skybox/skybox.png');
+
 }
 
 function setup() {
@@ -31,8 +34,9 @@ let world_data = {
 };
 
 function draw() {
-	background(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
-  rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
+	//dbackground(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
+  image(sky_box,0,0);
+  //rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
 
   map_handler.draw(world_data);
   player_handler.draw(world_data);
