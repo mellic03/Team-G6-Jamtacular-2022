@@ -336,7 +336,7 @@ class Player {
     if (keyIsDown(13))
       requestPointerLock();
 
-    this.vel.scale(0.9)
+    this.vel.scale(0.9);
     this.pos.add(this.vel);
 
     if (keyIsDown(keycodes.A)) {
