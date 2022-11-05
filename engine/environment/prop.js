@@ -4,6 +4,8 @@ class Prop {
   directory;
   sprite;
 
+  height = 1;
+
   active_img;
 
   img_front;        og_img_front;
@@ -14,14 +16,17 @@ class Prop {
 
   pos = new Vector2(0, 0);
   
-  constructor(directory) {
+  constructor(x, y, scale, directory) {
+    this.pos.x = x;
+    this.pos.y = y;
+    this.height *= scale;
     this.directory = directory;
   }
 
   preload() {
     this.sprite = new Sprite();
 
-    loadImage(this.directory + "/front.png", (img) => {
+    loadImage(this.directory + "/pillar.png", (img) => {
       this.img_front = img;
       this.active_img = this.img_front;
       this.og_img_front = copy_image(this.img_front);
@@ -36,7 +41,6 @@ class Prop {
   }
 
   draw() {
-    
   }
 
 }

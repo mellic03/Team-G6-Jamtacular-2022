@@ -1,6 +1,5 @@
 class UI {
 
-
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
@@ -16,20 +15,12 @@ class UI {
     textFont(this.doom_font);
 
 
-
     this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
     //this.chad_anim.resize(100, 100);
     //this.chad.resize(100, 100);
   }
 
-  framerate = 0;
-
   draw(world_data) {
-
-    for (let player of world_data.players) {
-
-      // do stuff regarding the player
-    }
 
     /* Or like this to avoid executing the ui code multiple times:
     

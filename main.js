@@ -20,7 +20,7 @@ function preload() {
 function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(144); pixelDensity(1); noSmooth();
-  
+
   map_handler.setup();
   player_handler.setup();
   ui_handler.setup();
@@ -30,7 +30,7 @@ function setup() {
 let world_data = {
   players: player_handler._players,
   active_map: map_handler.active_map,
-  maps: map_handler._maps
+  maps: map_handler._maps,
 };
 
 function draw() {

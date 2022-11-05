@@ -9,9 +9,11 @@ class EnemyType_1 {
 
   directory; // folder to retrieve assets from
 
+  height = 1;
   speed = 1;
 
   sprite;
+
 
   active_img;
 
@@ -37,8 +39,9 @@ class EnemyType_1 {
    * @param {*} x x position of enemy
    * @param {*} y y position of enemy
    */
-  constructor(x, y, directory) {
+  constructor(x, y, scale, directory) {
     this.pos = new Vector2(x, y);
+    this.height *= scale;
     this.directory = directory;
   }
 
@@ -107,29 +110,37 @@ class EnemyType_1 {
   setup() {
     this.sprite = new Sprite();
     this.anim_front = loadAnimation(this.sheet_front);
-    this.anim_front.frameDelay = 32;
     this.sprite.addAnimation('walkfront', this.anim_front);
 
     this.anim_front_angle = loadAnimation(this.sheet_front_angle);
-    this.anim_front_angle.frameDelay = 32;
     this.sprite.addAnimation('walkfrontangle', this.anim_front_angle);
 
     this.anim_back = loadAnimation(this.sheet_back);
-    this.anim_back.frameDelay = 32;
     this.sprite.addAnimation('walkback', this.anim_back);
 
     this.anim_back_angle = loadAnimation(this.sheet_back_angle);
-    this.anim_back_angle.frameDelay = 32;
     this.sprite.addAnimation('walkbackangle', this.anim_back_angle);
 
     this.anim_left = loadAnimation(this.sheet_left);
-    this.anim_left.frameDelay = 32;
     this.sprite.addAnimation('walkleft', this.anim_left);
+  
+    console.log(this.sprite);
   }
 
   draw(world_data) {
+    
+    if (frameCount % floor(frameRate()) == 0) {
+      let frame_delay = floor( 2/9 * ceil(frameRate()));
+      this.sprite.animations.walkback.frameDelay        = frame_delay;
+      this.sprite.animations.walkbackangle.frameDelay   = frame_delay;
+      this.sprite.animations.walkfront.frameDelay       = frame_delay;
+      this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
+      this.sprite.animations.walkleft.frameDelay        = frame_delay;
+    }
+
+
     this.collide_against_enemies(world_data.active_map.enemies);
-    this.move_to_player(world_data);
+    // this.move_to_player(world_data);
     this.correct_angle(world_data);
   }
 

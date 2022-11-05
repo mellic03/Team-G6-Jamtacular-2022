@@ -72,7 +72,7 @@ class Player {
     this.world_render();
     // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
     // console.log(world_data.active_map.enemies);
-    this.sprite_render(world_data.active_map.enemies);
+    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props));
     this.occlude_sprites(this.sprite_buffer);
     this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
@@ -271,11 +271,17 @@ class Player {
         let spriteScreenX = (SCREEN_WIDTH/2) * (1 + transformX/transformY);
         sprite_array[i].sprite.position.x = spriteScreenX;
 
+        let scale = sprite_array[i].height;
         let sprite_height = abs(SCREEN_HEIGHT / transformY);
-        let scaling_factor = 10*sprite_height / sprite_array[i].active_img.height;
-        sprite_array[i].sprite.scale = scaling_factor;
-        sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 + 2*sprite_height;
+        let scaling_factor = sprite_height / sprite_array[i].active_img.height;
         
+
+        sprite_array[i].sprite.scale = scale*scaling_factor;
+        sprite_array[i].sprite.position.y = SCREEN_HEIGHT/2 + (sprite_array[i].active_img.height*scaling_factor)/2;
+
+        console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
+        
+
         this.sprite_width_buffer[i] = sprite_height * (sprite_array[i].active_img.width/sprite_array[i].active_img.height);
       }
 

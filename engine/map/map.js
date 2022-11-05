@@ -50,7 +50,9 @@ class Map {
 
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
-
+          let obj = entity_data.static_props[prop_name];
+          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.height, obj.directory);
+          this.props.push(prop);
         }
 
         else if (tokens[0] == "PICKUP:") {
@@ -59,7 +61,8 @@ class Map {
 
         else if (tokens[0] == "ENEMY:") {
           let enemy_name = tokens[1];
-          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5,  entity_data.enemies[enemy_name].directory);
+          let obj = entity_data.enemies[enemy_name];
+          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.height, obj.directory);
           this.enemies.push(enemy);
         }
       }
@@ -67,7 +70,9 @@ class Map {
       for (let enemy of this.enemies) {
         enemy.preload();
       }
-
+      for (let prop of this.props) {
+        prop.preload();
+      }
     });
   }
 
@@ -75,11 +80,17 @@ class Map {
     for (let enemy of this.enemies) {
       enemy.setup();
     }
+    for (let prop of this.props) {
+      prop.setup();
+    }
   }
 
   draw(world_data) {
     for (let enemy of this.enemies) {
       enemy.draw(world_data);
+    }
+    for (let prop of this.props) {
+      prop.draw();
     }
   }
 
