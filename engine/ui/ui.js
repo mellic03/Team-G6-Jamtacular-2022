@@ -10,17 +10,7 @@ class UI {
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
-    this.face_sprites.chad_state_1 = loadSpriteSheet('engine/ui/work.png', 80, 100, 5);
-    this.face_sprites.chad_state_2 = loadSpriteSheet('engine/ui/hurt.png', 80, 100, 5);
-    this.face_sprites.chad_state_3 = loadSpriteSheet('engine/ui/mod_dmg.png', 80, 100, 5);
-    this.face_sprites.chad_state_4 = loadSpriteSheet('engine/ui/sev_dmg.png', 80, 100, 5);
-    this.face_sprites.chad_state_5 = loadSpriteSheet('engine/ui/dng_dmg.png', 80, 100, 5);
-    this.chad_anim = loadAnimation(this.face_sprites.chad_state_1);
-    this.chad_anim2 = loadAnimation(this.face_sprites.chad_state_2);
-    this.chad_anim3 = loadAnimation(this.face_sprites.chad_state_3);
-    this.chad_anim4 = loadAnimation(this.face_sprites.chad_state_4);
-    this.chad_anim5 = loadAnimation(this.face_sprites.chad_state_5);
-
+  
     this.faces_middle[0] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_high.png');
     this.faces_middle[2] = loadImage('engine/ui/faces_middle/chad_middle_mid.png')
@@ -38,13 +28,6 @@ class UI {
     this.faces_left[2] = loadImage('engine/ui/faces_left/chad_left_mid.png');
     this.faces_left[3] = loadImage('engine/ui/faces_left/chad_left_low.png');
     this.faces_left[4] = loadImage('engine/ui/faces_left/chad_left_healthy.png');
-
-
-
-
-
-    this.chad_anim2.frameDelay = 80;
-
   }
 
 
@@ -54,9 +37,6 @@ class UI {
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     textFont(this.doom_font);
     console.log(this.faces_middle);
-
-
-
     this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
     //this.chad_anim.resize(100, 100);
     //this.chad.resize(100, 100);
@@ -84,42 +64,28 @@ class UI {
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
-
-
-    
-
     noStroke();
-
     this.draw_health_ui(world_data);
     this.draw_armor_ui(world_data);
     this.draw_stamina_ui(world_data);
     this.draw_face_state(world_data);
-
-  
   }
 
   draw_face_state(world_data) {
     for (let player of world_data.players) {
-      console.log(floor(player.health/20)-1);
-
       this.state = floor(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
-        console.log("left");
-        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
-
-  
+        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2, 
+                                                        SCREEN_HEIGHT - this.ui_banner.height);  
       }
       else if (keyIsDown(keycodes.RIGHT)) {
-        console.log("right");
-        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
-  
+        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2, 
+                                                         SCREEN_HEIGHT - this.ui_banner.height);
       }
       else {
-        // display the middle face at relevant damage
-        // middle_faces[floor(player.health/20)];
-        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2, SCREEN_HEIGHT - this.ui_banner.height);
+        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2, 
+                                                          SCREEN_HEIGHT - this.ui_banner.height);
       }
-      console.log(player.health/20);
     }
   }
 
@@ -128,12 +94,9 @@ class UI {
     textSize(80);
     text('HEALTH', 300 * (SCREEN_WIDTH / 1000), 1000);
     textSize(160);
-    
     for(let player of world_data.players) {
       text(floor(player.health), 300 * (SCREEN_WIDTH / 1000), 965);
-
     }
-
   }
 
   draw_armor_ui() {
@@ -155,6 +118,4 @@ class UI {
       text(floor(player.stamina), 10 * (SCREEN_WIDTH / 1000), 965);
     }
   }
- 
-  
 }

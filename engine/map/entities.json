@@ -6,6 +6,13 @@
       "collision_radius": 1,
       "height": 0.05,
       "vertical_offset": 6000
+    },
+
+    "barrelfire": {
+      "directory": "engine/environment/barrelfire",
+      "collision_radius": 1,
+      "height": 0.05,
+      "vertical_offset":6000
     }
 
   },

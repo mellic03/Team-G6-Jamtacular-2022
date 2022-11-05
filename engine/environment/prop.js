@@ -30,7 +30,6 @@ class Prop {
       this.active_img = this.img_front;
       this.og_img_front = copy_image(this.img_front);
     });
-
   }
 
   setup() {
