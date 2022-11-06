@@ -303,33 +303,53 @@ class Player {
 
   occlude_sprites(sprite_buffer) {
     rectMode(CENTER);
-    let occluded = false;
-
     for (let j=0; j<this.sprite_buffer.length; j++) {
 
       if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH) {
         continue;
       }
 
-
       // let sprite_dist = vector2_dist(this.pos, this.sprite_buffer[j].pos);
       let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
-      let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].dist*10
+      let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].real_dist;
 
       let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
-      let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
+      let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH-1);
 
-      // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(this.sprite_buffer[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
 
-      if (wall_dist > sprite_dist) {
-        drawSprite(this.sprite_buffer[j].sprite);
+      // Scan from xmin to xmax comparing depth buffer values to sprite distance
+
+      let occluded = false;
+      let occlude_start = 0, occlude_end = 0;
+      
+      for (let i=xmin+1; i<=xmax; i++) {
+        if (this.depth_buffer[SCREEN_WIDTH-i].real_dist < sprite_dist) {
+          
+          if (occluded == false) {
+            occlude_start = floor((i-xmin) / sprite_buffer[j].sprite.scale);
+            occluded = true;
+          }
+
+          else {
+            occlude_end = floor((i-xmin) / sprite_buffer[j].sprite.scale);
+          }
+
+          // stroke(255, 0, 0)
+          // line(i, 300, i, 700);
+        }
       }
 
-      stroke(0, 255, 0);
-      strokeWeight(2);
-      // console.log(xmin)
-      line(xmin, 300, xmin, 700);
-      line(xmax, 300, xmax, 700);
+      sprite_buffer[j].set_occlusion(occlude_start, occlude_end);
+
+      // stroke(0, 255, 0);
+      // strokeWeight(2);
+      // line(xmin, 300, xmin, 700);
+      // line(xmax, 300, xmax, 700);
+
+      // if (wall_dist > sprite_dist) {
+        drawSprite(this.sprite_buffer[j].sprite);
+      // }
+
     }
 
     this.sprite_buffer = [];

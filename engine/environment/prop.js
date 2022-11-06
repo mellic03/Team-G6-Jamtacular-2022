@@ -9,7 +9,7 @@ class Prop {
 
   height = 1;
 
-  active_img;
+  active_img; og_active_img;
 
   spritesheet; og_spritesheet;
   
@@ -30,9 +30,9 @@ class Prop {
     loadImage(`${this.directory}/${this.name}.png`, (img) => {
       this.img_front = img;
       this.active_img = this.img_front;
-      this.og_img_front = copy_image(this.img_front);
+      this.og_active_img = copy_image(this.img_front);
 
-      this.spritesheet = loadSpriteSheet(`${this.directory}/${this.name}.png`, img.width/this.frames, img.height, this.frames);
+      this.spritesheet = loadSpriteSheet(img, img.width/this.frames, img.height, this.frames);
     });
   }
 
@@ -43,6 +43,21 @@ class Prop {
   }
 
   draw() {
+  }
+
+  set_occlusion(x1, x2) {
+
+    let width = this.active_img.width;
+    let height = this.active_img.height;
+  
+    let row = 4*width;
+
+    for (let x=x1; x<=x2; x++) {
+      for (let y=0; y<height; y++) {
+        this.active_img.pixels[row*y + 4*x+3] = 0;
+      }
+    }
+    this.active_img.updatePixels();
   }
 
 }

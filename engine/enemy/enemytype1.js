@@ -15,6 +15,7 @@ class EnemyType_1 {
 
   sprite;
 
+  occlude_start; occlude_end;
 
   frames;
   active_img;
@@ -106,7 +107,6 @@ class EnemyType_1 {
         img.width/this.frames, img.height, this.frames
       );
     });
-
   }
 
   setup() {
@@ -126,7 +126,7 @@ class EnemyType_1 {
     this.anim_left = loadAnimation(this.sheet_left);
     this.sprite.addAnimation('walkleft', this.anim_left);
   
-    console.log(this.sprite);
+    this.og_active_img = this.og_img_front;
   }
 
   draw(world_data) {
@@ -139,6 +139,7 @@ class EnemyType_1 {
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
     }
+
 
     this.collide_against_enemies(world_data.active_map.enemies);
     // this.move_to_player(world_data);
@@ -153,46 +154,24 @@ class EnemyType_1 {
 
   /** Make a portion of an spritesheet invisible.
    *  Assumes the spritesheet has four frames.
-   * @param {*} img 
-   * @param {*} x1
-   * @param {*} x2
    */
-  set_occlusion(img, x1, x2) {
-    let width = img.width;
-    let height = img.height;
+  set_occlusion(x1, x2) {
+
+    let width = this.active_img.width;
+    let height = this.active_img.height;
   
     let row = 4*width;
 
-    for (let x=x1; x<x2; x++) {
+    for (let x=x1; x<=x2; x++) {
       for (let y=0; y<height; y++) {
-        img.pixels[row*y + 4*x+0*width+3] = 0;
-        img.pixels[row*y + 4*x+1*width+3] = 0;
-        img.pixels[row*y + 4*x+2*width+3] = 0;
-        img.pixels[row*y + 4*x+3*width+3] = 0;
+        this.active_img.pixels[row*y + 4*x+0*width+3] = 0;
+        this.active_img.pixels[row*y + 4*x+1*width+3] = 0;
+        this.active_img.pixels[row*y + 4*x+2*width+3] = 0;
+        this.active_img.pixels[row*y + 4*x+3*width+3] = 0;
       }
     }
-    img.updatePixels();
+    this.active_img.updatePixels();
   }
-
-  reset_occlusion(dest, src, x1, x2) {
-
-    let width = dest.width;
-    let height = dest.height;
-
-    let row = 4*width;
-
-    for (let x=x1; x<x2; x++) {
-      for (let y=0; y<height; y++) {
-        dest.pixels[row*y + 4*x+0*width+3] = src.pixels[row*y + 4*x+0*width+3];
-        dest.pixels[row*y + 4*x+1*width+3] = src.pixels[row*y + 4*x+1*width+3];
-        dest.pixels[row*y + 4*x+2*width+3] = src.pixels[row*y + 4*x+2*width+3];
-        dest.pixels[row*y + 4*x+3*width+3] = src.pixels[row*y + 4*x+3*width+3];
-      }
-    }
-
-    dest.updatePixels();
-  }
-
 
   collide_against_enemies(enemies) {
     for (let i=0; i<enemies.length; i++) {
@@ -300,18 +279,21 @@ class EnemyType_1 {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkfront");
       this.active_img = this.img_front;
+      this.og_active_img = this.og_img_front;
     }
 
     else if (theta > 112.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
       this.active_img = this.img_front_angle;
+      this.og_active_img = this.og_img_front_angle;
     }
 
     else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
       this.active_img = this.img_side;
+      this.og_active_img = this.og_img_side;
     }
 
 
@@ -319,12 +301,14 @@ class EnemyType_1 {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkbackangle");
       this.active_img = this.img_back_angle;
+      this.og_active_img = this.og_img_back_angle;
     }
 
     else if (theta > 0) {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkback");
       this.active_img = this.img_back;
+      this.og_active_img = this.og_img_back;
     }
   }
 

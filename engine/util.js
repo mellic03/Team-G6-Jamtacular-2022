@@ -24,15 +24,12 @@ function copy_image(src) {
   let height = src.height;
   let new_image = createImage(width, height);
   
-  let row = 4*width;
-
   src.loadPixels();
   new_image.loadPixels();
   for (let i=0; i<src.pixels.length; i++) {
-    new_image.pixels[i] = src.pixels[i];
+    new_image.pixels[i] = +src.pixels[i];
   }
   new_image.updatePixels();
-
   return new_image;
 }
 

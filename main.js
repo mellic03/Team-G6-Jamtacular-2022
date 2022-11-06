@@ -34,6 +34,12 @@ let world_data = {
 };
 
 function draw() {
+  for (let enemy of world_data.active_map.enemies) {
+    enemy.og_active_img.copy(enemy.active_img, 0, 0, enemy.active_img.width, enemy.active_img.height, 0, 0, enemy.active_img.width, enemy.active_img.height);
+  }
+  for (let prop of world_data.active_map.props) {
+    prop.og_active_img.copy(prop.active_img, 0, 0, prop.active_img.width, prop.active_img.height, 0, 0, prop.active_img.width, prop.active_img.height);
+  }
 	//background(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
   image(sky_box, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   //rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
@@ -45,8 +51,15 @@ function draw() {
 
   // FOR TESTING SPRITE VERTICAL OFFSET
   //---------------------------------------------------------------------
-   stroke(0, 255, 0);
-   line(0, SCREEN_HEIGHT/2 + 120, SCREEN_WIDTH, SCREEN_HEIGHT/2 + 120);
+  //  stroke(0, 255, 0);
+  //  line(0, SCREEN_HEIGHT/2 + 120, SCREEN_WIDTH, SCREEN_HEIGHT/2 + 120);
   //---------------------------------------------------------------------
+
+  for (let enemy of world_data.active_map.enemies) {
+    enemy.active_img.copy(enemy.og_active_img, 0, 0, enemy.active_img.width, enemy.active_img.height, 0, 0, enemy.active_img.width, enemy.active_img.height);
+  }
+  for (let prop of world_data.active_map.props) {
+    prop.active_img.copy(prop.og_active_img, 0, 0, prop.active_img.width, prop.active_img.height, 0, 0, prop.active_img.width, prop.active_img.height);
+  }
 }
 
