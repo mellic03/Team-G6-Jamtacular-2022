@@ -67,7 +67,7 @@ class Map {
           let enemy_name = tokens[1];
           let obj = entity_data.enemies[enemy_name];
 
-          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
+          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames);
 
           for (let script of obj.behaviour_scripts) {
             enemy.behaviour_scripts.push(behaviour_scripts[script]);

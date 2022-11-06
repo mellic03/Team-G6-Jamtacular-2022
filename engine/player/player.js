@@ -291,7 +291,7 @@ class Player {
 
         // console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
 
-        this.sprite_width_buffer[i] = scale*sprite_height;// * (sprite_array[i].active_img.width/sprite_array[i].active_img.height);
+        this.sprite_width_buffer[i] = sprite_height*(sprite_array[i].active_img.width/sprite_array[i].active_img.height)/sprite_array[i].frames;
       }
 
       else {
@@ -316,8 +316,8 @@ class Player {
       let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
       let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].dist*10
 
-      // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
-      // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
+      let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
+      let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH);
 
       // console.log(`sprite: ${floor(sprite_dist)}, col: ${floor(this.sprite_buffer[j].sprite.position.x)},  wall: ${floor(wall_dist)}`);
 
@@ -325,8 +325,11 @@ class Player {
         drawSprite(this.sprite_buffer[j].sprite);
       }
 
-      // stroke(0, 255, 0);
-      // rect(this.sprite_buffer[j].sprite.position.x, 500, 1, this.sprite_width_buffer[j]);
+      stroke(0, 255, 0);
+      strokeWeight(2);
+      // console.log(xmin)
+      line(xmin, 300, xmin, 700);
+      line(xmax, 300, xmax, 700);
     }
 
     this.sprite_buffer = [];

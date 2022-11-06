@@ -15,6 +15,8 @@ class EnemyType_1 {
 
   sprite;
 
+
+  frames;
   active_img;
 
   img_front;        og_img_front;
@@ -39,9 +41,10 @@ class EnemyType_1 {
    * @param {*} x x position of enemy
    * @param {*} y y position of enemy
    */
-  constructor(x, y, directory) {
+  constructor(x, y, directory, frames) {
     this.pos = new Vector2(x, y);
     this.directory = directory;
+    this.frames = frames;
   }
 
   // ENEMY SPECIFICATION
@@ -64,7 +67,7 @@ class EnemyType_1 {
       this.active_img = this.img_front;
       this.sheet_front = loadSpriteSheet(
         this.img_front,
-        img.width/4, img.height, 4
+        img.width/this.frames, img.height, this.frames
       );
     });
 
@@ -73,7 +76,7 @@ class EnemyType_1 {
       this.img_back = img;
       this.sheet_back = loadSpriteSheet(
         this.img_back,
-        img.width/4, img.height, 4
+        img.width/this.frames, img.height, this.frames
       );
     });
 
@@ -82,7 +85,7 @@ class EnemyType_1 {
       this.img_front_angle = img;
       this.sheet_front_angle = loadSpriteSheet(
         this.img_front_angle,
-        img.width/4, img.height, 4
+        img.width/this.frames, img.height, this.frames
       );
     });
 
@@ -91,7 +94,7 @@ class EnemyType_1 {
       this.img_back_angle = img;
       this.sheet_back_angle = loadSpriteSheet(
         this.img_back_angle,
-        img.width/4, img.height, 4
+        img.width/this.frames, img.height, this.frames
       );
     });
 
@@ -100,7 +103,7 @@ class EnemyType_1 {
       this.img_side = img;
       this.sheet_left = loadSpriteSheet(
         this.img_side,
-        img.width/4, img.height, 4
+        img.width/this.frames, img.height, this.frames
       );
     });
 
