@@ -5,6 +5,14 @@
       "directory": "engine/environment/pillar",
       "frames": 1,
       "collision_radius": 1,
+      "height": 0.1,
+      "vertical_offset": 900
+    },
+
+    "pillar_reflect": {
+      "directory": "engine/environment/pillar_reflect",
+      "frames": 1,
+      "collision_radius": 1,
       "height": 0.05,
       "vertical_offset": 6000
     },
@@ -14,23 +22,23 @@
       "frames": 3,
       "collision_radius": 1,
       "height": 0.15,
-      "vertical_offset":3000
+      "vertical_offset": 3000
     },
 
     "palmtreer": {
       "directory": "engine/environment/palmtreer",
       "frames": 1,
       "collision_radius": 1,
-      "height":0.04,
-      "vertical_offset" :-6300
+      "height": 0.04,
+      "vertical_offset": -6700
     },
 
     "palmtreel": {
       "directory": "engine/environment/palmtreel",
       "frames": 1,
       "collision_radius": 1,
-      "height":0.04,
-      "vertical_offset" :-6300
+      "height": 0.04,
+      "vertical_offset": -6700
     }
 
   },
