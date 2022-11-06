@@ -17,12 +17,20 @@
       "vertical_offset":3000
     },
 
-    "palmtree": {
-      "directory": "engine/environment/palmtree",
+    "palmtreer": {
+      "directory": "engine/environment/palmtreer",
       "frames": 1,
       "collision_radius": 1,
       "height":0.04,
-      "vertical_offset" :-6000
+      "vertical_offset" :-6300
+    },
+
+    "palmtreel": {
+      "directory": "engine/environment/palmtreel",
+      "frames": 1,
+      "collision_radius": 1,
+      "height":0.04,
+      "vertical_offset" :-6300
     }
 
   },

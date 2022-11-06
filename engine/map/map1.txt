@@ -158,7 +158,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: barrelfire
+PROP: palmtreel
 NULL
 NULL
 NULL
@@ -209,7 +209,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: barrelfire
+NULL
 ENEMY: zombie
 NULL
 NULL
@@ -258,7 +258,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: barrelfire
+PROP: palmtreer
 NULL
 NULL
 NULL
@@ -303,7 +303,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: palmtree
+NULL
 NULL
 NULL
 NULL
