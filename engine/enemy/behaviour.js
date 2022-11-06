@@ -21,20 +21,34 @@ const behaviour_scripts = {
     // keep track of delta_dist, if delta_dist becomes negative, 
     // recalculate nearest 45 degree angle
 
-    if (enemy.time2 - enemy.time1 > 2) {
-      enemy.time1 = enemy.time2;
+    // circle(enemy.pos.x, enemy.pos.y, 10);
+
+    // stroke(0, 255, 0);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dir.x*40, enemy.pos.y+enemy.dir.y*40);
+
+    // stroke(0, 0, 255);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[0].x*20, enemy.pos.y+enemy.dirs[0].y*20);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[1].x*20, enemy.pos.y+enemy.dirs[1].y*20);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[2].x*20, enemy.pos.y+enemy.dirs[2].y*20);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[3].x*20, enemy.pos.y+enemy.dirs[3].y*20);
+
+    // stroke(0, 0, 0);
+    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy_to_player.x*30, enemy.pos.y+enemy_to_player.y*30);
+
+    // fill(0, 255, 0);
+    // circle(player.pos.x, player.pos.y, 10);
+
+    if (enemy.player_delta_dist < 0.005*deltaTime) {
       let closest_dot = -1;
       
       for (let i=0; i<4; i++) {
         let dot = vector2_dot(enemy.dirs[i], enemy_to_player);
         if (dot > closest_dot) {
           closest_dot = dot;
-          enemy.closest_dir.x = enemy.dirs[i].x
-          enemy.closest_dir.y = enemy.dirs[i].y;
+          enemy.dir.x = enemy.dirs[i].x
+          enemy.dir.y = enemy.dirs[i].y;
         }
       }
-      enemy.closest_dir.normalise();
-      enemy.dir = enemy.closest_dir;
     }
 
     if (dist > 50) {
@@ -57,11 +71,15 @@ const behaviour_scripts = {
     else {
       enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
       enemy.dir.normalise();
+      enemy.sprite.changeAnimation("attack");
     }
 
     if (dist < 7) {
       world_data.players[0].vel.add(enemy.dir.get_scaled(0.02*deltaTime));
     }
+
+    enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
+    enemy.player_last_dist = dist;
 
     enemy.time2 = floor((new Date()).getTime() / 1000);
   }

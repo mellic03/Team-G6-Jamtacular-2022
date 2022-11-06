@@ -213,7 +213,7 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: zombie
+ENEMY: zombie_reflect
 NULL
 NULL
 NULL
