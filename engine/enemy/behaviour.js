@@ -38,7 +38,7 @@ const behaviour_scripts = {
     // fill(0, 255, 0);
     // circle(player.pos.x, player.pos.y, 10);
 
-    if (enemy.player_delta_dist < 0.01*deltaTime) {
+    if (enemy.player_delta_dist < 0.005*deltaTime) {
       let closest_dot = -1;
       
       for (let i=0; i<4; i++) {
