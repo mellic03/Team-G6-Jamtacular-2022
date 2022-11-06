@@ -214,14 +214,9 @@ class EnemyType_1 {
     new Vector2(-sqrt(2)/2, +sqrt(2)/2)
   ];
 
-  closest_dir = this.dirs[0];
   player_last_dist = 0;
   player_delta_dist = 0;
 
-  time1 = Math.floor((new Date()).getTime() / 1000);
-  time2 = Math.floor((new Date()).getTime() / 1000) + 19;
-
-  
   /** Change active animation to ensure player sees enemy from correct angle
    * @param {*} world_data 
    */
