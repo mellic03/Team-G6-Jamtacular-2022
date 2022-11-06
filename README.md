@@ -12,10 +12,10 @@
 ```bash
 ./mapedit [FILE]
 ```
-Where [FILE] is the filepath to a .map file. If supplied, the .map file will be imported into the map editor.
+Where [FILE] is the filepath to a map file. If supplied, the map file will be imported into the map editor.
 
 ### GUI (Windows)
-On Windows, .map files can be dragged onto the mapedit executable to import them into the editor.
+On Windows, map files can be dragged onto the mapedit executable to import them into the editor.
 
 &nbsp;
 
