@@ -82,7 +82,7 @@ const behaviour_scripts = {
     }
 
     if (dist < 7) {
-      world_data.players[0].pos.add(enemy.dir.get_scaled(0.02*deltaTime));
+      player.vel.add(enemy.dir.get_scaled(0.2));
     }
 
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);

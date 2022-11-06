@@ -356,13 +356,15 @@ class Player {
   }
 
   next_pos = new Vector2(0, 0);
+  delta_vel = new Vector2(0, 0);
 
   input(map) {
     if (keyIsDown(13))
       requestPointerLock();
 
-    this.vel.scale(0.13 * deltaTime);
-    this.pos.add(this.vel);
+    this.vel.scale(0.95);
+    this.pos.x += this.vel.x * 0.1 * deltaTime;
+    this.pos.y += this.vel.y * 0.1 * deltaTime;
 
     // if (keyIsDown(keycodes.A)) {
     //   let temp = this.dir.get_rotated(-1.57);
@@ -398,27 +400,33 @@ class Player {
     //   }
     // }
 
+    this.delta_vel.x = 0;
+    this.delta_vel.y = 0;
+
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-      this.vel.x += temp.x * 0.1;
-      this.vel.y += temp.y * 0.1;
+      this.delta_vel.x += temp.x * 0.1;
+      this.delta_vel.y += temp.y * 0.1;
     }
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-      this.vel.x += temp.x * 0.1;
-      this.vel.y += temp.y * 0.1;
+      this.delta_vel.x += temp.x * 0.1;
+      this.delta_vel.y += temp.y * 0.1;
     }
 
     if (keyIsDown(keycodes.W)) {
-      this.vel.x += this.dir.x*0.1;
-      this.vel.y += this.dir.y*0.1;
+      this.delta_vel.x += this.dir.x*0.1;
+      this.delta_vel.y += this.dir.y*0.1;
     }
 
     if (keyIsDown(keycodes.S)) {
-      this.vel.x -= this.dir.x*0.1;
-      this.vel.y -= this.dir.y*0.1;
+      this.delta_vel.x -= this.dir.x*0.1;
+      this.delta_vel.y -= this.dir.y*0.1;
     }
+
+    this.vel.x += this.delta_vel.x;
+    this.vel.y += this.delta_vel.y;
 
     this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
     this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
