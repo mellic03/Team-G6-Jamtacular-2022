@@ -204,63 +204,6 @@ class EnemyType_1 {
   time1 = Math.floor((new Date()).getTime() / 1000);
   time2 = Math.floor((new Date()).getTime() / 1000) + 19;
 
-  move_to_player(world_data) {
-
-    let dist = vector2_dist(world_data.players[0].pos, this.pos);
-
-    let enemy_to_player = vector2_sub(world_data.players[0].pos, this.pos);
-    enemy_to_player.normalise();
-    let player_to_enemy = vector2_sub(this.pos, world_data.players[0].pos);
-
-
-    // Move towards the player at the nearest 45 degree angle,
-    // keep track of delta_dist, if delta_dist becomes negative, 
-    // recalculate nearest 45 degree angle
-
-    if (this.time2 - this.time1 > 2) {
-      this.time1 = Math.floor((new Date()).getTime() / 1000);
-      let closest_dot = -1;
-      
-      for (let i=0; i<4; i++) {
-        let dot = vector2_dot(this.dirs[i], enemy_to_player);
-        if (dot > closest_dot) {
-          closest_dot = dot;
-          this.closest_dir = new Vector2(this.dirs[i].x, this.dirs[i].y);
-        }
-      }
-      this.closest_dir.normalise();
-      this.dir = this.closest_dir;
-    }
-
-    if (dist > 50) {
-      if (world_data.active_map.point_in_grid(vector2_add(this.pos, this.dir.get_scaled(4))) == false)
-        this.pos.add(this.dir.get_scaled(0.02*deltaTime));
-      
-      else {
-        this.dir.rotate(0.78);
-        this.pos.add(this.dir.get_scaled(2));
-        this.time1 = Math.floor((new Date()).getTime() / 1000) + 3
-      }
-    }
-
-    else if (dist > 20) {
-      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
-      this.dir.normalise();
-      this.pos.add(this.dir.get_scaled(0.02*deltaTime));
-    }
-
-    else {
-      this.dir.lerp(player_to_enemy, 0.005*deltaTime);
-      this.dir.normalise();
-    }
-
-    if (dist < 7) {
-      world_data.players[0].vel.add(this.dir.get_scaled(0.02*deltaTime));
-    }
-
-    this.time2 = Math.floor((new Date()).getTime() / 1000);
-  }
-
   
   /** Change active animation to ensure player sees enemy from correct angle
    * @param {*} world_data 

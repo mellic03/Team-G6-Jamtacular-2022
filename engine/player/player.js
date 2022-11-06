@@ -319,36 +319,36 @@ class Player {
 
       // Scan from xmin to xmax comparing depth buffer values to sprite distance
 
-      let occluded = false;
-      let occlude_start = 0, occlude_end = 0;
+      // let occluded = false;
+      // let occlude_start = 0, occlude_end = 0;
       
-      for (let i=xmin+1; i<=xmax; i++) {
-        if (this.depth_buffer[SCREEN_WIDTH-i].real_dist < sprite_dist) {
+      // for (let i=xmin+1; i<=xmax; i++) {
+      //   if (this.depth_buffer[SCREEN_WIDTH-i].real_dist < sprite_dist) {
           
-          if (occluded == false) {
-            occlude_start = floor((i-xmin) / sprite_buffer[j].sprite.scale);
-            occluded = true;
-          }
+      //     if (occluded == false) {
+      //       occlude_start = floor((i-xmin) / sprite_buffer[j].sprite.scale);
+      //       occluded = true;
+      //     }
 
-          else {
-            occlude_end = floor((i-xmin) / sprite_buffer[j].sprite.scale);
-          }
+      //     else {
+      //       occlude_end = floor((i-xmin) / sprite_buffer[j].sprite.scale);
+      //     }
 
-          // stroke(255, 0, 0)
-          // line(i, 300, i, 700);
-        }
-      }
+      //     // stroke(255, 0, 0)
+      //     // line(i, 300, i, 700);
+      //   }
+      // }
 
-      sprite_buffer[j].set_occlusion(occlude_start, occlude_end);
+      // sprite_buffer[j].set_occlusion(occlude_start, occlude_end);
 
       // stroke(0, 255, 0);
       // strokeWeight(2);
       // line(xmin, 300, xmin, 700);
       // line(xmax, 300, xmax, 700);
 
-      // if (wall_dist > sprite_dist) {
+      if (wall_dist > sprite_dist) {
         drawSprite(this.sprite_buffer[j].sprite);
-      // }
+      }
 
     }
 

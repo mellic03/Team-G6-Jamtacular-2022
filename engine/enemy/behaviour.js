@@ -22,14 +22,15 @@ const behaviour_scripts = {
     // recalculate nearest 45 degree angle
 
     if (enemy.time2 - enemy.time1 > 2) {
-      enemy.time1 = Math.floor((new Date()).getTime() / 1000);
+      enemy.time1 = enemy.time2;
       let closest_dot = -1;
       
       for (let i=0; i<4; i++) {
         let dot = vector2_dot(enemy.dirs[i], enemy_to_player);
         if (dot > closest_dot) {
           closest_dot = dot;
-          enemy.closest_dir = new Vector2(enemy.dirs[i].x, enemy.dirs[i].y);
+          enemy.closest_dir.x = enemy.dirs[i].x
+          enemy.closest_dir.y = enemy.dirs[i].y;
         }
       }
       enemy.closest_dir.normalise();
@@ -43,7 +44,7 @@ const behaviour_scripts = {
       else {
         enemy.dir.rotate(0.78);
         enemy.pos.add(enemy.dir.get_scaled(2));
-        enemy.time1 = Math.floor((new Date()).getTime() / 1000) + 3
+        enemy.time1 = enemy.time2 + 3
       }
     }
 
@@ -62,7 +63,7 @@ const behaviour_scripts = {
       world_data.players[0].vel.add(enemy.dir.get_scaled(0.02*deltaTime));
     }
 
-    enemy.time2 = Math.floor((new Date()).getTime() / 1000);
+    enemy.time2 = floor((new Date()).getTime() / 1000);
   }
 
 
