@@ -46,7 +46,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: blimp
+NULL
 WALL: 050,050,050
 WALL: 050,050,050
 NULL
@@ -186,7 +186,7 @@ NULL
 NULL
 NULL
 PROP: pillar
-NULL
+PROP: palmtree_l
 NULL
 NULL
 NULL
@@ -211,7 +211,7 @@ NULL
 SPAWN
 NULL
 PROP: barrelfire
-NULL
+PROP: blimp
 NULL
 NULL
 NULL
@@ -260,8 +260,8 @@ NULL
 NULL
 NULL
 NULL
-PROP: pillar_reflect
-NULL
+PROP: pillar
+PROP: palmtree_r
 NULL
 NULL
 NULL
