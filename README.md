@@ -67,6 +67,24 @@ const behaviour_scripts = {
 
 &nbsp;
 
+## Creating a New Static Prop
+1. Create a directory named after the prop in /engine/environment populated with a single spritesheet
+    > /engine/prop/example_prop/
+
+3. Create a new entry in /engine/map/entities.json
+    ```json
+    "example_prop": {
+      "directory": "engine/environment/example_prop",
+      "frames": 1,
+      "collision_radius": 1,
+      "height": 0.2,
+      "vertical_offset": 6000,
+    }
+    ```
+4. The new prop can now be placed in the map editor by typing the prop name in the "prop" field
+
+&nbsp;
+
 # Planning For The Future
 
 ## TODO

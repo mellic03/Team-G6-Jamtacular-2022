@@ -38,7 +38,7 @@
 
     "zombie": {
       "directory": "engine/enemy/zombie",
-      "behaviour_scripts": [],
+      "behaviour_scripts": ["follow_player_zigzag"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,
