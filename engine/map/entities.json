@@ -15,6 +15,14 @@
       "collision_radius": 1,
       "height": 0.15,
       "vertical_offset":3000
+    },
+
+    "palmtree": {
+      "directory": "engine/environment/palmtree",
+      "frames": 1,
+      "collision_radius": 1,
+      "height":0.04,
+      "vertical_offset" :-6000
     }
 
   },
