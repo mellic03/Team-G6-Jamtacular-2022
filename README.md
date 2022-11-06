@@ -12,10 +12,10 @@
 ```bash
 ./mapedit [FILE]
 ```
-Where [FILE] is the filepath to a .map file. If supplied, the .map file will be imported into the map editor.
+Where [FILE] is the filepath to a map file. If supplied, the map file will be imported into the map editor.
 
 ### GUI (Windows)
-On Windows, .map files can be dragged onto the mapedit executable to import them into the editor.
+On Windows, map files can be dragged onto the mapedit executable to import them into the editor.
 
 &nbsp;
 
@@ -64,6 +64,24 @@ const behaviour_scripts = {
 - Behaviour scripts must take the enemy as the first parameter and world_data as the second.
 - Multiple scripts can be added to the behaviour_scripts array in entities.json.
 - Each script will be executed once per frame.
+
+&nbsp;
+
+## Creating a New Static Prop
+1. Create a directory named after the prop in /engine/environment populated with a single spritesheet
+    > /engine/prop/example_prop/
+
+3. Create a new entry in /engine/map/entities.json
+    ```json
+    "example_prop": {
+      "directory": "engine/environment/example_prop",
+      "frames": 1,
+      "collision_radius": 1,
+      "height": 0.2,
+      "vertical_offset": 6000,
+    }
+    ```
+4. The new prop can now be placed in the map editor by typing the prop name in the "prop" field
 
 &nbsp;
 

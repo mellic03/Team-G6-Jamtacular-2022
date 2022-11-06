@@ -138,7 +138,7 @@ class EnemyType_1 {
     }
 
     this.collide_against_enemies(world_data.active_map.enemies);
-    this.move_to_player(world_data);
+    // this.move_to_player(world_data);
     this.correct_angle(world_data);
 
 
@@ -276,7 +276,6 @@ class EnemyType_1 {
       world_data.players[0].vel.add(this.dir.get_scaled(0.02*deltaTime));
     }
 
-    
     this.time2 = Math.floor((new Date()).getTime() / 1000);
   }
 
