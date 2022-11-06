@@ -46,7 +46,7 @@ NULL
 NULL
 NULL
 NULL
-NULL
+PROP: blimp
 WALL: 050,050,050
 WALL: 050,050,050
 NULL
@@ -210,7 +210,7 @@ NULL
 NULL
 SPAWN
 NULL
-ENEMY: zombie
+PROP: barrelfire
 NULL
 NULL
 NULL
@@ -235,7 +235,7 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: zombie_reflect
+PROP: barrelfire
 NULL
 NULL
 NULL
@@ -260,7 +260,7 @@ NULL
 NULL
 NULL
 NULL
-NULL
+PROP: pillar_reflect
 NULL
 NULL
 NULL

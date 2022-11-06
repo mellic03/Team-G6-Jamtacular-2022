@@ -25,20 +25,28 @@
       "vertical_offset": 3000
     },
 
-    "palmtreer": {
-      "directory": "engine/environment/palmtreer",
+    "palmtree_r": {
+      "directory": "engine/environment/palmtree_r",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.04,
       "vertical_offset": -6700
     },
 
-    "palmtreel": {
-      "directory": "engine/environment/palmtreel",
+    "palmtree_l": {
+      "directory": "engine/environment/palmtree_l",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.04,
       "vertical_offset": -6700
+    },
+
+    "blimp": {
+      "directory": "engine/environment/blimp",
+      "frames": 2,
+      "collision_radius": 1,
+      "height": 0.15,
+      "vertical_offset": -20000 
     }
 
   },
