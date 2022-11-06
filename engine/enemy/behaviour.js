@@ -1,5 +1,11 @@
 const behaviour_scripts = {
 
+  use_velocity(enemy) {
+    enemy.vel.scale(0.95);
+    enemy.pos.x += enemy.vel.x * 0.01 * deltaTime;
+    enemy.pos.y += enemy.vel.y * 0.01 * deltaTime;
+  },
+
   follow_player(enemy, world_data) {
     let player = world_data.players[0];
 
@@ -9,6 +15,7 @@ const behaviour_scripts = {
   },
 
   follow_player_zigzag(enemy, world_data) {
+
     let player = world_data.players[0];
 
     let dist = vector2_dist(player.pos, enemy.pos);
@@ -75,14 +82,26 @@ const behaviour_scripts = {
     }
 
     if (dist < 7) {
-      world_data.players[0].vel.add(enemy.dir.get_scaled(0.02*deltaTime));
+      world_data.players[0].pos.add(enemy.dir.get_scaled(0.02*deltaTime));
     }
 
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
     enemy.player_last_dist = dist;
 
     enemy.time2 = floor((new Date()).getTime() / 1000);
-  }
+  },
 
+  player_damage_enemy(enemy, world_data) {
+    
+    let player = world_data.players[0];
+
+    if (vector2_dist(player.pos, enemy.pos) < 15 && keyIsDown(keycodes.SPACE)) {
+      let dir = vector2_sub(enemy.pos, player.pos);
+      dir.scale(1);
+      enemy.vel.add(dir);
+    }
+
+  }
+  
 
 };

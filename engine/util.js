@@ -33,3 +33,14 @@ function copy_image(src) {
   return new_image;
 }
 
+function MIN(value1, value2) {
+  return value1 < value2 ? value1 : value2;
+}
+
+function MAX(value1, value2) {
+  return value1 > value2 ? value1 : value2;
+}
+
+function clamp(value, min, max) {
+  return MIN(MAX(value, min), max);
+}
