@@ -25,18 +25,21 @@ class EnemyType_1 {
   img_side;         og_img_side;
   img_front_angle;  og_img_front_angle;
   img_back_angle;   og_img_back_angle;
+  img_attack;       og_img_attack;
 
   sheet_back
   sheet_front;
-  sheet_left;
+  sheet_side;
   sheet_front_angle;
   sheet_back_angle;
+  sheet_attack;
 
   anim_back;
   anim_front;
-  anim_left;
+  anim_side;
   anim_front_angle;
   anim_back_angle;
+  anim_attack;
 
   /**
    * @param {*} x x position of enemy
@@ -102,8 +105,17 @@ class EnemyType_1 {
     loadImage(this.directory + "/spritesheets/walkside-sheet.png", (img) => {
       this.og_img_side = copy_image(img);
       this.img_side = img;
-      this.sheet_left = loadSpriteSheet(
+      this.sheet_side = loadSpriteSheet(
         this.img_side,
+        img.width/this.frames, img.height, this.frames
+      );
+    });
+  
+    loadImage(this.directory + "/spritesheets/attack-sheet.png", (img) => {
+      this.og_img_attack = copy_image(img);
+      this.img_attack = img;
+      this.sheet_attack = loadSpriteSheet(
+        this.img_attack,
         img.width/this.frames, img.height, this.frames
       );
     });
@@ -123,9 +135,14 @@ class EnemyType_1 {
     this.anim_back_angle = loadAnimation(this.sheet_back_angle);
     this.sprite.addAnimation('walkbackangle', this.anim_back_angle);
 
-    this.anim_left = loadAnimation(this.sheet_left);
-    this.sprite.addAnimation('walkleft', this.anim_left);
+    this.anim_side = loadAnimation(this.sheet_side);
+    this.sprite.addAnimation('walkleft', this.anim_side);
   
+
+    this.anim_attack = loadAnimation(this.sheet_attack);
+    this.sprite.addAnimation('attack', this.anim_attack);
+  
+
     this.og_active_img = this.og_img_front;
   }
 

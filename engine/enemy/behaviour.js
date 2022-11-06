@@ -57,6 +57,7 @@ const behaviour_scripts = {
     else {
       enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
       enemy.dir.normalise();
+      enemy.sprite.changeAnimation("attack");
     }
 
     if (dist < 7) {
