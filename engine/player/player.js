@@ -10,11 +10,13 @@ class Player {
   dealing_damage = false;
   frames_since_punch = 0;
 
-  mov_speed = 0.6;
+  headbob_count = 0;
+
+  mov_speed = 0.4;
   max_delta_v = 0.15;
   mov_friction = 0.94;
 
-  rot_speed = 0.003;
+  rot_speed = 0.002;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
@@ -83,7 +85,7 @@ class Player {
       return;
     }
 
-    // translate(0, 10*cos(0.1*(this.pos.x + this.pos.y)));
+    translate(0, 5*cos(0.2*this.headbob_count));
 
     this.depth_buffer = [];
     this.input(world_data.map_handler.active_map);
@@ -98,7 +100,7 @@ class Player {
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
 
-    // translate(0, -10*cos(0.1*(this.pos.x + this.pos.y)));
+    translate(0, -5*cos(0.2*this.headbob_count));
   }
 
   draw_minimap(map) {
@@ -400,27 +402,35 @@ class Player {
     this.delta_vel.x = 0;
     this.delta_vel.y = 0;
 
+    let headbob = false;
+
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
       this.delta_vel.x += temp.x*this.mov_speed;
       this.delta_vel.y += temp.y*this.mov_speed;
+      headbob = true;
     }
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
       this.delta_vel.x += temp.x*this.mov_speed;
       this.delta_vel.y += temp.y*this.mov_speed;
+      headbob = true;
     }
 
     if (keyIsDown(keycodes.W)) {
       this.delta_vel.x += this.dir.x*this.mov_speed;
       this.delta_vel.y += this.dir.y*this.mov_speed;
+      headbob = true;
     }
 
     if (keyIsDown(keycodes.S)) {
       this.delta_vel.x -= this.dir.x*this.mov_speed;
       this.delta_vel.y -= this.dir.y*this.mov_speed;
+      headbob = true;
     }
+
+    if (headbob) this.headbob_count += 1;
 
     this.vel.x += this.delta_vel.x;
     this.vel.y += this.delta_vel.y;
