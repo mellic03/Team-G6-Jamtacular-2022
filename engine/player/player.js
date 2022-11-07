@@ -42,7 +42,7 @@ class Player {
   }
 
   preload() {
-    this.fist_R_img = loadImage("engine/player/fist.png", () => {
+    this.fist_R_img = loadImage("engine/player/shiv.png", () => {
       this.fist_R_sprite = new Sprite()
       this.fist_R_sprite.addImage("fist_R", this.fist_R_img);
       this.fist_R_sprite.scale = 3;
