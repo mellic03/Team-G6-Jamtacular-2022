@@ -69,10 +69,27 @@ class UI {
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     noStroke();
-    this.draw_health_ui(world_data);
-    this.draw_armor_ui(world_data);
-    this.draw_stamina_ui(world_data);
+    this.draw_stat_ui(world_data);
     this.draw_face_state(world_data);
+  }
+
+  draw_stat_ui() {
+    fill(250, 150, 150);
+    textSize(80);
+    text('HEALTH', 300 * (SCREEN_WIDTH / 1000), 1000);
+    fill(150, 150, 250);
+    text('ARMOR', 600 * (SCREEN_WIDTH / 1000), 1000);
+    fill(150, 250, 150);
+    text('STAMINA', 0 * (SCREEN_WIDTH / 1000), 1000);
+    textSize(160);
+    for(let player of world_data.players) {
+      fill(250, 150, 150);
+      text(floor(player.health), 300 * (SCREEN_WIDTH / 1000), 965);
+      fill(150, 150, 250);
+      text(floor(player.armor), 600 * (SCREEN_WIDTH / 1000), 965);
+      fill(150, 250, 150);
+      text(floor(player.stamina), 10 * (SCREEN_WIDTH / 1000), 965);
+    }
   }
 
   draw_face_state(world_data) {
@@ -91,36 +108,6 @@ class UI {
         image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2, 
                                                           SCREEN_HEIGHT - this.ui_banner.height);
       }
-    }
-  }
-
-  draw_health_ui() {
-    fill(250, 150, 150);
-    textSize(80);
-    text('HEALTH', 300 * (SCREEN_WIDTH / 1000), 1000);
-    textSize(160);
-    for(let player of world_data.players) {
-      text(floor(player.health), 300 * (SCREEN_WIDTH / 1000), 965);
-    }
-  }
-
-  draw_armor_ui() {
-    fill(150, 150, 250);
-    textSize(80);
-    text('ARMOR', 600 * (SCREEN_WIDTH / 1000), 1000);
-    textSize(160);
-    for(let player of world_data.players) {
-      text(floor(player.armor), 600 * (SCREEN_WIDTH / 1000), 965);
-    }
-  }
-
-  draw_stamina_ui() {
-    fill(150, 250, 150);
-    textSize(80);
-    text('STAMINA', 0 * (SCREEN_WIDTH / 1000), 1000);
-    textSize(160);
-    for(let player of world_data.players) {
-      text(floor(player.stamina), 10 * (SCREEN_WIDTH / 1000), 965);
     }
   }
 }
