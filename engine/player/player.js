@@ -72,7 +72,7 @@ class Player {
 
   draw(world_data) {
     
-    translate(0, 10*cos(0.1*(this.pos.x + this.pos.y)));
+    // translate(0, 10*cos(0.1*(this.pos.x + this.pos.y)));
 
     this.depth_buffer = [];
     this.input(world_data.active_map);
@@ -87,7 +87,7 @@ class Player {
     drawSprite(this.fist_R_sprite);
 
 
-    translate(0, -10*cos(0.1*(this.pos.x + this.pos.y)));
+    // translate(0, -10*cos(0.1*(this.pos.x + this.pos.y)));
   }
 
   draw_minimap(map) {
