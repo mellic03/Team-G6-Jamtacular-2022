@@ -82,18 +82,27 @@ class Map {
           let enemy_name = tokens[1];
           let obj = entity_data.enemies[enemy_name];
 
-          let enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames);
+          let enemy;
+
+          if (enemy_name == "cyberdemon")
+            enemy = new CyberDemon((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
+
+          else
+            enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
 
           for (let script of obj.behaviour_scripts) {
             enemy.behaviour_scripts.push(behaviour_scripts[script]);
           }
 
+          enemy.frames = obj.frames;
           enemy.height = obj.height;
           enemy.voffset = obj.vertical_offset;
 
           this.enemies.push(enemy);
         }
       }
+
+      console.log(this.enemies);
 
       for (let enemy of this.enemies) {
         enemy.preload();
@@ -143,4 +152,9 @@ class Map {
     return false;
   }
   
+}
+
+
+function create_special_enemy(name, x, y) {
+
 }

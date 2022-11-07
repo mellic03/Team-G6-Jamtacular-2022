@@ -114,7 +114,7 @@ const behaviour_scripts = {
 
     let player = world_data.players[0];
 
-    if (vector2_dist(player.pos, enemy.pos) < 15 && keyIsDown(keycodes.SPACE)) {
+    if (vector2_dist(player.pos, enemy.pos) < 15 && player.dealing_damage) {
       let dir = vector2_sub(enemy.pos, player.pos);
       dir.scale(1);
       enemy.vel.add(dir);
