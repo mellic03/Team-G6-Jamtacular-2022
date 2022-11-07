@@ -26,6 +26,7 @@ class EnemyType_1 {
   img_front_angle;  og_img_front_angle;
   img_back_angle;   og_img_back_angle;
   img_attack;       og_img_attack;
+  img_death;        og_img_death;
 
   sheet_back
   sheet_front;
@@ -33,6 +34,7 @@ class EnemyType_1 {
   sheet_front_angle;
   sheet_back_angle;
   sheet_attack;
+  sheet_death;
 
   anim_back;
   anim_front;
@@ -40,6 +42,7 @@ class EnemyType_1 {
   anim_front_angle;
   anim_back_angle;
   anim_attack;
+  anim_death;
 
   /**
    * @param {*} x x position of enemy
@@ -53,7 +56,7 @@ class EnemyType_1 {
 
   // ENEMY SPECIFICATION
   //------------------------------------------------------------------------------------------------
-  health = 10;
+  health = 50;
   damage = 5;
 
   pos = new Vector2(0, 0);
@@ -66,7 +69,6 @@ class EnemyType_1 {
     console.log("preloading enemy")
   
     loadImage(this.directory + "/spritesheets/walkfront-sheet.png", (img) => {
-      this.og_img_front = copy_image(img);
       this.img_front = img;
       this.active_img = this.img_front;
       this.sheet_front = loadSpriteSheet(
@@ -76,7 +78,6 @@ class EnemyType_1 {
     });
 
     loadImage(this.directory + "/spritesheets/walkback-sheet.png", (img) => {
-      this.og_img_back = copy_image(img);
       this.img_back = img;
       this.sheet_back = loadSpriteSheet(
         this.img_back,
@@ -85,7 +86,6 @@ class EnemyType_1 {
     });
 
     loadImage(this.directory + "/spritesheets/walkfrontangle-sheet.png", (img) => {
-      this.og_img_front_angle = copy_image(img);
       this.img_front_angle = img;
       this.sheet_front_angle = loadSpriteSheet(
         this.img_front_angle,
@@ -94,7 +94,6 @@ class EnemyType_1 {
     });
 
     loadImage(this.directory + "/spritesheets/walkbackangle-sheet.png", (img) => {
-      this.og_img_back_angle = copy_image(img);
       this.img_back_angle = img;
       this.sheet_back_angle = loadSpriteSheet(
         this.img_back_angle,
@@ -103,7 +102,6 @@ class EnemyType_1 {
     });
 
     loadImage(this.directory + "/spritesheets/walkside-sheet.png", (img) => {
-      this.og_img_side = copy_image(img);
       this.img_side = img;
       this.sheet_side = loadSpriteSheet(
         this.img_side,
@@ -112,13 +110,21 @@ class EnemyType_1 {
     });
   
     loadImage(this.directory + "/spritesheets/attack-sheet.png", (img) => {
-      this.og_img_attack = copy_image(img);
       this.img_attack = img;
       this.sheet_attack = loadSpriteSheet(
         this.img_attack,
         img.width/this.frames, img.height, this.frames
       );
     });
+
+    loadImage(this.directory + "/spritesheets/death-sheet.png", (img) => {
+      this.img_death = img;
+      this.sheet_death = loadSpriteSheet(
+        this.img_death,
+        img.width/this.frames, img.height, this.frames
+      );
+    });
+
   }
 
   setup() {
@@ -138,9 +144,12 @@ class EnemyType_1 {
     this.anim_side = loadAnimation(this.sheet_side);
     this.sprite.addAnimation('walkleft', this.anim_side);
   
-
     this.anim_attack = loadAnimation(this.sheet_attack);
     this.sprite.addAnimation('attack', this.anim_attack);
+   
+    this.anim_death = loadAnimation(this.sheet_death);
+    this.anim_death.looping = false;
+    this.sprite.addAnimation('death', this.anim_death);
   
 
     this.og_active_img = this.og_img_front;
@@ -155,6 +164,8 @@ class EnemyType_1 {
       this.sprite.animations.walkfront.frameDelay       = frame_delay;
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
+      this.sprite.animations.attack.frameDelay          = frame_delay;
+      this.sprite.animations.death.frameDelay           = frame_delay;
     }
 
 
@@ -166,7 +177,6 @@ class EnemyType_1 {
     for (let i=0; i<this.behaviour_scripts.length; i++) {
       this.behaviour_scripts[i](this, world_data);
     }
-
   }
 
   /** Make a portion of an spritesheet invisible.
@@ -238,21 +248,18 @@ class EnemyType_1 {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkfront");
       this.active_img = this.img_front;
-      this.og_active_img = this.og_img_front;
     }
 
     else if (theta > 112.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkfrontangle");
       this.active_img = this.img_front_angle;
-      this.og_active_img = this.og_img_front_angle;
     }
 
     else if (theta > 67.5) {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkleft");
       this.active_img = this.img_side;
-      this.og_active_img = this.og_img_side;
     }
 
 
@@ -260,14 +267,12 @@ class EnemyType_1 {
       this.sprite.mirrorX(side);
       this.sprite.changeAnimation("walkbackangle");
       this.active_img = this.img_back_angle;
-      this.og_active_img = this.og_img_back_angle;
     }
 
     else if (theta > 0) {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkback");
       this.active_img = this.img_back;
-      this.og_active_img = this.og_img_back;
     }
   }
 

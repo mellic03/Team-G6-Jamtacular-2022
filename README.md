@@ -31,6 +31,7 @@ On Windows, map files can be dragged onto the mapedit executable to import them 
     - walkfrontangle-sheet.png
     - walkside-sheet.png
     - attack-sheet.png
+    - death-sheet.png
 
 3. Create a new entry in /engine/map/entities.json
     ```json

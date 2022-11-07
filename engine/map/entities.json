@@ -82,7 +82,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
       "height": 0.14,
       "vertical_offset": 2300,
       "health": 100,
@@ -93,7 +93,7 @@
     "zombie_reflect": {
       "directory": "engine/enemy/zombie_reflect",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "player_damage_enemy"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,

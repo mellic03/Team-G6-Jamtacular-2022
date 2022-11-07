@@ -3,10 +3,13 @@ class Player {
   health = 100;
   armor = 100;
   stamina = 100;
-  damage;
+  damage = 10;
+
+  mov_speed = 0.6;
+  max_delta_v = 0.15;
+  mov_friction = 0.94;
 
   rot_speed = 0.003;
-  mov_speed = 0.08;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
@@ -362,10 +365,18 @@ class Player {
     if (keyIsDown(13))
       requestPointerLock();
 
-    this.vel.scale(0.95);
-    this.pos.x += this.vel.x * 0.1 * deltaTime;
-    this.pos.y += this.vel.y * 0.1 * deltaTime;
+    this.vel.scale(this.mov_friction);
 
+    let deltav_x = this.vel.x * this.mov_speed * deltaTime;
+    let deltav_y = this.vel.y * this.mov_speed * deltaTime;
+
+    if (point_in_wall(this.pos.x+deltav_x, this.pos.y+deltav_y, map)) {
+      deltav_x = 0;
+      deltav_y = 0;
+    }
+
+    this.pos.x += deltav_x;
+    this.pos.y += deltav_y;
     // if (keyIsDown(keycodes.A)) {
     //   let temp = this.dir.get_rotated(-1.57);
     //   let nextx = this.pos.x + temp.x;
@@ -405,28 +416,34 @@ class Player {
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-      this.delta_vel.x += temp.x * 0.1;
-      this.delta_vel.y += temp.y * 0.1;
+      this.delta_vel.x += temp.x*this.mov_speed;
+      this.delta_vel.y += temp.y*this.mov_speed;
     }
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-      this.delta_vel.x += temp.x * 0.1;
-      this.delta_vel.y += temp.y * 0.1;
+      this.delta_vel.x += temp.x*this.mov_speed;
+      this.delta_vel.y += temp.y*this.mov_speed;
     }
 
     if (keyIsDown(keycodes.W)) {
-      this.delta_vel.x += this.dir.x*0.1;
-      this.delta_vel.y += this.dir.y*0.1;
+      this.delta_vel.x += this.dir.x*this.mov_speed;
+      this.delta_vel.y += this.dir.y*this.mov_speed;
     }
 
     if (keyIsDown(keycodes.S)) {
-      this.delta_vel.x -= this.dir.x*0.1;
-      this.delta_vel.y -= this.dir.y*0.1;
+      this.delta_vel.x -= this.dir.x*this.mov_speed;
+      this.delta_vel.y -= this.dir.y*this.mov_speed;
     }
 
     this.vel.x += this.delta_vel.x;
     this.vel.y += this.delta_vel.y;
+
+    let mag = this.delta_vel.mag();
+    if (mag > this.max_delta_v) {
+      this.vel.normalise();
+      this.vel.scale(this.max_delta_v);
+    }
 
     this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
     this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);

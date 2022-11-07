@@ -1,9 +1,19 @@
 const behaviour_scripts = {
 
-  use_velocity(enemy) {
+  use_velocity(enemy, world_data) {
     enemy.vel.scale(0.95);
-    enemy.pos.x += enemy.vel.x * 0.01 * deltaTime;
-    enemy.pos.y += enemy.vel.y * 0.01 * deltaTime;
+    let dv_x = enemy.vel.x * 0.01 * deltaTime;
+    let dv_y = enemy.vel.y * 0.01 * deltaTime;
+
+    if (point_in_wall(enemy.pos.x+dv_x, enemy.pos.y+dv_y, world_data.active_map)) {
+      dv_x *= -1;
+      dv_y *= -1;
+      enemy.vel.x = 0;
+      enemy.vel.y = 0;
+    }
+
+    enemy.pos.x += dv_x;
+    enemy.pos.y += dv_y;
   },
 
   follow_player(enemy, world_data) {
@@ -15,6 +25,11 @@ const behaviour_scripts = {
   },
 
   follow_player_zigzag(enemy, world_data) {
+
+    if (enemy.health <= 0) {
+      enemy.sprite.changeAnimation("death");
+      return;
+    }
 
     let player = world_data.players[0];
 
@@ -91,16 +106,22 @@ const behaviour_scripts = {
     enemy.time2 = floor((new Date()).getTime() / 1000);
   },
 
-  player_damage_enemy(enemy, world_data) {
+  killable(enemy, world_data) {
     
+    if (enemy.health <= 0) {
+      return;
+    }
+
     let player = world_data.players[0];
 
     if (vector2_dist(player.pos, enemy.pos) < 15 && keyIsDown(keycodes.SPACE)) {
       let dir = vector2_sub(enemy.pos, player.pos);
       dir.scale(1);
       enemy.vel.add(dir);
+   
+      enemy.health -= player.damage;
+      console.log(enemy.health);
     }
-
   }
   
 
