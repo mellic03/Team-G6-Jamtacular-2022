@@ -50,8 +50,6 @@ class Map {
 
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
-          console.log(prop_name);
-          console.log(entity_data);
           let obj = entity_data.static_props[prop_name];
           let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
           prop.height = obj.height;
@@ -61,6 +59,12 @@ class Map {
 
         else if (tokens[0] == "PICKUP:") {
           let pickup_name = tokens[1];
+          let obj = entity_data.pickups[pickup_name];
+          let pickup = new Pickup((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, pickup_name);
+          pickup.height = obj.height;
+          pickup.voffset = obj.vertical_offset;
+          console.log(pickup);
+          this.pickups.push(pickup);
         }
 
         else if (tokens[0] == "ENEMY:") {
@@ -87,6 +91,9 @@ class Map {
       for (let prop of this.props) {
         prop.preload();
       }
+      for (let pickup of this.pickups) {
+        pickup.preload();
+      }
     });
   }
 
@@ -97,6 +104,9 @@ class Map {
     for (let prop of this.props) {
       prop.setup();
     }
+    for (let pickup of this.pickups) {
+      pickup.setup();
+    }
   }
 
   draw(world_data) {
@@ -105,6 +115,9 @@ class Map {
     }
     for (let prop of this.props) {
       prop.draw();
+    }
+    for (let pickup of this.pickups) {
+      pickup.draw();
     }
   }
 

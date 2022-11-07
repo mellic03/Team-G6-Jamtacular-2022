@@ -1,8 +1,9 @@
 {
+
   "static_props": {
 
     "pillar": {
-      "directory": "engine/environment/pillar",
+      "directory": "engine/prop/pillar",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.1,
@@ -10,7 +11,7 @@
     },
 
     "pillar_reflect": {
-      "directory": "engine/environment/pillar_reflect",
+      "directory": "engine/prop/pillar_reflect",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.05,
@@ -18,7 +19,7 @@
     },
 
     "barrelfire": {
-      "directory": "engine/environment/barrelfire",
+      "directory": "engine/prop/barrelfire",
       "frames": 3,
       "collision_radius": 1,
       "height": 0.15,
@@ -26,7 +27,7 @@
     },
 
     "palmtree_r": {
-      "directory": "engine/environment/palmtree_r",
+      "directory": "engine/prop/palmtree_r",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.04,
@@ -34,7 +35,7 @@
     },
 
     "palmtree_l": {
-      "directory": "engine/environment/palmtree_l",
+      "directory": "engine/prop/palmtree_l",
       "frames": 1,
       "collision_radius": 1,
       "height": 0.04,
@@ -42,7 +43,7 @@
     },
 
     "blimp": {
-      "directory": "engine/environment/blimp",
+      "directory": "engine/prop/blimp",
       "frames": 2,
       "collision_radius": 1,
       "height": 0.15,
@@ -50,7 +51,7 @@
     },
 
     "steamgrate": {
-      "directory": "engine/environment/steamgrate",
+      "directory": "engine/prop/steamgrate",
       "frames": 4,
       "collision_radius": 1,
       "height": 0.2,
@@ -61,15 +62,17 @@
 
 
   "directional_props": {
-    
+
   },
-  
+
 
   "pickups": {
     
     "health": {
-      "directory": "engine/whatever/health",
-      "attribute": "health"
+      "directory": "engine/pickup/health",
+      "attribute": "health",
+      "height": 0.2,
+      "vertical_offset": 3500
     }
   },
 
@@ -79,7 +82,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": ["follow_player_zigzag"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag"],
       "height": 0.14,
       "vertical_offset": 2300,
       "health": 100,
@@ -90,13 +93,13 @@
     "zombie_reflect": {
       "directory": "engine/enemy/zombie_reflect",
       "frames": 4,
-      "behaviour_scripts": ["follow_player_zigzag"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "player_damage_enemy"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,
       "damage": 10,
       "speed": 2
     }
-
   }
+
 }

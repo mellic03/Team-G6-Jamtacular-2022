@@ -66,6 +66,7 @@ class UI {
       this.framerate = Math.floor(frameRate());
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
+    text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     noStroke();
     this.draw_health_ui(world_data);

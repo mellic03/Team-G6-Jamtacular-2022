@@ -6,7 +6,7 @@ class Player {
   damage;
 
   rot_speed = 0.003;
-  mov_speed = 0.06;
+  mov_speed = 0.08;
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
@@ -72,7 +72,7 @@ class Player {
     this.world_render();
     // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
     // console.log(world_data.active_map.enemies);
-    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props));
+    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props).concat(world_data.active_map.pickups));
     this.occlude_sprites(this.sprite_buffer);
     // this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
@@ -355,61 +355,84 @@ class Player {
     this.sprite_buffer = [];
   }
 
+  next_pos = new Vector2(0, 0);
+  delta_vel = new Vector2(0, 0);
+
   input(map) {
     if (keyIsDown(13))
       requestPointerLock();
 
-    this.vel.scale(0.9);
-    this.pos.add(this.vel);
+    this.vel.scale(0.95);
+    this.pos.x += this.vel.x * 0.1 * deltaTime;
+    this.pos.y += this.vel.y * 0.1 * deltaTime;
+
+    // if (keyIsDown(keycodes.A)) {
+    //   let temp = this.dir.get_rotated(-1.57);
+    //   let nextx = this.pos.x + temp.x;
+    //   let nexty = this.pos.y + temp.y;
+    //   if (!point_in_wall(nextx, nexty, map)) {
+    //     this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
+    //   }
+    // }
+
+    // if (keyIsDown(keycodes.D)) {
+    //   let temp = this.dir.get_rotated(+1.57);
+    //   let nextx = this.pos.x + temp.x;
+    //   let nexty = this.pos.y + temp.y;
+    //   if (!point_in_wall(nextx, nexty, map)) {
+    //     this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
+    //   }
+    // }
+
+    // if (keyIsDown(keycodes.W)) {
+    //   let nextx = (this.pos.x + this.dir.x);
+    //   let nexty = (this.pos.y + this.dir.y);
+    //   if (!point_in_wall(nextx, nexty, map)) {
+    //     this.pos.add(this.dir.get_scaled(this.mov_speed * deltaTime));
+    //   }
+    // }
+   
+    // if (keyIsDown(keycodes.S)) {
+    //   let nextx = this.pos.x - this.dir.x;
+    //   let nexty = this.pos.y - this.dir.y;
+    //   if (!point_in_wall(nextx, nexty, map)) {
+    //     this.pos.sub(this.dir.get_scaled(this.mov_speed * deltaTime));
+    //   }
+    // }
+
+    this.delta_vel.x = 0;
+    this.delta_vel.y = 0;
 
     if (keyIsDown(keycodes.A)) {
       let temp = this.dir.get_rotated(-1.57);
-      let nextx = this.pos.x + temp.x;
-      let nexty = this.pos.y + temp.y;
-      let next_pos = new Vector2(nextx, nexty);
-      
-      if (!point_in_wall(next_pos, map)) {
-        this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
-      }
+      this.delta_vel.x += temp.x * 0.1;
+      this.delta_vel.y += temp.y * 0.1;
     }
 
     if (keyIsDown(keycodes.D)) {
       let temp = this.dir.get_rotated(+1.57);
-      let nextx = this.pos.x + temp.x;
-      let nexty = this.pos.y + temp.y;
-      let next_pos = new Vector2(nextx, nexty);
-
-      if (!point_in_wall(next_pos, map)) {
-        this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
-      }
+      this.delta_vel.x += temp.x * 0.1;
+      this.delta_vel.y += temp.y * 0.1;
     }
 
     if (keyIsDown(keycodes.W)) {
-      let nextx = this.pos.x + this.dir.x;
-      let nexty = this.pos.y + this.dir.y;
-      let next_pos = new Vector2(nextx, nexty);
-
-      if (!point_in_wall(next_pos, map)) {
-        this.pos.add(this.dir.get_scaled(this.mov_speed * deltaTime));
-      }
+      this.delta_vel.x += this.dir.x*0.1;
+      this.delta_vel.y += this.dir.y*0.1;
     }
-   
+
     if (keyIsDown(keycodes.S)) {
-      let nextx = this.pos.x - this.dir.x;
-      let nexty = this.pos.y - this.dir.y;
-      let next_pos = new Vector2(nextx, nexty);
-
-      if (!point_in_wall(next_pos, map)) {
-        this.pos.sub(this.dir.get_scaled(this.mov_speed * deltaTime));
-      }
+      this.delta_vel.x -= this.dir.x*0.1;
+      this.delta_vel.y -= this.dir.y*0.1;
     }
 
+    this.vel.x += this.delta_vel.x;
+    this.vel.y += this.delta_vel.y;
 
-    this.fist_L_sprite.position.y = (900 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
-    this.fist_R_sprite.position.y = (900 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
 
-    this.fist_L_sprite.position.x = (250 + 10*(cos(0.2*this.pos.x) + cos(0.2*(this.pos.y)))) * (SCREEN_WIDTH/1000);
-    this.fist_R_sprite.position.x = (750 + 10*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
     
     if (keyIsDown(keycodes.SPACE)) {
     this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
@@ -432,10 +455,10 @@ class Player {
  * @param pos position of player
  * @param grid tilemap
  */
-function point_in_wall(pos, grid) {
+function point_in_wall(x, y, grid) {
 
-  let xprime = Math.floor(pos.x/grid.width);
-  let yprime = Math.floor(pos.y/grid.width);
+  let xprime = Math.floor(x/grid.width);
+  let yprime = Math.floor(y/grid.width);
 
   if (grid.tilemap[grid.width*yprime + xprime] > 0) {
     return true

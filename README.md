@@ -88,9 +88,11 @@ const behaviour_scripts = {
 # Planning For The Future
 
 ## TODO
-- [ ] Cocaine
+- [ ] Pickups -cocaine
 - [x] Chad looks left or right with player rotation
 - [ ] More props, enemy sprites
 - [x] Enemy behaviour scripting
-- [ ] Boss
+- [ ] Boss, bosses?
 - [ ] Weapons -shiv, needle?
+- [ ] Gameplay loop -combat, dying, enemy death
+- [ ] Map transitions

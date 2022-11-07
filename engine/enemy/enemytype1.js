@@ -230,6 +230,10 @@ class EnemyType_1 {
     let side = vector2_dot(this.dir.get_normalised(), dir.get_rotated(-1.57)) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
+    if (vector2_dist(player_pos, this.pos) < 20) {
+      return;
+    }
+
     if (theta > 155.7) {
       this.sprite.mirrorX(1);
       this.sprite.changeAnimation("walkfront");
