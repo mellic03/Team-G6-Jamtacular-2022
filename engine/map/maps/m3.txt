@@ -211,9 +211,9 @@ NULL
 NULL
 WALL: 100,150,155
 PROP: palmtree_l
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 PROP: palmtree_l
 WALL: 100,150,155
 NULL
@@ -236,9 +236,9 @@ NULL
 NULL
 WALL: 100,150,155
 NULL
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 NULL
 WALL: 100,150,155
 NULL
@@ -261,9 +261,9 @@ NULL
 NULL
 WALL: 100,150,155
 PROP: palmtree_l
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 PROP: palmtree_l
 WALL: 100,150,155
 NULL
@@ -286,9 +286,9 @@ NULL
 NULL
 WALL: 100,150,155
 NULL
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 NULL
 WALL: 100,150,155
 NULL
@@ -311,34 +311,34 @@ NULL
 NULL
 WALL: 100,150,155
 PROP: palmtree_l
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+PROP: palmtree_l
+WALL: 100,150,155
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+WALL: 100,150,200
+WALL: 100,150,200
+NULL
+NULL
+NULL
+WALL: 100,150,200
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+WALL: 100,150,155
 NULL
 ENEMY: cyberdemon
-NULL
-PROP: palmtree_l
-WALL: 100,150,155
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-WALL: 100,150,200
-WALL: 100,150,200
-NULL
-NULL
-NULL
-WALL: 100,150,200
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-WALL: 100,150,155
-NULL
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 NULL
 WALL: 100,150,155
 NULL
@@ -361,9 +361,9 @@ NULL
 NULL
 WALL: 100,150,155
 PROP: palmtree_l
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 PROP: palmtree_l
 WALL: 100,150,155
 NULL
@@ -386,9 +386,9 @@ NULL
 NULL
 WALL: 100,150,155
 NULL
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 NULL
 WALL: 100,150,155
 NULL
@@ -411,9 +411,9 @@ NULL
 NULL
 WALL: 100,150,155
 PROP: palmtree_l
-NULL
-NULL
-NULL
+ENEMY: cyberdemon
+ENEMY: cyberdemon
+ENEMY: cyberdemon
 PROP: palmtree_l
 WALL: 100,150,155
 NULL

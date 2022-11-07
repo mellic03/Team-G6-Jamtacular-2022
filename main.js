@@ -23,7 +23,7 @@ function preload() {
 
 function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
-  frameRate(60); pixelDensity(1); noSmooth();
+  frameRate(144); pixelDensity(1); noSmooth();
 
   player_handler.setup();
   map_handler.setup(player_handler);
@@ -39,11 +39,11 @@ let world_data = {
 };
 
 function draw() {
-	//background(50, 100, 150); fill(100, 100, 150); rectMode(CORNERS);
   image(sky_box, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   // image(vapor_sky, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
   // image(gif, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
-  // rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
+  fill(100, 50, 50); rectMode(CORNERS);
+  rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
 
   map_handler.draw(world_data);
   player_handler.draw(world_data);

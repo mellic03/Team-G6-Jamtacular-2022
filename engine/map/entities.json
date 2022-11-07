@@ -58,6 +58,24 @@
       "vertical_offset": 3500
     },
 
+    "bush1": {
+      "directory": "engine/prop/bush1",
+      "frames": 1,
+      "random_placement": true,
+      "collision_radius": 0,
+      "height": 0.2,
+      "vertical_offset": 3500
+    },
+
+    "deadboi": {
+      "directory": "engine/prop/deadboi",
+      "frames": 1,
+      "random_placement": true,
+      "collision_radius": 0,
+      "height": 0.1,
+      "vertical_offset": 0
+    },
+
     "exit_portal": {
       "directory": "engine/prop/exit_portal",
       "frames": 4,
@@ -85,8 +103,8 @@
 
     "ritalin": {
       "directory": "engine/pickup/ritalin",
-      "attribute": "ritalin",
-      "amount": 10,
+      "attribute": "health",
+      "amount": -50,
       "height": 0.2,
       "vertical_offset": 3500
     }
@@ -127,8 +145,30 @@
       "health": 100,
       "damage": 10,
       "speed": 2
-    }
+    },
   
+    "notzi": {
+      "directory": "engine/enemy/notzi",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "height": 0.14,
+      "vertical_offset": 2300,
+      "health": 100,
+      "damage": 10,
+      "speed": 2
+    },
+
+    "revenant": {
+      "directory": "engine/enemy/revenant",
+      "frames": 6,
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "height": 0.14,
+      "vertical_offset": 2300,
+      "health": 100,
+      "damage": 10,
+      "speed": 2
+    }
+
   }
 
 }

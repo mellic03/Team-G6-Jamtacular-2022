@@ -13,7 +13,6 @@ class Prop {
   active_img; og_active_img;
   spritesheet; og_spritesheet;
   
-
   pos = new Vector2(0, 0);
   
   constructor(x, y, directory, frames, name) {
@@ -34,6 +33,7 @@ class Prop {
 
       this.spritesheet = loadSpriteSheet(img, img.width/this.frames, img.height, this.frames);
     });
+
   }
 
   setup() {
@@ -43,6 +43,7 @@ class Prop {
   }
 
   draw() {
+
   }
 
   set_occlusion(x1, x2) {

@@ -62,7 +62,13 @@ class Map {
         else if (tokens[0] == "PROP:") {
           let prop_name = tokens[1];
           let obj = entity_data.static_props[prop_name];
-          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
+          let prop;
+          if (obj.random_placement != undefined) {
+            prop = new Prop((i%25)*25 + random(25), floor(i/25)*25 + random(25), obj.directory, obj.frames, prop_name);
+          }
+          else {
+            prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
+          }
           prop.height = obj.height;
           prop.voffset = obj.vertical_offset;
           prop.collision_radius = obj.collision_radius;
@@ -115,6 +121,7 @@ class Map {
       for (let pickup of this.pickups) {
         pickup.preload();
       }
+
     });
   }
 

@@ -88,6 +88,7 @@ class Player {
     this.depth_buffer = [];
     this.input(world_data.map_handler.active_map);
     this.collide_with_props(world_data.map_handler.active_map);
+    this.collide_with_pickups(world_data.map_handler.active_map);
     this.march(world_data.map_handler.active_map);
     this.world_render();
     // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
@@ -292,6 +293,7 @@ class Player {
         let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
 
         let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
+        dist = (dist < 2) ? 2 : dist;
 
         sprite_array[i].sprite.position.x = (SCREEN_WIDTH/2) * (1 + transformX/dist);
         
@@ -326,16 +328,25 @@ class Player {
     rectMode(CENTER);
     for (let j=0; j<this.sprite_buffer.length; j++) {
 
-      if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH) {
+
+      let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
+
+      let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].real_dist;
+      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[0].real_dist;
+
+      if (c1 || c2) {
+        drawSprite(this.sprite_buffer[j].sprite);
         continue;
       }
 
-      // let sprite_dist = vector2_dist(this.pos, this.sprite_buffer[j].pos);
-      let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
+      else if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH) {
+        continue;
+      }
+
       let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].real_dist;
 
-      let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
-      let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH-1);
+      // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
+      // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH-1);
 
 
       // Scan from xmin to xmax comparing depth buffer values to sprite distance
@@ -366,6 +377,7 @@ class Player {
       // strokeWeight(2);
       // line(xmin, 300, xmin, 700);
       // line(xmax, 300, xmax, 700);
+
 
       if (wall_dist > sprite_dist) {
         drawSprite(this.sprite_buffer[j].sprite);
@@ -478,6 +490,9 @@ class Player {
       this.plane.rotate(+this.rot_speed * deltaTime);
       this.dir.rotate(+this.rot_speed * deltaTime);
     }
+
+
+
   }
 
   prop_dir = new Vector2(0, 0);
@@ -498,6 +513,21 @@ class Player {
     }
 
   }
+
+  collide_with_pickups(map) {
+
+    for (let pickup of map.pickups) {
+      let dist = vector2_dist(this.pos, pickup.pos);
+      if (dist < 5) {
+
+        this[pickup.attribute] += pickup.amount;
+        pickup.pos = -100;
+
+      }
+    }
+
+  }
+
 }
 
 
@@ -536,5 +566,13 @@ function keyReleased(event) {
   if (event.code == "Space") {
     // world_data.players[0].can_punch = true;
   }
+
+}
+
+
+function mouseMoved(event) {
+
+  world_data.players[0].plane.rotate(0.0003 * event.movementX * deltaTime);
+  world_data.players[0].dir.rotate(0.0003 * event.movementX * deltaTime);
 
 }

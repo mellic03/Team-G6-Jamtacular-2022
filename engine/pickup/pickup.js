@@ -5,6 +5,9 @@ class Pickup {
   frames;
   name;
 
+  attribute;
+  amount;
+  
   sprite;
 
   height = 1;
