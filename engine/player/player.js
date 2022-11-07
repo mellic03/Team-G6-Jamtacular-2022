@@ -85,6 +85,8 @@ class Player {
       return;
     }
 
+    translate(0, 5*cos(0.1*this.headbob_count));
+
     this.depth_buffer = [];
     this.input(world_data.map_handler.active_map);
     this.collide_with_props(world_data.map_handler.active_map);
@@ -99,6 +101,7 @@ class Player {
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
 
+    translate(0, -5*cos(0.1*this.headbob_count));
   }
 
   draw_minimap(map) {
@@ -293,7 +296,7 @@ class Player {
         let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
 
         let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
-        dist = (dist < 2) ? 2 : dist;
+        dist = (dist < 3) ? 3 : dist;
 
         sprite_array[i].sprite.position.x = (SCREEN_WIDTH/2) * (1 + transformX/dist);
         
@@ -439,7 +442,7 @@ class Player {
       headbob = true;
     }
 
-    if (headbob) this.headbob_count += 1;
+    if (headbob) this.headbob_count += 0.1 * deltaTime;
 
     this.vel.x += this.delta_vel.x;
     this.vel.y += this.delta_vel.y;
