@@ -85,8 +85,6 @@ class Player {
       return;
     }
 
-    translate(0, 5*cos(0.2*this.headbob_count));
-
     this.depth_buffer = [];
     this.input(world_data.map_handler.active_map);
     this.collide_with_props(world_data.map_handler.active_map);
@@ -100,7 +98,6 @@ class Player {
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
 
-    translate(0, -5*cos(0.2*this.headbob_count));
   }
 
   draw_minimap(map) {

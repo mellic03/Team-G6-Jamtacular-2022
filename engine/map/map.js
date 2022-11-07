@@ -73,6 +73,8 @@ class Map {
           let pickup_name = tokens[1];
           let obj = entity_data.pickups[pickup_name];
           let pickup = new Pickup((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, pickup_name);
+          pickup.attribute = obj.attribute;
+          pickup.amount = obj.amount;
           pickup.height = obj.height;
           pickup.voffset = obj.vertical_offset;
           this.pickups.push(pickup);

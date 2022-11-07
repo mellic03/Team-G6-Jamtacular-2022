@@ -78,9 +78,19 @@
     "health": {
       "directory": "engine/pickup/health",
       "attribute": "health",
+      "amount": 10,
+      "height": 0.2,
+      "vertical_offset": 3500
+    },
+
+    "ritalin": {
+      "directory": "engine/pickup/ritalin",
+      "attribute": "ritalin",
+      "amount": 10,
       "height": 0.2,
       "vertical_offset": 3500
     }
+
   },
 
 
