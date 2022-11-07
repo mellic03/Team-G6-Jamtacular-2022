@@ -5,7 +5,7 @@
     "pillar": {
       "directory": "engine/prop/pillar",
       "frames": 1,
-      "collision_radius": 1,
+      "collision_radius": 5,
       "height": 0.1,
       "vertical_offset": 900
     },
@@ -13,7 +13,7 @@
     "pillar_reflect": {
       "directory": "engine/prop/pillar_reflect",
       "frames": 1,
-      "collision_radius": 1,
+      "collision_radius": 5,
       "height": 0.05,
       "vertical_offset": 6000
     },
@@ -56,8 +56,15 @@
       "collision_radius": 1,
       "height": 0.2,
       "vertical_offset": 3500
-    }
+    },
 
+    "exit_portal": {
+      "directory": "engine/prop/exit_portal",
+      "frames": 4,
+      "collision_radius": 0,
+      "height": 0.08,
+      "vertical_offset": -300
+    }
   },
 
 

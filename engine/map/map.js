@@ -1,14 +1,14 @@
-
 class Map {
   
-  name;
+  name; next_name;
   filepath;
 
   props = [];
   pickups = [];
   enemies = [];
 
-  player;
+  spawn_x; spawn_y;
+  exit_x;  exit_y;
 
   width = 25;
   tilemap = [];   // Raycasting and collisions against walls, 1/4 size of colourmap
@@ -43,9 +43,20 @@ class Map {
         }
 
         else if (tokens[0] == "SPAWN") {
-          this.player = new Player((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
-          this.player.preload();
-          player_handler.add(this.player);
+          this.spawn_x = (i%25)*25 + 12.5;
+          this.spawn_y = floor(i/25)*25 + 12.5
+        }
+
+        else if (tokens[0] == "EXIT") {
+          this.exit_x = (i%25)*25 + 12.5;
+          this.exit_y = floor(i/25)*25 + 12.5
+          let prop_name = "exit_portal";
+          let obj = entity_data.static_props[prop_name];
+          let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
+          prop.height = obj.height;
+          prop.voffset = obj.vertical_offset;
+          prop.collision_radius = obj.collision_radius;
+          this.props.push(prop);
         }
 
         else if (tokens[0] == "PROP:") {
@@ -54,6 +65,7 @@ class Map {
           let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
           prop.height = obj.height;
           prop.voffset = obj.vertical_offset;
+          prop.collision_radius = obj.collision_radius;
           this.props.push(prop);
         }
 
@@ -63,7 +75,6 @@ class Map {
           let pickup = new Pickup((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, pickup_name);
           pickup.height = obj.height;
           pickup.voffset = obj.vertical_offset;
-          console.log(pickup);
           this.pickups.push(pickup);
         }
 
@@ -79,7 +90,6 @@ class Map {
 
           enemy.height = obj.height;
           enemy.voffset = obj.vertical_offset;
-
 
           this.enemies.push(enemy);
         }
@@ -121,19 +131,16 @@ class Map {
     }
   }
 
-
   point_in_grid(pos) {
 
     let xprime = Math.floor(pos.x/this.width);
     let yprime = Math.floor(pos.y/this.width);
   
-    if (this.tilemap[this.width*yprime + xprime] ==1) {
+    if (this.tilemap[this.width*yprime + xprime] == 1) {
       return true
     }
   
     return false;
   }
   
-
-
 }

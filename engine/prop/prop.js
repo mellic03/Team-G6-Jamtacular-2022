@@ -8,9 +8,9 @@ class Prop {
   sprite;
 
   height = 1;
+  collision_radius = 10;
 
   active_img; og_active_img;
-
   spritesheet; og_spritesheet;
   
 

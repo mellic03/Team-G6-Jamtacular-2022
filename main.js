@@ -2,6 +2,7 @@
 
 "use strict";
 
+
 let player_handler = player_init();
 let map_handler = map_init();
 let ui_handler = ui_init();
@@ -24,8 +25,8 @@ function setup() {
 	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(144); pixelDensity(1); noSmooth();
 
-  map_handler.setup();
   player_handler.setup();
+  map_handler.setup(player_handler);
   ui_handler.setup();
   audio_handler.setup();
 }
@@ -34,6 +35,7 @@ let world_data = {
   players: player_handler._players,
   active_map: map_handler.active_map,
   maps: map_handler._maps,
+  map_handler: map_handler
 };
 
 function draw() {

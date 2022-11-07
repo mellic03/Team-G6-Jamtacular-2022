@@ -72,20 +72,24 @@ class Player {
 
   draw(world_data) {
     
+    if (world_data.active_map == undefined) {
+      return;
+    }
+
     // translate(0, 10*cos(0.1*(this.pos.x + this.pos.y)));
 
     this.depth_buffer = [];
-    this.input(world_data.active_map);
-    this.march(world_data.active_map);
+    this.input(world_data.map_handler.active_map);
+    this.collide_with_props(world_data.map_handler.active_map);
+    this.march(world_data.map_handler.active_map);
     this.world_render();
     // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
     // console.log(world_data.active_map.enemies);
-    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props).concat(world_data.active_map.pickups));
+    this.sprite_render(world_data.map_handler.active_map.enemies.concat(world_data.map_handler.active_map.props).concat(world_data.map_handler.active_map.pickups));
     this.occlude_sprites(this.sprite_buffer);
     // this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
-
 
     // translate(0, -10*cos(0.1*(this.pos.x + this.pos.y)));
   }
@@ -181,7 +185,7 @@ class Player {
 
       let steps = 0;
 
-      while (hit == 0 && steps < 1000000) {
+      while (hit == 0 && steps < 1000) {
         steps++;
         if (sideDistX < sideDistY) {
           sideDistX += dx;
@@ -385,39 +389,6 @@ class Player {
 
     this.pos.x += deltav_x;
     this.pos.y += deltav_y;
-    // if (keyIsDown(keycodes.A)) {
-    //   let temp = this.dir.get_rotated(-1.57);
-    //   let nextx = this.pos.x + temp.x;
-    //   let nexty = this.pos.y + temp.y;
-    //   if (!point_in_wall(nextx, nexty, map)) {
-    //     this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
-    //   }
-    // }
-
-    // if (keyIsDown(keycodes.D)) {
-    //   let temp = this.dir.get_rotated(+1.57);
-    //   let nextx = this.pos.x + temp.x;
-    //   let nexty = this.pos.y + temp.y;
-    //   if (!point_in_wall(nextx, nexty, map)) {
-    //     this.pos.add(temp.get_scaled(this.mov_speed * deltaTime));
-    //   }
-    // }
-
-    // if (keyIsDown(keycodes.W)) {
-    //   let nextx = (this.pos.x + this.dir.x);
-    //   let nexty = (this.pos.y + this.dir.y);
-    //   if (!point_in_wall(nextx, nexty, map)) {
-    //     this.pos.add(this.dir.get_scaled(this.mov_speed * deltaTime));
-    //   }
-    // }
-   
-    // if (keyIsDown(keycodes.S)) {
-    //   let nextx = this.pos.x - this.dir.x;
-    //   let nexty = this.pos.y - this.dir.y;
-    //   if (!point_in_wall(nextx, nexty, map)) {
-    //     this.pos.sub(this.dir.get_scaled(this.mov_speed * deltaTime));
-    //   }
-    // }
 
     this.delta_vel.x = 0;
     this.delta_vel.y = 0;
@@ -473,6 +444,23 @@ class Player {
       this.plane.rotate(+this.rot_speed * deltaTime);
       this.dir.rotate(+this.rot_speed * deltaTime);
     }
+  }
+
+  prop_dir = new Vector2(0, 0);
+
+  collide_with_props(map) {
+
+    for (let prop of map.props) {
+      let dist = vector2_dist(this.pos, prop.pos);
+      if (dist < prop.collision_radius) {
+        this.prop_dir.x = this.pos.x - prop.pos.x;
+        this.prop_dir.y = this.pos.y - prop.pos.y;
+        this.prop_dir.normalise();
+        this.prop_dir.scale(0.02);
+        this.vel.add(this.prop_dir);
+      }
+    }
+
   }
 }
 
