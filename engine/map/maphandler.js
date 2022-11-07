@@ -1,16 +1,18 @@
 class MapHandler {
   
+  map_number = 1;
   active_map;
 
   constructor() {
     this._maps = [];
   }
 
-  set_active_map(map_name) {
+  set_active_map(map_name, player) {
     for (let map of this._maps) {
       if (map.name == map_name) {
         this.active_map = map;
-        break;
+        player.pos.x = map.spawn_x;
+        player.pos.y = map.spawn_y;
       }
     }
   }
@@ -30,26 +32,30 @@ class MapHandler {
     }
   }
 
-  remove() {
-
-  }
-
   
   preload() {
     for (let map of this._maps) {
       map.preload();
     }
+
   }
 
-  setup() {
+  setup(player_handler) {
     for (let map of this._maps) {
       map.setup();
     }
+    player_handler._players[0].pos.x = this.active_map.spawn_x;
+    player_handler._players[0].pos.y = this.active_map.spawn_y;
   }
 
   draw(world_data) {
-    for (let map of this._maps) {
-      map.draw(world_data);
+    let player = world_data.players[0];
+    this.active_map.draw(world_data);
+    // if player.pos is on top of exit, load next map
+    if (floor(player.pos.x/25) == floor(this.active_map.exit_x/25) && floor(player.pos.y/25) == floor(this.active_map.exit_y/25)) {
+      this.map_number += 1;
+      this.set_active_map("m" + this.map_number, player);
+      console.log("REEE");
     }
   }
 
