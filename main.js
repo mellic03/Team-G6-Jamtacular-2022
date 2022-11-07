@@ -17,7 +17,7 @@ function preload() {
   player_handler.preload();
   ui_handler.preload();
   audio_handler.preload();
-  sky_box = loadImage('engine/environment/skybox/skybox.jpg');
+  sky_box = loadImage('engine/prop/skybox/skybox.jpg');
 }
 
 function setup() {

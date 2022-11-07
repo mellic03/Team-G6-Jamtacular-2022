@@ -186,12 +186,12 @@ NULL
 NULL
 NULL
 NULL
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
+NULL
+NULL
+NULL
+PICKUP: health
+NULL
+NULL
 NULL
 NULL
 NULL
@@ -213,17 +213,8 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: zombie_reflect
 NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-WALL: 050,050,050
-WALL: 050,050,050
+PICKUP: health
 NULL
 NULL
 NULL
@@ -232,16 +223,25 @@ NULL
 NULL
 NULL
 WALL: 050,050,050
+WALL: 050,050,050
 NULL
 NULL
 NULL
 NULL
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
-PROP: pillar_reflect
+NULL
+NULL
+NULL
+WALL: 050,050,050
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+PICKUP: health
+NULL
+NULL
 NULL
 NULL
 NULL

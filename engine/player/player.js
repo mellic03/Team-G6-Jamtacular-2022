@@ -72,7 +72,7 @@ class Player {
     this.world_render();
     // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
     // console.log(world_data.active_map.enemies);
-    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props));
+    this.sprite_render(world_data.active_map.enemies.concat(world_data.active_map.props).concat(world_data.active_map.pickups));
     this.occlude_sprites(this.sprite_buffer);
     // this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
