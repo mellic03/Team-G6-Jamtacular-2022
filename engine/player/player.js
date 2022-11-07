@@ -5,6 +5,11 @@ class Player {
   stamina = 100;
   damage = 10;
 
+  can_punch = true;
+  is_punching = false;
+  dealing_damage = false;
+  frames_since_punch = 0;
+
   mov_speed = 0.6;
   max_delta_v = 0.15;
   mov_friction = 0.94;
@@ -72,6 +77,8 @@ class Player {
 
   draw(world_data) {
     
+    this.health = clamp(this.health, 0, 100)
+
     if (world_data.active_map == undefined) {
       return;
     }
@@ -424,17 +431,37 @@ class Player {
       this.vel.scale(this.max_delta_v);
     }
 
-    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
-    this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
 
-    this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
-    this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
-   
-
-    if (keyIsDown(keycodes.SPACE)) {
-    this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    if (keyIsDown(keycodes.SPACE) && this.can_punch) {
+      this.can_punch = false;
+      this.dealing_damage = true;
+      this.is_punching = true;
+      this.frames_since_punch = 0;
     }
 
+    if (this.is_punching) {
+      this.frames_since_punch += 1;
+    }
+
+    if (this.frames_since_punch > 1) {
+      this.dealing_damage = false;
+      if (!keyIsDown(keycodes.SPACE) && this.frames_since_punch > 10) {
+        this.is_punching = false;
+        this.can_punch = true;
+      }
+    }
+
+    if (this.is_punching) {
+      this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    }
+    if (!this.is_punching) {
+      this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+      this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    }
+
+    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+    this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    
     if (keyIsDown(LEFT_ARROW)) {
       this.plane.rotate(-this.rot_speed * deltaTime);
       this.dir.rotate(-this.rot_speed * deltaTime);
@@ -456,7 +483,9 @@ class Player {
         this.prop_dir.x = this.pos.x - prop.pos.x;
         this.prop_dir.y = this.pos.y - prop.pos.y;
         this.prop_dir.normalise();
-        this.prop_dir.scale(0.02);
+        this.vel.x = 0;
+        this.vel.y = 0;
+        this.prop_dir.scale(0.06);
         this.vel.add(this.prop_dir);
       }
     }
@@ -495,4 +524,10 @@ function point_in_cell(x, y, grid) {
   }
 }
 
+function keyReleased(event) {
 
+  if (event.code == "Space") {
+    // world_data.players[0].can_punch = true;
+  }
+
+}

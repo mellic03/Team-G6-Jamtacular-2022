@@ -94,8 +94,7 @@ class UI {
 
   draw_face_state(world_data) {
     for (let player of world_data.players) {
-      player.health = 100;
-      this.state = floor(player.health/20);
+      this.state = ceil(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
         image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2, 
                                                         SCREEN_HEIGHT - this.ui_banner.height);  
