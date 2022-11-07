@@ -68,7 +68,12 @@ class Player {
     this.fist_L_sprite.height = 200;
   }
 
+  count = 0;
+
   draw(world_data) {
+    
+    translate(0, 10*cos(0.1*(this.pos.x + this.pos.y)));
+
     this.depth_buffer = [];
     this.input(world_data.active_map);
     this.march(world_data.active_map);
@@ -80,6 +85,9 @@ class Player {
     // this.draw_minimap(world_data.active_map);
     drawSprite(this.fist_L_sprite);
     drawSprite(this.fist_R_sprite);
+
+
+    translate(0, -10*cos(0.1*(this.pos.x + this.pos.y)));
   }
 
   draw_minimap(map) {
@@ -450,7 +458,8 @@ class Player {
 
     this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
     this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
-    
+   
+
     if (keyIsDown(keycodes.SPACE)) {
     this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
     }

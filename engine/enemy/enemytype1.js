@@ -275,5 +275,6 @@ class EnemyType_1 {
       this.active_img = this.img_back;
     }
   }
-
 }
+
+

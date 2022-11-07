@@ -2,3 +2,7 @@
 
 jsconfig.json
 
+
+# raw enemy sprites
+engine/enemy/cyberdemon/raw sprites
+engine/enemy/zombie/raw sprites
