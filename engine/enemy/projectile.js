@@ -5,7 +5,7 @@ class Projectile {
 
   frame_count = 0;
 
-  height = 0.3;
+  height = 0.4;
   voffset = 0;
 
   sprite;
