@@ -201,8 +201,6 @@ class CyberDemon {
       this.to_player.scale(0.1);
       this.pos.add(this.to_player);
     }
-
-    circle(this.pos.x, this.pos.y, 20);
   }
 
 
