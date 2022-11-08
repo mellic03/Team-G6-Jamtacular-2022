@@ -168,7 +168,7 @@ class EnemyType_1 {
       this.sprite.animations.death.frameDelay           = frame_delay;
     }
 
-    this.collide_against_enemies(world_data.active_map.enemies);
+    this.collide_against_enemies(world_data.map_handler.active_map.enemies);
     // this.move_to_player(world_data);
     this.correct_angle(world_data);
 

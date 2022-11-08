@@ -5,7 +5,7 @@ const behaviour_scripts = {
     let dv_x = enemy.vel.x * 0.01 * deltaTime;
     let dv_y = enemy.vel.y * 0.01 * deltaTime;
 
-    if (point_in_wall(enemy.pos.x+dv_x, enemy.pos.y+dv_y, world_data.active_map)) {
+    if (point_in_wall(enemy.pos.x+dv_x, enemy.pos.y+dv_y, world_data.map_handler.active_map)) {
       dv_x *= -1;
       dv_y *= -1;
       enemy.vel.x = 0;
@@ -74,7 +74,7 @@ const behaviour_scripts = {
     }
 
     if (dist > 50) {
-      if (world_data.active_map.point_in_grid(enemy.pos.x + enemy.dir.get_scaled(4).x, enemy.pos.y + enemy.dir.get_scaled(4).y) == false)
+      if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x + enemy.dir.get_scaled(4).x, enemy.pos.y + enemy.dir.get_scaled(4).y) == false)
         enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
       
       else {

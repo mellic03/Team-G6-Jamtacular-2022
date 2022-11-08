@@ -3,6 +3,8 @@ class Map {
   name; next_name;
   filepath;
 
+  background;
+
   props = [];
   pickups = [];
   enemies = [];
@@ -22,6 +24,8 @@ class Map {
   /** Load map data from file, construct JavaScript objects with entity data
    */
   preload() {
+
+    this.background = loadImage("engine/map/maps/" + this.name + ".png");
 
     loadJSON("engine/map/entities.json", (entity_data) => {
 

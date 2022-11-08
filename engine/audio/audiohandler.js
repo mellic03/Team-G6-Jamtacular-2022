@@ -33,7 +33,7 @@ class AudioHandler {
     //   }
     // }
 
-    if (world_data.active_map.name == "map1")
+    if (world_data.map_handler.active_map.name == "map1")
     {
       if (this.audio_lock == false) {
         this.tracks.map1_track1.loop();

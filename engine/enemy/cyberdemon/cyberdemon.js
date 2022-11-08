@@ -197,7 +197,7 @@ class CyberDemon {
     this.to_player.x = this.dir.x;
     this.to_player.y = this.dir.y;
 
-    if (!world_data.active_map.point_in_grid(this.pos.x+this.to_player.x*20, this.pos.y+this.to_player.y*20)) {
+    if (!world_data.map_handler.active_map.point_in_grid(this.pos.x+this.to_player.x*20, this.pos.y+this.to_player.y*20)) {
       this.to_player.scale(0.1);
       this.pos.add(this.to_player);
     }

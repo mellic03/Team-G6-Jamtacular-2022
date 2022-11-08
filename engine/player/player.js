@@ -86,7 +86,7 @@ class Player {
     
     this.health = clamp(this.health, 0, 100)
 
-    if (world_data.active_map == undefined) {
+    if (world_data.map_handler.active_map == undefined) {
       return;
     }
 
