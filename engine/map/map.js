@@ -73,6 +73,20 @@ class Map {
             else {
               prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
             }
+
+            // If directional prop
+            if (tokens.length == 3) {
+              let dir;
+              switch (tokens[2]) {
+                case ("north"): dir = new Vector2(+1, +0); break;
+                case ("east"):  dir = new Vector2(+0, +1); break;
+                case ("south"): dir = new Vector2(-1, +0); break;
+                case ("west"):  dir = new Vector2(+0, -1); break;
+              }
+              prop = new DirectionalProp((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, dir.x, dir.y, obj.directory, obj.frames, prop_name);
+
+            }
+
             prop.height = obj.height;
             prop.voffset = obj.vertical_offset;
             prop.collision_radius = obj.collision_radius;
@@ -146,11 +160,13 @@ class Map {
     for (let enemy of this.enemies) {
       enemy.draw(world_data);
     }
-    for (let prop of this.props) {
-      prop.draw();
-    }
+
     for (let pickup of this.pickups) {
       pickup.draw();
+    }
+  
+    for (let prop of this.props) {
+      prop.draw(world_data);
     }
   }
 
