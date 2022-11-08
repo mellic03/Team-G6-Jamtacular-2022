@@ -7,6 +7,7 @@ class UI {
   faces_right = [];
   state;
   helm;
+  ui_display;
   currframe;
 
   preload() {
@@ -49,6 +50,7 @@ class UI {
     //this.chad_anim.resize(100, 100);
     //this.chad.resize(100, 100);
     this.helm = true;
+    this.ui_display = false;
   }
 
   draw(world_data) {
@@ -73,52 +75,38 @@ class UI {
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
-    image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
-    image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
     if(this.helm == true){
       image(this.helmet,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
       this.currframe = this.helmet.getCurrentFrame();
       if(this.currframe == 19){
         this.helm = false;
+        this.ui_display = true;
       }
+
+    }
+    if(this.ui_display == true) {
+      //image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
+      image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      this.draw_stat_ui(world_data);
+      this.draw_face_state(world_data);
     }
     //this.helmet.pause();
     //this.helmet.getCurrentFrame();
-    noStroke();
-    this.draw_stat_ui(world_data);
-    this.draw_face_state(world_data);
+    //noStroke();
+   
     //this.getFrame();
   }
 
-  getFrame() {
-
-    //text(this.currframe,500,500);
-    if(helm == true){
-
-    }
-    if(this.currframe == 19) {
-    }
-
-
-  }
-
-
   draw_stat_ui() {
     fill(250, 150, 150);
-    textSize(80);
-    text('HEALTH', 300 * (SCREEN_WIDTH / 1000), 1000);
-    fill(150, 150, 250);
-    text('ARMOR', 600 * (SCREEN_WIDTH / 1000), 1000);
-    fill(150, 250, 150);
-    text('STAMINA', 0 * (SCREEN_WIDTH / 1000), 1000);
-    textSize(160);
+    textSize(130);
     for(let player of world_data.players) {
       fill(250, 150, 150);
-      text(floor(player.health), 300 * (SCREEN_WIDTH / 1000), 965);
+      text(floor(player.health), 175 * (SCREEN_WIDTH / 1000), 855);
       fill(150, 150, 250);
-      text(floor(player.armor), 600 * (SCREEN_WIDTH / 1000), 965);
+      text(floor(player.armor), 175 * (SCREEN_WIDTH / 1000), 925);
       fill(150, 250, 150);
-      text(floor(player.stamina), 10 * (SCREEN_WIDTH / 1000), 965);
+      text(floor(player.stamina), 750 * (SCREEN_WIDTH / 1000), 915);
     }
   }
 
