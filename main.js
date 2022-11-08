@@ -12,13 +12,15 @@ let sky_box;
 // let gif;
 let gif2;
 // let light;
+let beach;
 
 function preload() {
   map_handler.preload();
   player_handler.preload();
   ui_handler.preload();
   audio_handler.preload();
-  sky_box = loadImage('engine/prop/skybox/skybox.jpg');
+  sky_box = loadImage('engine/prop/skybox/lab.png');
+  beach = loadImage('engine/prop/skybox/beach.png');
 }
 
 function setup() {
@@ -39,11 +41,11 @@ let world_data = {
 };
 
 function draw() {
-  image(sky_box, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  image(beach, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   // image(vapor_sky, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
   // image(gif, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/2);
   fill(100, 50, 50); rectMode(CORNERS);
-  rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
+  //rect(-1, SCREEN_HEIGHT/2, SCREEN_WIDTH+1, SCREEN_HEIGHT);
 
   map_handler.draw(world_data);
   player_handler.draw(world_data);
