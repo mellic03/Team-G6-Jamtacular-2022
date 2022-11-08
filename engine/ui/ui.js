@@ -10,6 +10,7 @@ class UI {
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
+    this.hud = loadImage('engine/ui/hud.png');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -68,6 +69,7 @@ class UI {
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
+    image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
     noStroke();
     this.draw_stat_ui(world_data);
     this.draw_face_state(world_data);
