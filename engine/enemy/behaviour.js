@@ -73,7 +73,7 @@ const behaviour_scripts = {
       }
     }
 
-    if (dist > 50) {
+    if (dist > enemy.chase_range) {
       if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x + enemy.dir.get_scaled(4).x, enemy.pos.y + enemy.dir.get_scaled(4).y) == false)
         enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
       
@@ -84,7 +84,7 @@ const behaviour_scripts = {
       }
     }
 
-    else if (dist > 20) {
+    else if (dist > enemy.chase_range/2) {
       enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
       enemy.dir.normalise();
       enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
@@ -96,7 +96,7 @@ const behaviour_scripts = {
       enemy.sprite.changeAnimation("attack");
     }
 
-    if (dist <= enemy.attack_range/2) {
+    if (dist <= enemy.push_range) {
       player.vel.add(enemy.dir.get_scaled(0.2));
     }
 

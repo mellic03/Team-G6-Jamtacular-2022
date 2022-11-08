@@ -14,7 +14,9 @@ class EnemyType_1 {
   health = 50;
   damage = 5;
   speed = 1;
-  attack_range = 20;
+  chase_range = 100;
+  attack_range = 50;
+  push_range = 7;
 
   sprite;
 
