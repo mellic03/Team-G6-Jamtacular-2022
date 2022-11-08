@@ -222,7 +222,7 @@ class CyberDemon {
 
       if (this.sprite.animations.attack.frame == 3) {
         this.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(this.pos, e2p_x*0.5, e2p_y*0.5);
+        world_data.map_handler.active_map.create_projectile(this.pos, e2p_x*0.7, e2p_y*0.7);
       }
     }
 
