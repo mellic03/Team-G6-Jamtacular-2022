@@ -168,37 +168,16 @@ class EnemyType_1 {
       this.sprite.animations.death.frameDelay           = frame_delay;
     }
 
-
     this.collide_against_enemies(world_data.active_map.enemies);
     // this.move_to_player(world_data);
     this.correct_angle(world_data);
-
 
     for (let i=0; i<this.behaviour_scripts.length; i++) {
       this.behaviour_scripts[i](this, world_data);
     }
   }
 
-  /** Make a portion of an spritesheet invisible.
-   *  Assumes the spritesheet has four frames.
-   */
-  set_occlusion(x1, x2) {
-
-    let width = this.active_img.width;
-    let height = this.active_img.height;
-  
-    let row = 4*width;
-
-    for (let x=x1; x<=x2; x++) {
-      for (let y=0; y<height; y++) {
-        this.active_img.pixels[row*y + 4*x+0*width+3] = 0;
-        this.active_img.pixels[row*y + 4*x+1*width+3] = 0;
-        this.active_img.pixels[row*y + 4*x+2*width+3] = 0;
-        this.active_img.pixels[row*y + 4*x+3*width+3] = 0;
-      }
-    }
-    this.active_img.updatePixels();
-  }
+  enemy_to_enemy = new Vector2(0, 0);
 
   collide_against_enemies(enemies) {
     for (let i=0; i<enemies.length; i++) {
@@ -207,10 +186,11 @@ class EnemyType_1 {
           let dist = vector2_dist(enemies[i].pos, enemies[j].pos);
           if (dist < 10) {
             
-            let dir = vector2_sub(enemies[i].pos, enemies[j].pos);
-            dir.normalise();
-            dir.scale(0.2);
-            enemies[i].pos.add(dir);
+            this.enemy_to_enemy.x = enemies[i].pos.x - enemies[j].pos.x;
+            this.enemy_to_enemy.y = enemies[i].pos.y - enemies[j].pos.y;
+            this.enemy_to_enemy.normalise();
+            this.enemy_to_enemy.scale(0.2);
+            enemies[i].pos.add(this.enemy_to_enemy);
           }
         }
       }

@@ -74,7 +74,7 @@ const behaviour_scripts = {
     }
 
     if (dist > 50) {
-      if (world_data.active_map.point_in_grid(vector2_add(enemy.pos, enemy.dir.get_scaled(4))) == false)
+      if (world_data.active_map.point_in_grid(enemy.pos.x + enemy.dir.get_scaled(4).x, enemy.pos.y + enemy.dir.get_scaled(4).y) == false)
         enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
       
       else {
