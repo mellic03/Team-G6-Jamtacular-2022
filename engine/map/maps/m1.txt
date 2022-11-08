@@ -55,7 +55,7 @@ NULL
 PROP: light
 NULL
 NULL
-PROP: vendingmachine:west
+PROP: vendingmachine:south
 WALL: 050,050,050
 NULL
 NULL

@@ -1,6 +1,6 @@
 class Projectile {
 
-  pos;
+  pos = new Vector2(0, 0);
   xvel; yvel;
 
   frame_count = 0;
@@ -11,24 +11,19 @@ class Projectile {
   sprite;
   active_img;
 
-  constructor(xp, yp, xv, yv, world_data) {
-    if (world_data.map_handler.active_map.projectiles.length <= world_data.map_handler.active_map.max_projectiles) {
-      this.pos = new Vector2(xp, yp);
-      this.xvel = xv;
-      this.yvel = yv;
-      this.init(world_data);
-    }
+  constructor(xp, yp, xv, yv) {
+    this.pos = new Vector2(xp, yp);
+    this.xvel = xv;
+    this.yvel = yv;
   }
 
 
   // Assumes projectile sprite has already been loaded
-  init(world_data) {
+  init(projectile_img) {
     this.sprite = new Sprite();
-    this.sprite.addAnimation("proj", world_data.assets.projectile_img);
-    this.active_img = world_data.assets.projectile_img;
+    this.sprite.addAnimation("proj", projectile_img);
+    this.active_img = projectile_img;
     this.sprite.changeAnimation("proj");
-
-    world_data.map_handler.active_map.projectiles.unshift(this);
   }
 
   draw() {

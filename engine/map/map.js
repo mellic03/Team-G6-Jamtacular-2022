@@ -5,9 +5,10 @@ class Map {
 
   background;
 
-  projectile_count = 0;
   max_projectiles = 50;
+  projectile_count = 0;
   projectiles = [];
+
   props = [];
   pickups = [];
   enemies = [];
@@ -27,6 +28,14 @@ class Map {
   /** Load map data from file, construct JavaScript objects with entity data
    */
   preload() {
+
+    loadImage("engine/prop/projectile/projectile.png", (img) => {
+      for (let i=0; i<this.max_projectiles; i++) {
+        let proj = new Projectile(-100, -100, 0, 0);
+        proj.init(img);
+        this.projectiles.push(proj);
+      }
+    })
 
     this.background = loadImage("engine/map/maps/" + this.name + ".png");
 
@@ -181,10 +190,6 @@ class Map {
       projectile.pos.x += projectile.xvel;
       projectile.pos.y += projectile.yvel;
     }
-
-    if (this.projectiles.length >= this.max_projectiles) {
-      this.projectiles.pop();
-    }
   }
 
   point_in_grid(x, y) {
@@ -198,10 +203,17 @@ class Map {
   
     return false;
   }
+ 
+  create_projectile(pos, xvel, yvel) {
+    this.projectile_count = (this.projectile_count+1)%this.max_projectiles;
+
+    console.log(this.projectile_count)
+
+    this.projectiles[this.projectile_count].pos.x = pos.x;
+    this.projectiles[this.projectile_count].pos.y = pos.y;
+    this.projectiles[this.projectile_count].xvel = xvel;
+    this.projectiles[this.projectile_count].yvel = yvel;
+  }
   
 }
 
-
-function create_special_enemy(name, x, y) {
-
-}
