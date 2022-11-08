@@ -96,6 +96,7 @@ class Player {
     this.input(world_data.map_handler.active_map);
     this.collide_with_props(world_data.map_handler.active_map);
     this.collide_with_pickups(world_data.map_handler.active_map);
+    this.collide_with_projectiles(world_data.map_handler.active_map)
     this.march(world_data.map_handler.active_map);
     this.world_render();
     this.sprite_render(
@@ -504,6 +505,16 @@ class Player {
       }
     }
 
+  }
+
+  collide_with_projectiles(map) {
+    for (let projectile of map.projectiles) {
+      if (vector2_dist(projectile.pos, this.pos) < projectile.radius) {
+        projectile.pos.x = -100; projectile.pos.y = -100;
+        projectile.xvel = 0; projectile.yvel = 0;
+        this.health -= projectile.damage;
+      }
+    }
   }
 
 }

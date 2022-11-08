@@ -8,6 +8,9 @@ class Projectile {
   height = 0.4;
   voffset = 0;
 
+  radius = 5;
+  damage = 5;
+
   sprite;
   active_img;
 
