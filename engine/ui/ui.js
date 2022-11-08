@@ -7,14 +7,18 @@ class UI {
   faces_right = [];
   state;
   helm;
+  helmoff;
   ui_display;
   currframe;
+  currframe2;
+  toggle;
 
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
     this.hud = loadImage('engine/ui/hud.png');
-    this.helmet = loadImage('engine/ui/helmet.gif');
+    this.helmeton = loadImage('engine/ui/helmeton.gif');
+    this.helmetoff = loadImage('engine/ui/helmetoff.gif');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -41,19 +45,18 @@ class UI {
 
   setup() {
     noSmooth();
-    console.log(this.helmet.numFrames);
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     textFont(this.doom_font);
-    console.log(this.faces_middle);
-    this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
-    //this.chad_anim.resize(100, 100);
-    //this.chad.resize(100, 100);
-    this.helm = true;
+    //this.helm = true;
+    //this.helmoff = true;
+    this.toggle = false;
+
     this.ui_display = false;
   }
 
   draw(world_data) {
+
 
     /* Or like this to avoid executing the ui code multiple times:
     
@@ -69,27 +72,26 @@ class UI {
     */
 
     
-    if (frameCount % 30 == 0)
+    if (frameCount % 30 == 0) {
       this.framerate = Math.floor(frameRate());
-
-
-    if(this.helm == true){
-      image(this.helmet,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-      this.currframe = this.helmet.getCurrentFrame();
-
-      if(this.currframe == 19){
-        this.helm = false;
-        this.ui_display = true;
-      }
-
     }
+    this.keyPressed();
+    this.keyPressed2();
 
+    this.helmet_on();
+    this.helmet_off();
+
+    
     if(this.ui_display == true) {
       //image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
     }
+    console.log(this.toggle);
+
+
+
     
     fill(255);
     textSize(60);
@@ -128,4 +130,60 @@ class UI {
       }
     }
   }
+
+
+  helmet_on() {
+    if(this.helm == true){
+      //this.helmeton.setFrame(1);
+      image(this.helmeton,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+      this.helmeton.play();
+      this.currframe = this.helmeton.getCurrentFrame();
+      console.log(this.currframe);
+
+      this.helmoff = false;
+
+      if(this.currframe == 19){
+        this.helm = false;
+        this.ui_display = true;
+        this.helmeton.reset();
+      }
+    }
+  }
+
+  helmet_off(){
+    if(this.helmoff == true) {
+      this.ui_display = false;
+      this.currframe2 = this.helmetoff.getCurrentFrame();
+      //hjthis.helmetoff.setFrame(1);
+      image(this.helmetoff, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      console.log(this.currframe2);
+
+      if(this.currframe2 == 18) {
+        this.helmoff = false;
+        this.helmetoff.reset();
+
+      }
+    }
+
+   
+  }
+
+  keyPressed() {
+    if(keyCode == keycodes.H && this.toggle == true) {
+      this.helmoff = true;
+      this.helmon = false;
+      this.toggle = false; 
+    }
+  }
+
+
+  keyPressed2() {
+    if(keyCode == keycodes.J && this.toggle == false){
+      this.helm = true;
+      this.helmoff = false;
+      this.toggle = true;
+
+    }
+  }
+
 }

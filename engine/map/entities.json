@@ -91,7 +91,7 @@
       "height": 0.08,
       "vertical_offset": -300
     },
-    
+
     "light": {
       "directory": "engine/prop/light",
       "frames": 1,
