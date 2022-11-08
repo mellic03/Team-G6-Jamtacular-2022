@@ -54,7 +54,7 @@ SPAWN
 NULL
 PROP: light
 NULL
-NULL
+ENEMY: pinky
 PROP: vendingmachine:south
 WALL: 050,050,050
 NULL

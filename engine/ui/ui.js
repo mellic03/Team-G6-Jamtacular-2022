@@ -15,33 +15,32 @@ class UI {
 
   preload() {
 
-    this.ui_banner = loadImage('engine/ui/banner.png');
-    this.hud = loadImage('engine/ui/hud.png');
+    this.hud = loadImage('engine/ui/player_sprites/hud.png');
 
-    this.armor_sprites[2] = loadImage('engine/ui/break0.png');
-    this.armor_sprites[1] = loadImage('engine/ui/break1.png');
-    this.armor_sprites[0] = loadImage('engine/ui/break2.png');
+    this.armor_sprites[2] = loadImage('engine/ui/player_sprites/break0.png');
+    this.armor_sprites[1] = loadImage('engine/ui/player_sprites/break1.png');
+    this.armor_sprites[0] = loadImage('engine/ui/player_sprites/break2.png');
 
-    this.pain = loadImage('engine/ui/PAIN1.png')
-    this.helmeton = loadImage('engine/ui/helmeton.gif');
-    this.helmetoff = loadImage('engine/ui/helmetoff.gif');
-    this.helmsound = loadSound('engine/audio/sounds/player_sounds/helmet.mp3');
+    this.pain = loadImage('engine/ui/player_sprites/PAIN1.png')
+    this.helmeton = loadImage('engine/ui/player_sprites/helmeton.gif');
+    this.helmetoff = loadImage('engine/ui/player_sprites/helmetoff.gif');
+    this.helmsound = loadSound('engine/ui/player_sounds/helmet.mp3');
 
-    this.faces_middle[0] = loadImage('engine/ui/skull.png');
+    this.faces_middle[0] = loadImage('engine/ui/player_sprites/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
     this.faces_middle[2] = loadImage('engine/ui/faces_middle/chad_middle_high.png');
     this.faces_middle[3] = loadImage('engine/ui/faces_middle/chad_middle_mid.png')
     this.faces_middle[4] = loadImage('engine/ui/faces_middle/chad_middle_low.png');
     this.faces_middle[5] = loadImage('engine/ui/faces_middle/chad_middle_healthy.png');
 
-    this.faces_right[0] = loadImage('engine/ui/skull.png');
+    this.faces_right[0] = loadImage('engine/ui/player_sprites/skull.png');
     this.faces_right[1] = loadImage('engine/ui/faces_right/chad_right_severe.png');
     this.faces_right[2] = loadImage('engine/ui/faces_right/chad_right_high.png');
     this.faces_right[3] = loadImage('engine/ui/faces_right/chad_right_mid.png');
     this.faces_right[4] = loadImage('engine/ui/faces_right/chad_right_low.png');
     this.faces_right[5] = loadImage('engine/ui/faces_right/chad_right_healthy.png');
 
-    this.faces_left[0] = loadImage('engine/ui/skull.png');
+    this.faces_left[0] = loadImage('engine/ui/player_sprites/skull.png');
     this.faces_left[1] = loadImage('engine/ui/faces_left/chad_left_severe.png');
     this.faces_left[2] = loadImage('engine/ui/faces_left/chad_left_high.png');
     this.faces_left[3] = loadImage('engine/ui/faces_left/chad_left_mid.png');
@@ -120,15 +119,15 @@ class UI {
       this.state = ceil(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
         image(this.faces_left[this.state], SCREEN_WIDTH/2.17, 
-                                                        SCREEN_HEIGHT - this.ui_banner.height);  
+                                                        SCREEN_HEIGHT - 100);  
       }
       else if (keyIsDown(keycodes.RIGHT)) {
         image(this.faces_right[this.state], SCREEN_WIDTH/2.17, 
-                                                         SCREEN_HEIGHT - this.ui_banner.height);
+                                                         SCREEN_HEIGHT - 100);
       }
       else {
         image(this.faces_middle[this.state], SCREEN_WIDTH/2.17, 
-                                                          SCREEN_HEIGHT - this.ui_banner.height);
+                                                          SCREEN_HEIGHT - 100);
       }
     }
   }

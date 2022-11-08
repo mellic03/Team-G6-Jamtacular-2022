@@ -192,6 +192,17 @@
       "health": 100,
       "damage": 10,
       "speed": 2
+    },
+
+    "pinky": {
+      "directory": "engine/enemy/pinky",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "height": 0.14,
+      "vertical_offset": 2300,
+      "health": 100,
+      "damage": 10,
+      "speed": 2
     }
 
   }
