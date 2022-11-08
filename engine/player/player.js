@@ -5,6 +5,11 @@ class Player {
   stamina = 100;
   damage = 10;
 
+  // POWERUPS
+  //---------------------------------
+  stimmed_up_on_ritalin = false; 
+  //---------------------------------
+
   can_punch = true;
   is_punching = false;
   dealing_damage = false;
@@ -20,7 +25,7 @@ class Player {
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
-  plane = new Vector2(0, -SCREEN_WIDTH/SCREEN_HEIGHT);
+  plane = new Vector2(0, +SCREEN_WIDTH/SCREEN_HEIGHT);
 
   fist_offset = 0;
   dir_L; dir_R;
@@ -148,6 +153,8 @@ class Player {
     this.ray_intersections = [];
   }
 
+  march_dir = new Vector2(0, 0);
+
   march(map) {
     this.depth_buffer = [];
 
@@ -155,13 +162,13 @@ class Player {
 
       let camx = (2*x)/(SCREEN_WIDTH)-1;
 
-      let dirx = this.dir.x + this.plane.x*camx;
-      let diry = this.dir.y + this.plane.y*camx;
+      this.march_dir.x = this.dir.x + this.plane.x*camx;
+      this.march_dir.y = this.dir.y + this.plane.y*camx;
 
-      let angle = vector2_angle(this.dir, new Vector2(dirx, diry));
+      let angle = vector2_angle(this.dir, this.march_dir);
 
-      let dx = sqrt(1 + (diry**2 / dirx**2));
-      let dy = sqrt(1 + (dirx**2 / diry**2));
+      let dx = sqrt(1 + (this.march_dir.y**2 / this.march_dir.x**2));
+      let dy = sqrt(1 + (this.march_dir.x**2 / this.march_dir.y**2));
 
       let step_x, step_y;
 
@@ -170,7 +177,7 @@ class Player {
 
       let sideDistX, sideDistY;
 
-      if (dirx < 0) {
+      if (this.march_dir.x < 0) {
         step_x = -1;
         sideDistX = (this.pos.x - mapX) * dx;
       }
@@ -179,7 +186,7 @@ class Player {
         sideDistX = (mapX + 1.0 - this.pos.x) * dx;
       }
 
-      if (diry < 0) {
+      if (this.march_dir.y < 0) {
         step_y = -1;
         sideDistY = (this.pos.y - mapY) * dy;
       }
@@ -252,18 +259,19 @@ class Player {
 
       line_height = SCREEN_HEIGHT/this.depth_buffer[i].dist;
 
-      line_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-      if(line_start < 0) line_start = 0;
-      line_end = line_height / 2 + SCREEN_HEIGHT / 2;
-      if(line_end >= SCREEN_HEIGHT) line_end = SCREEN_HEIGHT - 1;
+      line_start = -line_height/2 + SCREEN_HEIGHT/2;
+      line_end = line_height/2 + SCREEN_HEIGHT/2;
 
       // strokeWeight(2);
       stroke(r, g, b);
-      line(SCREEN_WIDTH-i, line_start, SCREEN_WIDTH-i-1, line_end);
+      line(i, line_start, i+1, line_end);
     }
     stroke(0);
     rectMode(CORNER);
   }
+
+  player_to_sprite = new Vector2(0, 0);
+  newpos = new Vector2(0, 0); 
 
   sprite_render(sprite_array) {
     
@@ -284,18 +292,23 @@ class Player {
     }
     
     for (let i=0; i<sprite_array.length; i++) {
-      let player_to_sprite = vector2_sub(this.pos, sprite_array[i].pos);
-      player_to_sprite.normalise();
-      if (vector2_dot(this.dir, player_to_sprite) < -0.1) {
+      this.player_to_sprite.x = this.pos.x - sprite_array[i].pos.x;
+      this.player_to_sprite.y = this.pos.y - sprite_array[i].pos.y;
+      this.player_to_sprite.normalise();
+
+      if (vector2_dot(this.dir, this.player_to_sprite) < -0.1) {
 
         this.sprite_buffer.push(sprite_array[i]);
         
-        let newpos = vector2_sub(sprite_array[i].pos, this.pos);
+        this.newpos.x = sprite_array[i].pos.x - this.pos.x;
+        this.newpos.y = sprite_array[i].pos.y - this.pos.y;
         let invDet = 1 / (this.plane.x*this.dir.y - this.dir.x*this.plane.y);
-        let transformX = invDet * (this.dir.x*newpos.y - this.dir.y*newpos.x);
-        let transformY = invDet * (this.plane.x*newpos.y - this.plane.y*newpos.x);
+        let transformX = invDet * (this.dir.y*this.newpos.x - this.dir.x*this.newpos.y);
+        let transformY = invDet * (-this.plane.y*this.newpos.x + this.plane.x*this.newpos.y);
 
-        let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
+        // let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
+        let dist = p2oint_plane_dist(this.dir.x, this.dir.y, (this.pos.x+this.dir.x), (this.pos.y+this.dir.y), sprite_array[i].pos.x, sprite_array[i].pos.y);
+
         dist = (dist < 3) ? 3 : dist;
 
         sprite_array[i].sprite.position.x = (SCREEN_WIDTH/2) * (1 + transformX/dist);
@@ -331,11 +344,10 @@ class Player {
     rectMode(CENTER);
     for (let j=0; j<this.sprite_buffer.length; j++) {
 
-
       let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
 
-      let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].real_dist;
-      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[0].real_dist;
+      let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[0].real_dist;
+      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].real_dist;
 
       if (c1 || c2) {
         drawSprite(this.sprite_buffer[j].sprite);
@@ -346,46 +358,11 @@ class Player {
         continue;
       }
 
-      let wall_dist = this.depth_buffer[SCREEN_WIDTH-floor(this.sprite_buffer[j].sprite.position.x)-1].real_dist;
-
-      // let xmin = max(floor(this.sprite_buffer[j].sprite.position.x-this.sprite_width_buffer[j]/2), 0);
-      // let xmax = min(floor(this.sprite_buffer[j].sprite.position.x+this.sprite_width_buffer[j]/2), SCREEN_WIDTH-1);
-
-
-      // Scan from xmin to xmax comparing depth buffer values to sprite distance
-
-      // let occluded = false;
-      // let occlude_start = 0, occlude_end = 0;
-      
-      // for (let i=xmin+1; i<=xmax; i++) {
-      //   if (this.depth_buffer[SCREEN_WIDTH-i].real_dist < sprite_dist) {
-          
-      //     if (occluded == false) {
-      //       occlude_start = floor((i-xmin) / sprite_buffer[j].sprite.scale);
-      //       occluded = true;
-      //     }
-
-      //     else {
-      //       occlude_end = floor((i-xmin) / sprite_buffer[j].sprite.scale);
-      //     }
-
-      //     // stroke(255, 0, 0)
-      //     // line(i, 300, i, 700);
-      //   }
-      // }
-
-      // sprite_buffer[j].set_occlusion(occlude_start, occlude_end);
-
-      // stroke(0, 255, 0);
-      // strokeWeight(2);
-      // line(xmin, 300, xmin, 700);
-      // line(xmax, 300, xmax, 700);
-
+      let wall_dist = this.depth_buffer[floor(this.sprite_buffer[j].sprite.position.x)].real_dist;
 
       if (wall_dist > sprite_dist) {
         drawSprite(this.sprite_buffer[j].sprite);
       }
-
     }
 
     this.sprite_buffer = [];
