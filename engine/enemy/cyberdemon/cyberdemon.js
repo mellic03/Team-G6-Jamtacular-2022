@@ -6,7 +6,9 @@ class CyberDemon {
   sprite;
   height;
 
-  attack_dist = 100;
+  chase_range = 200;
+  attack_range = 100;
+  push_range = 15;
 
   frames;
 
@@ -168,6 +170,7 @@ class CyberDemon {
     }
 
     this.follow_player(world_data);
+    this.shoot_player(world_data);
     this.correct_angle(world_data);
   }
 
@@ -176,9 +179,8 @@ class CyberDemon {
   follow_player(world_data) {
     let player = world_data.players[0];
 
-    if (vector2_dist(player.pos, this.pos) < this.attack_dist) {
+    if (vector2_dist(player.pos, this.pos) < this.attack_range) {
       this.sprite.changeAnimation("attack");
-      player.health -= 1;
       return;
     }
 
@@ -203,12 +205,30 @@ class CyberDemon {
     }
   }
 
+  shoot_player(world_data) {
+    let player = world_data.players[0];
+    let e2p_x = player.pos.x - this.pos.x;
+    let e2p_y = player.pos.y - this.pos.y;
+
+    let dist = vector2_dist(player.pos, this.pos);
+
+    console.log(this.sprite.animations.attack.frame)
+
+    if (dist <= this.attack_range) {
+
+      if (this.sprite.animations.attack.frame == 3) {
+        this.sprite.animations.attack.frame = 0;
+        let proj = new Projectile(this.pos.x, this.pos.y, e2p_x*0.01, e2p_y*0.01, world_data);
+      }
+    }
+
+  }
 
   correct_angle(world_data) {
 
     let player_pos = world_data.players[0].pos;
 
-    if (vector2_dist(player_pos, this.pos) < this.attack_dist) {
+    if (vector2_dist(player_pos, this.pos) < this.attack_range) {
       return;
     }
 

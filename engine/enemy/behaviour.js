@@ -132,7 +132,11 @@ const behaviour_scripts = {
     let dist = vector2_dist(player.pos, enemy.pos);
 
     if (dist <= enemy.attack_range) {
-      let proj = new Projectile(enemy.pos.x, enemy.pos.y, e2p_x*0.01, e2p_y*0.01, world_data);
+
+      if (enemy.sprite.animations.attack.frame == 3) {
+        enemy.sprite.animations.attack.frame = 0;
+        let proj = new Projectile(enemy.pos.x, enemy.pos.y, e2p_x*0.01, e2p_y*0.01, world_data);
+      }
     }
 
   }
