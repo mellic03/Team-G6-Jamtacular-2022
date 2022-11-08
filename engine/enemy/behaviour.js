@@ -40,7 +40,7 @@ const behaviour_scripts = {
     let player_to_enemy = vector2_sub(enemy.pos, player.pos);
 
     // Move towards the player at the nearest 45 degree angle,
-    // keep track of delta_dist, if delta_dist becomes negative, 
+    // keep track of delta_dist, if delta_dist becomes too small, 
     // recalculate nearest 45 degree angle
 
     // circle(enemy.pos.x, enemy.pos.y, 10);
@@ -90,13 +90,13 @@ const behaviour_scripts = {
       enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
     }
 
-    else {
+    else if (dist <= enemy.attack_range) {
       enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
       enemy.dir.normalise();
       enemy.sprite.changeAnimation("attack");
     }
 
-    if (dist < 7) {
+    if (dist <= enemy.attack_range/2) {
       player.vel.add(enemy.dir.get_scaled(0.2));
     }
 
@@ -122,7 +122,19 @@ const behaviour_scripts = {
       enemy.health -= player.damage;
       console.log(enemy.health);
     }
-  }
+  },
   
+  shoot_player(enemy, world_data) {
+    let player = world_data.players[0];
+    let e2p_x = player.pos.x - enemy.pos.x;
+    let e2p_y = player.pos.y - enemy.pos.y;
+
+    let dist = vector2_dist(player.pos, enemy.pos);
+
+    if (dist <= enemy.attack_range) {
+      let proj = new Projectile(enemy.pos.x, enemy.pos.y, e2p_x*0.01, e2p_y*0.01, world_data);
+    }
+
+  }
 
 };

@@ -5,6 +5,9 @@ class Map {
 
   background;
 
+  projectile_count = 0;
+  max_projectiles = 50;
+  projectiles = [];
   props = [];
   pickups = [];
   enemies = [];
@@ -171,6 +174,16 @@ class Map {
 
     for (let prop of this.props) {
       prop.draw(world_data);
+    }
+
+    for (let projectile of this.projectiles) {
+      projectile.draw(world_data);
+      projectile.pos.x += projectile.xvel;
+      projectile.pos.y += projectile.yvel;
+    }
+
+    if (this.projectiles.length >= this.max_projectiles) {
+      this.projectiles.pop();
     }
   }
 

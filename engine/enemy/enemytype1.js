@@ -11,7 +11,10 @@ class EnemyType_1 {
 
   behaviour_scripts = []; // Array of functions to be executed in draw()
 
+  health = 50;
+  damage = 5;
   speed = 1;
+  attack_range = 20;
 
   sprite;
 
@@ -54,10 +57,7 @@ class EnemyType_1 {
     this.frames = frames;
   }
 
-  // ENEMY SPECIFICATION
-  //------------------------------------------------------------------------------------------------
-  health = 50;
-  damage = 5;
+
 
   pos = new Vector2(0, 0);
   pos_screen = new Vector2(0, SCREEN_HEIGHT/2);

@@ -98,9 +98,13 @@ class Player {
     this.collide_with_pickups(world_data.map_handler.active_map);
     this.march(world_data.map_handler.active_map);
     this.world_render();
-    // this.sprite_render(world_data.active_map.enemies.concat(world_data.props));
-    // console.log(world_data.active_map.enemies);
-    this.sprite_render(world_data.map_handler.active_map.enemies.concat(world_data.map_handler.active_map.props).concat(world_data.map_handler.active_map.pickups));
+    this.sprite_render(
+      world_data.map_handler.active_map.enemies.concat(
+      world_data.map_handler.active_map.props).concat(
+      world_data.map_handler.active_map.pickups).concat(
+      world_data.map_handler.active_map.projectiles)
+    );
+
     this.occlude_sprites(this.sprite_buffer);
     // this.draw_minimap(world_data.active_map);
     if (world_data.ui_handler.helmet.getCurrentFrame() >= 14) {
