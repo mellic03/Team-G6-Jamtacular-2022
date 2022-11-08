@@ -1,7 +1,6 @@
 class UI {
 
   face_sprites = {};
-
   faces_middle = [];
   faces_left = [];
   faces_right = [];
@@ -48,8 +47,6 @@ class UI {
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     textFont(this.doom_font);
-    //this.helm = true;
-    //this.helmoff = true;
     this.toggle = false;
 
     this.ui_display = false;
@@ -139,13 +136,15 @@ class UI {
       this.helmeton.play();
       this.currframe = this.helmeton.getCurrentFrame();
       console.log(this.currframe);
+      this.helmetoff.reset();
+
 
       this.helmoff = false;
 
       if(this.currframe == 19){
         this.helm = false;
         this.ui_display = true;
-        this.helmeton.reset();
+
       }
     }
   }
@@ -157,10 +156,12 @@ class UI {
       //hjthis.helmetoff.setFrame(1);
       image(this.helmetoff, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
       console.log(this.currframe2);
+      this.helmeton.reset();
+
 
       if(this.currframe2 == 18) {
         this.helmoff = false;
-        this.helmetoff.reset();
+
 
       }
     }
