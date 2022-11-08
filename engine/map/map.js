@@ -5,6 +5,9 @@ class Map {
 
   background;
 
+  projectile_count = 0;
+  max_projectiles = 50;
+  projectiles = [];
   props = [];
   pickups = [];
   enemies = [];
@@ -64,27 +67,35 @@ class Map {
           }
 
           else if (tokens[0] == "PROP:") {
-            let prop_name = tokens[1];
+            let tok1 = splitTokens(tokens[1], ':');
+            let prop_name;
+            if (tok1.length == 2) {
+              prop_name = tok1[0];
+            }
+            else {
+              prop_name = tokens[1];
+            }
             let obj = entity_data.static_props[prop_name];
             let prop;
-            if (obj.random_placement != undefined) {
+
+            // If directional prop
+            if (tok1.length == 2) {
+              let dir;
+              console.log(obj)
+              switch (tok1[1]) {
+                case ("north"): dir = new Vector2(+1,  0); break;
+                case ("east"):  dir = new Vector2( 0, +1); break;
+                case ("south"): dir = new Vector2(-1,  0); break;
+                case ("west"):  dir = new Vector2( 0, -1); break;
+              }
+              prop = new DirectionalProp((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, dir.x, dir.y, obj.directory, obj.frames, prop_name);
+            }
+
+            else if (obj.random_placement != undefined) {
               prop = new Prop((i%25)*25 + random(25), floor(i/25)*25 + random(25), obj.directory, obj.frames, prop_name);
             }
             else {
               prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
-            }
-
-            // If directional prop
-            if (tokens.length == 3) {
-              let dir;
-              switch (tokens[2]) {
-                case ("north"): dir = new Vector2(+1, +0); break;
-                case ("east"):  dir = new Vector2(+0, +1); break;
-                case ("south"): dir = new Vector2(-1, +0); break;
-                case ("west"):  dir = new Vector2(+0, -1); break;
-              }
-              prop = new DirectionalProp((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, dir.x, dir.y, obj.directory, obj.frames, prop_name);
-
             }
 
             prop.height = obj.height;
@@ -163,6 +174,16 @@ class Map {
 
     for (let prop of this.props) {
       prop.draw(world_data);
+    }
+
+    for (let projectile of this.projectiles) {
+      projectile.draw(world_data);
+      projectile.pos.x += projectile.xvel;
+      projectile.pos.y += projectile.yvel;
+    }
+
+    if (this.projectiles.length >= this.max_projectiles) {
+      this.projectiles.pop();
     }
   }
 

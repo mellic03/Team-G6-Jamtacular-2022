@@ -6,14 +6,16 @@ class Prop {
   name;
 
   sprite;
-
-  height = 1;
-  collision_radius = 10;
+  height = 0.1;
+  voffset = 0;
+  collision_radius = 0;
 
   active_img; og_active_img;
   spritesheet; og_spritesheet;
   
   pos = new Vector2(0, 0);
+  xvel = 0; yvel = 0;
+  vel = new Vector2(0, 0);
   
   constructor(x, y, directory, frames, name) {
     this.pos.x = x;

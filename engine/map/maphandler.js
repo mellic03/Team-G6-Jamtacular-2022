@@ -3,6 +3,8 @@ class MapHandler {
   map_number = 1;
   active_map;
 
+  assets = {};
+
   constructor() {
     this._maps = [];
   }
@@ -37,6 +39,10 @@ class MapHandler {
     for (let map of this._maps) {
       map.preload();
     }
+
+    loadImage("engine/prop/projectile/projectile.png", (img) => {
+      this.assets.projectile_img = img;
+    });
 
   }
 

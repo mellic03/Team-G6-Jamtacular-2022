@@ -29,7 +29,8 @@ let world_data = {
   maps: map_handler._maps,
   map_handler: map_handler,
   ui_handler: ui_handler,
-  audio_handler: audio_handler
+  audio_handler: audio_handler,
+  assets: map_handler.assets
 };
 
 function draw() {

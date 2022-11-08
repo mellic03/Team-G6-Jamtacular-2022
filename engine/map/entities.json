@@ -84,6 +84,14 @@
       "vertical_offset": 3400
     },
 
+    "vendingmachine": {
+      "directory": "engine/prop/vendingmachine",
+      "frames": 1,
+      "collision_radius": 0,
+      "height": 0.09,
+      "vertical_offset": 1500
+    },
+    
     "exit_portal": {
       "directory": "engine/prop/exit_portal",
       "frames": 4,
@@ -98,14 +106,16 @@
       "collision_radius": 0,
       "height": 0.08,
       "vertical_offset": -300
+    },
+
+    "projectile": {
+      "directory": "engine/prop/projectile",
+      "frames": 1,
+      "collision_radius": 0,
+      "height": 0.08,
+      "vertical_offset": -300
     }
   },
-
-
-  "directional_props": {
-
-  },
-
 
   "pickups": {
     
@@ -133,7 +143,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.14,
       "vertical_offset": 2300,
       "health": 100,
@@ -144,7 +154,7 @@
     "zombie_reflect": {
       "directory": "engine/enemy/zombie_reflect",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 100,
