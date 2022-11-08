@@ -133,7 +133,7 @@ class EnemyType_1 {
       );
     });
 
-    loadSound(this.directory + "/sounds/death.mp3", (sound)=> {
+    loadSound(this.directory + "/sounds/death.mp3", (sound) => {
       this.sound_death = sound;
     })
   }

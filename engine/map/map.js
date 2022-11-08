@@ -206,9 +206,6 @@ class Map {
  
   create_projectile(pos, xvel, yvel) {
     this.projectile_count = (this.projectile_count+1)%this.max_projectiles;
-
-    console.log(this.projectile_count)
-
     this.projectiles[this.projectile_count].pos.x = pos.x;
     this.projectiles[this.projectile_count].pos.y = pos.y;
     this.projectiles[this.projectile_count].xvel = xvel;
