@@ -144,3 +144,12 @@ function point_plane_dist(plane_normal, plane_pos, point_pos) {
   return vector2_dot(plane_normal, vector2_sub(point_pos, plane_pos));
 }
 
+function v2ector2_dot(x1, y1, x2, y2) {
+  return x1*x2 + y1*y2;
+}
+
+function p2oint_plane_dist(nx, ny, plx, ply, ptx, pty) {
+  return v2ector2_dot(nx, ny, ptx-plx, pty-ply);
+}
+
+
