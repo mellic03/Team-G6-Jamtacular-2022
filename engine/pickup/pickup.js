@@ -41,7 +41,4 @@ class Pickup {
     this.sprite.addAnimation('front', this.anim_front);
   }
 
-  draw() {
-    
-  }
 }

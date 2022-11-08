@@ -7,7 +7,7 @@
       "frames": 1,
       "collision_radius": 5,
       "height": 0.1,
-      "vertical_offset": 900
+      "vertical_offset": 650
     },
 
     "pillar_reflect": {
@@ -74,6 +74,14 @@
       "collision_radius": 0,
       "height": 0.1,
       "vertical_offset": 0
+    },
+
+    "stool": {
+      "directory": "engine/prop/stool",
+      "frames": 1,
+      "collision_radius": 0,
+      "height": 0.13,
+      "vertical_offset": 3400
     },
 
     "exit_portal": {
