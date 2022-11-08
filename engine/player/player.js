@@ -106,7 +106,7 @@ class Player {
     );
 
     this.occlude_sprites(this.sprite_buffer);
-    // this.draw_minimap(world_data.active_map);
+
     if (world_data.ui_handler.helmeton.getCurrentFrame() >= 14) {
       drawSprite(this.fist_L_sprite);
       drawSprite(this.fist_R_sprite);
