@@ -282,20 +282,12 @@ class Player {
   sprite_render(sprite_array) {
     
     // Sort sprites by distance, from furthest to nearest
-    let dist_i, dist_j;
-    for (let i=0; i<sprite_array.length; i++) {
-      for (let j=0; j<sprite_array.length; j++) {
-        if (i!=j) {
-          dist_i = vector2_dist(this.pos, sprite_array[i].pos);
-          dist_j = vector2_dist(this.pos, sprite_array[j].pos);
-          if (dist_i > dist_j) {
-            let temp = sprite_array[i];
-            sprite_array[i] = sprite_array[j];
-            sprite_array[j] = temp;
-          }
-        }
-      }
-    }
+    sprite_array.sort((a, b) => {
+      if (vector2_dist(a.pos, this.pos) > vector2_dist(b.pos, this.pos))
+        return -1;
+      else
+        return 1;
+    })
     
     for (let i=0; i<sprite_array.length; i++) {
       this.player_to_sprite.x = this.pos.x - sprite_array[i].pos.x;

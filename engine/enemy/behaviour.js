@@ -120,7 +120,6 @@ const behaviour_scripts = {
       enemy.vel.add(dir);
    
       enemy.health -= player.damage;
-      console.log(enemy.health);
     }
   },
   
@@ -128,6 +127,11 @@ const behaviour_scripts = {
     let player = world_data.players[0];
     let e2p_x = player.pos.x - enemy.pos.x;
     let e2p_y = player.pos.y - enemy.pos.y;
+  
+    let mag = sqrt(e2p_x**2 + e2p_y**2);
+     
+    e2p_x /= mag;
+    e2p_y /= mag;
 
     let dist = vector2_dist(player.pos, enemy.pos);
 
@@ -135,7 +139,7 @@ const behaviour_scripts = {
 
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
-        let proj = new Projectile(enemy.pos.x, enemy.pos.y, e2p_x*0.01, e2p_y*0.01, world_data);
+        world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
       }
     }
 
