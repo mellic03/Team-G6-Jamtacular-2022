@@ -68,13 +68,10 @@ class UI {
 
     */
 
-    fill(255);
-    textSize(60);
+    
     if (frameCount % 30 == 0)
       this.framerate = Math.floor(frameRate());
-    text(`FPS: ${this.framerate}`, 10, 30);
-    text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
-    text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
+
 
     if(this.helm == true){
       image(this.helmet,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -93,11 +90,12 @@ class UI {
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
     }
-    //this.helmet.pause();
-    //this.helmet.getCurrentFrame();
-    //noStroke();
-   
-    //this.getFrame();
+    
+    fill(255);
+    textSize(60);
+    text(`FPS: ${this.framerate}`, 10, 30);
+    text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
+    text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
   }
 
   draw_stat_ui() {
