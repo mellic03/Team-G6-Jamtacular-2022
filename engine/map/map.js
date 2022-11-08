@@ -150,10 +150,10 @@ class Map {
     }
   }
 
-  point_in_grid(pos) {
+  point_in_grid(x, y) {
 
-    let xprime = Math.floor(pos.x/this.width);
-    let yprime = Math.floor(pos.y/this.width);
+    let xprime = Math.floor(x/this.width);
+    let yprime = Math.floor(y/this.width);
   
     if (this.tilemap[this.width*yprime + xprime] == 1) {
       return true

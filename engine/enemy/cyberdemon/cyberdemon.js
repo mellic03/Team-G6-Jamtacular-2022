@@ -155,7 +155,7 @@ class CyberDemon {
 
   draw(world_data) {
 
-    if (frameCount % floor(frameRate()) == 0) {
+    if (frameCount % 30 == 0) {
       let frame_delay = floor( 2/9 * ceil(frameRate()));
       this.sprite.animations.walkback.frameDelay        = frame_delay;
       this.sprite.animations.walkbackright.frameDelay   = frame_delay;
@@ -170,6 +170,8 @@ class CyberDemon {
     this.follow_player(world_data);
     this.correct_angle(world_data);
   }
+
+  next_pos = new Vector2(0, 0);
 
   follow_player(world_data) {
     let player = world_data.players[0];
@@ -194,9 +196,13 @@ class CyberDemon {
 
     this.to_player.x = this.dir.x;
     this.to_player.y = this.dir.y;
-    this.to_player.scale(0.1);
 
-    this.pos.add(this.to_player);
+    if (!world_data.active_map.point_in_grid(this.pos.x+this.to_player.x*20, this.pos.y+this.to_player.y*20)) {
+      this.to_player.scale(0.1);
+      this.pos.add(this.to_player);
+    }
+
+    circle(this.pos.x, this.pos.y, 20);
   }
 
 
