@@ -109,7 +109,7 @@ const behaviour_scripts = {
   killable(enemy, world_data) {
     
     if (enemy.health <= 0 && enemy.death_sound_play == false) {
-      enemy.death.play();
+      enemy.sound_death.play();
       enemy.death_sound_play = true;
       return;
     }
