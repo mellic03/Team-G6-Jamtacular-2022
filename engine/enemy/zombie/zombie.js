@@ -11,6 +11,7 @@ class Zombie {
   directory; // folder to retrieve assets from
 
   speed = 1;
+  death_sound_play;
 
   sprite;
 
@@ -132,6 +133,9 @@ class Zombie {
     this.anim_left = loadAnimation(this.sheet_left);
     this.anim_left.frameDelay = 32;
     this.sprite.addAnimation('walkleft', this.anim_left);
+    
+    this.death_sound_play = false;
+    this.death = this.sound_death;
   }
 
   draw(world_data) {
