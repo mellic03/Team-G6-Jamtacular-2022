@@ -28,8 +28,6 @@ const behaviour_scripts = {
 
     if (enemy.health <= 0) {
       enemy.sprite.changeAnimation("death");
-
-
       return;
     }
 
@@ -113,7 +111,6 @@ const behaviour_scripts = {
     if (enemy.health <= 0 && enemy.death_sound_play == false) {
       enemy.death.play();
       enemy.death_sound_play = true;
-
       return;
     }
 
