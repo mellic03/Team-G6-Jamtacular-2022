@@ -18,6 +18,7 @@ class UI {
     this.hud = loadImage('engine/ui/hud.png');
     this.helmeton = loadImage('engine/ui/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/helmetoff.gif');
+    this.vcr = loadImage('engine/ui/vcr.gif');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -81,6 +82,7 @@ class UI {
     
     if(this.ui_display == true) {
       //image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
+      image(this.vcr,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
