@@ -85,7 +85,7 @@ class UI {
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
     }
-    console.log(this.toggle);
+    // console.log(this.toggle);
 
 
 
@@ -135,7 +135,7 @@ class UI {
       image(this.helmeton,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
       this.helmeton.play();
       this.currframe = this.helmeton.getCurrentFrame();
-      console.log(this.currframe);
+      // console.log(this.currframe);
       this.helmetoff.reset();
 
 
@@ -155,7 +155,7 @@ class UI {
       this.currframe2 = this.helmetoff.getCurrentFrame();
       //hjthis.helmetoff.setFrame(1);
       image(this.helmetoff, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      console.log(this.currframe2);
+      // console.log(this.currframe2);
       this.helmeton.reset();
 
 

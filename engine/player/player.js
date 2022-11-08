@@ -107,16 +107,10 @@ class Player {
 
     this.occlude_sprites(this.sprite_buffer);
 
-    // console.log(world_data.ui_handler.helmetoff.getCurrentFrame())
-
     if (world_data.ui_handler.helmeton.getCurrentFrame() >= 14) {
       drawSprite(this.fist_L_sprite);
       drawSprite(this.fist_R_sprite);
     }
-
-    drawSprite(this.fist_L_sprite);
-    drawSprite(this.fist_R_sprite);
-
 
     translate(0, -5*cos(0.1*this.headbob_count));
   }
