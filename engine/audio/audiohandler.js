@@ -14,7 +14,7 @@ class AudioHandler {
       this.tracks.map1_track1 = loadSound() blah blah blah I cant remember how sound works
     */
 
-      this.tracks[0] = loadSound('sound/track1.mp3')
+      this.tracks[0] = loadSound('engine/audio/sounds/music/track1.mp3')
   }
 
   setup() {

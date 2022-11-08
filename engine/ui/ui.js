@@ -19,7 +19,7 @@ class UI {
     this.helmeton = loadImage('engine/ui/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/helmetoff.gif');
     this.vcr = loadImage('engine/ui/vcr.gif');
-    this.helmsound = loadSound('sound/helmet.mp3');
+    this.helmsound = loadSound('engine/audio/sounds/player_sounds/helmet.mp3');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');

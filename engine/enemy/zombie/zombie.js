@@ -34,6 +34,8 @@ class Zombie {
   anim_front_angle;
   anim_back_angle;
 
+  sound_death;
+
   /**
    * @param {*} x x position of enemy
    * @param {*} y y position of enemy
@@ -101,6 +103,10 @@ class Zombie {
         this.img_side,
         43, 53, 4
       );
+    });
+
+    loadSound(this.directory + "/sounds/death.mp3", (sound) => {
+      this.sound_death = sound;
     });
 
   }
