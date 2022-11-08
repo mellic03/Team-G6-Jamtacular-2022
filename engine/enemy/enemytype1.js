@@ -18,6 +18,10 @@ class EnemyType_1 {
   attack_range = 50;
   push_range = 7;
 
+  on_last_frame = false;
+  on_first_frame = true;
+
+
   sprite;
 
   occlude_start; occlude_end;

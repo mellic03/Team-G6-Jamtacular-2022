@@ -165,7 +165,7 @@
     "cyberdemon": {
       "directory": "engine/enemy/cyberdemon",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": [],
       "height": 0.07,
       "vertical_offset": -1200,
       "health": 100,
