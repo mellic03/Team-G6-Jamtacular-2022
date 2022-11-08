@@ -27,7 +27,9 @@ function setup() {
 let world_data = {
   players: player_handler._players,
   maps: map_handler._maps,
-  map_handler: map_handler
+  map_handler: map_handler,
+  ui_handler: ui_handler,
+  audio_handler: audio_handler
 };
 
 function draw() {

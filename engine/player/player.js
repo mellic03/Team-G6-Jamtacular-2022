@@ -103,8 +103,10 @@ class Player {
     this.sprite_render(world_data.map_handler.active_map.enemies.concat(world_data.map_handler.active_map.props).concat(world_data.map_handler.active_map.pickups));
     this.occlude_sprites(this.sprite_buffer);
     // this.draw_minimap(world_data.active_map);
-    drawSprite(this.fist_L_sprite);
-    drawSprite(this.fist_R_sprite);
+    if (world_data.ui_handler.helmet.getCurrentFrame() >= 14) {
+      drawSprite(this.fist_L_sprite);
+      drawSprite(this.fist_R_sprite);
+    }
 
     translate(0, -5*cos(0.1*this.headbob_count));
   }
