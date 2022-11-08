@@ -19,6 +19,7 @@ class UI {
     this.helmeton = loadImage('engine/ui/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/helmetoff.gif');
     this.vcr = loadImage('engine/ui/vcr.gif');
+    this.helmsound = loadSound('sound/helmet.mp3');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -47,6 +48,7 @@ class UI {
     noSmooth();
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
+    this.helmsound.setVolume(0.3);
     textFont(this.doom_font);
     this.toggle = false;
 
@@ -139,12 +141,11 @@ class UI {
       this.currframe = this.helmeton.getCurrentFrame();
       // console.log(this.currframe);
       this.helmetoff.reset();
-
-
       this.helmoff = false;
 
       if(this.currframe == 15){
         this.helm = false;
+        this.helmsound.play();
         this.ui_display = true;
 
       }
@@ -175,6 +176,8 @@ class UI {
     if(keyCode == keycodes.H && this.toggle == true) {
       this.helmoff = true;
       this.helmon = false;
+      this.helmsound.play();
+
       this.toggle = false; 
     }
   }
