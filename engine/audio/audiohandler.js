@@ -14,7 +14,7 @@ class AudioHandler {
       this.tracks.map1_track1 = loadSound() blah blah blah I cant remember how sound works
     */
 
-      this.tracks.map1_track1 = loadSound('sound/track1.mp3')
+      this.tracks[0] = loadSound('sound/track1.mp3')
   }
 
   setup() {
@@ -33,11 +33,11 @@ class AudioHandler {
     //   }
     // }
 
-    if (world_data.map_handler.active_map.name == "map1")
+    if (world_data.map_handler.active_map.name == "m1")
     {
       if (this.audio_lock == false) {
-        this.tracks.map1_track1.loop();
-        this.tracks.map1_track1.setVolume(0);
+        this.tracks[0].loop();
+        this.tracks[0].setVolume(0.4);
         this.audio_lock = true;
       }
     }

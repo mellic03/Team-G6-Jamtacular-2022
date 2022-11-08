@@ -70,7 +70,6 @@
     "deadboi": {
       "directory": "engine/prop/deadboi",
       "frames": 1,
-      "random_placement": true,
       "collision_radius": 0,
       "height": 0.1,
       "vertical_offset": 0
