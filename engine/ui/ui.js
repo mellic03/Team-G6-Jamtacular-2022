@@ -6,11 +6,14 @@ class UI {
   faces_left = [];
   faces_right = [];
   state;
+  helm;
+  currframe;
 
   preload() {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
     this.hud = loadImage('engine/ui/hud.png');
+    this.helmet = loadImage('engine/ui/helmet.gif');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -37,6 +40,7 @@ class UI {
 
   setup() {
     noSmooth();
+    console.log(this.helmet.numFrames);
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     textFont(this.doom_font);
@@ -44,6 +48,7 @@ class UI {
     this.ui_banner.resize(SCREEN_WIDTH, SCREEN_HEIGHT/ 10);
     //this.chad_anim.resize(100, 100);
     //this.chad.resize(100, 100);
+    this.helm = true;
   }
 
   draw(world_data) {
@@ -70,10 +75,33 @@ class UI {
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
     image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
     image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    if(this.helm == true){
+      image(this.helmet,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+      this.currframe = this.helmet.getCurrentFrame();
+      if(this.currframe == 19){
+        this.helm = false;
+      }
+    }
+    //this.helmet.pause();
+    //this.helmet.getCurrentFrame();
     noStroke();
     this.draw_stat_ui(world_data);
     this.draw_face_state(world_data);
+    //this.getFrame();
   }
+
+  getFrame() {
+
+    //text(this.currframe,500,500);
+    if(helm == true){
+
+    }
+    if(this.currframe == 19) {
+    }
+
+
+  }
+
 
   draw_stat_ui() {
     fill(250, 150, 150);
