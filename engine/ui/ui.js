@@ -75,15 +75,18 @@ class UI {
     text(`FPS: ${this.framerate}`, 10, 30);
     text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
+
     if(this.helm == true){
       image(this.helmet,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
       this.currframe = this.helmet.getCurrentFrame();
+
       if(this.currframe == 19){
         this.helm = false;
         this.ui_display = true;
       }
 
     }
+
     if(this.ui_display == true) {
       //image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -114,15 +117,15 @@ class UI {
     for (let player of world_data.players) {
       this.state = ceil(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
-        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2, 
+        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2.17, 
                                                         SCREEN_HEIGHT - this.ui_banner.height);  
       }
       else if (keyIsDown(keycodes.RIGHT)) {
-        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2, 
+        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2.17, 
                                                          SCREEN_HEIGHT - this.ui_banner.height);
       }
       else {
-        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2, 
+        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2.17, 
                                                           SCREEN_HEIGHT - this.ui_banner.height);
       }
     }
