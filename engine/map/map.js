@@ -161,10 +161,6 @@ class Map {
       enemy.draw(world_data);
     }
 
-    for (let pickup of this.pickups) {
-      pickup.draw();
-    }
-  
     for (let prop of this.props) {
       prop.draw(world_data);
     }
