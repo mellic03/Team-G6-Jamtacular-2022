@@ -54,7 +54,7 @@ SPAWN
 NULL
 PROP: stool west
 NULL
-NULL
+PROP: light
 NULL
 WALL: 050,050,050
 NULL
