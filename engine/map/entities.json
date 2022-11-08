@@ -84,6 +84,14 @@
       "vertical_offset": 3400
     },
 
+    "vendingmachine": {
+      "directory": "engine/prop/vendingmachine",
+      "frames": 1,
+      "collision_radius": 0,
+      "height": 0.09,
+      "vertical_offset": 1500
+    },
+    
     "exit_portal": {
       "directory": "engine/prop/exit_portal",
       "frames": 4,

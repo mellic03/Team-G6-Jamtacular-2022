@@ -52,10 +52,10 @@ WALL: 050,050,050
 NULL
 SPAWN
 NULL
-PROP: stool west
 NULL
 PROP: light
 NULL
+PROP: vendingmachine north
 WALL: 050,050,050
 NULL
 NULL
