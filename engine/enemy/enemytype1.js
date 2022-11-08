@@ -20,6 +20,7 @@ class EnemyType_1 {
 
   on_last_frame = false;
   on_first_frame = true;
+  death_sound_play;
 
 
   sprite;
@@ -161,7 +162,9 @@ class EnemyType_1 {
     this.anim_death = loadAnimation(this.sheet_death);
     this.anim_death.looping = false;
     this.sprite.addAnimation('death', this.anim_death);
-  
+
+    this.death_sound_play = false;
+    this.death = this.sound_death;
 
     this.og_active_img = this.og_img_front;
   }
