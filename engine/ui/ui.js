@@ -4,6 +4,7 @@ class UI {
   faces_middle = [];
   faces_left = [];
   faces_right = [];
+  armor_sprites = [];
   state;
   helm;
   helmoff;
@@ -16,9 +17,14 @@ class UI {
 
     this.ui_banner = loadImage('engine/ui/banner.png');
     this.hud = loadImage('engine/ui/hud.png');
+
+    this.armor_sprites[2] = loadImage('engine/ui/break0.png');
+    this.armor_sprites[1] = loadImage('engine/ui/break1.png');
+    this.armor_sprites[0] = loadImage('engine/ui/break2.png');
+
+    this.pain = loadImage('engine/ui/PAIN1.png')
     this.helmeton = loadImage('engine/ui/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/helmetoff.gif');
-    this.vcr = loadImage('engine/ui/vcr.gif');
     this.helmsound = loadSound('engine/audio/sounds/player_sounds/helmet.mp3');
 
     this.faces_middle[0] = loadImage('engine/ui/skull.png');
@@ -83,17 +89,12 @@ class UI {
 
     
     if(this.ui_display == true) {
-      //image(this.ui_banner, SCREEN_WIDTH - this.ui_banner.width, SCREEN_HEIGHT - this.ui_banner.height);
-      image(this.vcr,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+      this.draw_armor_state(world_data);
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
-    }
-    // console.log(this.toggle);
+    };
 
-
-
-    
     fill(255);
     textSize(60);
     text(`FPS: ${this.framerate}`, 10, 30);
@@ -118,18 +119,26 @@ class UI {
     for (let player of world_data.players) {
       this.state = ceil(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
-        image(this.faces_left[floor(player.health/20)], SCREEN_WIDTH/2.17, 
+        image(this.faces_left[this.state], SCREEN_WIDTH/2.17, 
                                                         SCREEN_HEIGHT - this.ui_banner.height);  
       }
       else if (keyIsDown(keycodes.RIGHT)) {
-        image(this.faces_right[floor(player.health/20)], SCREEN_WIDTH/2.17, 
+        image(this.faces_right[this.state], SCREEN_WIDTH/2.17, 
                                                          SCREEN_HEIGHT - this.ui_banner.height);
       }
       else {
-        image(this.faces_middle[floor(player.health/20)], SCREEN_WIDTH/2.17, 
+        image(this.faces_middle[this.state], SCREEN_WIDTH/2.17, 
                                                           SCREEN_HEIGHT - this.ui_banner.height);
       }
     }
+  }
+
+  draw_armor_state(world_data) {
+    for (let player of world_data.players) {
+      this.state = ceil(player.armor/50);
+      image(this.armor_sprites[this.state], -50, 50, SCREEN_WIDTH+50, SCREEN_HEIGHT-200);
+    }
+
   }
 
 

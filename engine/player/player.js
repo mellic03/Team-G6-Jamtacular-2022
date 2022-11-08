@@ -84,7 +84,9 @@ class Player {
 
   draw(world_data) {
     
-    this.health = clamp(this.health, 0, 100)
+    this.health = clamp(this.health, 0, 100);
+    this.armor = clamp(this.armor, 0, 100);
+    this.armor-= 0.01;
 
     if (world_data.map_handler.active_map == undefined) {
       return;
