@@ -141,7 +141,7 @@ class UI {
 
       this.helmoff = false;
 
-      if(this.currframe == 19){
+      if(this.currframe == 15){
         this.helm = false;
         this.ui_display = true;
 
@@ -159,7 +159,7 @@ class UI {
       this.helmeton.reset();
 
 
-      if(this.currframe2 == 18) {
+      if(this.currframe2 == 14) {
         this.helmoff = false;
 
 
