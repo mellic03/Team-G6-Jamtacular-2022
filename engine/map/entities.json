@@ -106,6 +106,14 @@
       "vertical_offset": 150
     },
 
+    "lightflkr": {
+      "directory": "engine/prop/lightflkr",
+      "frames": 6,
+      "collision_radius": 0,
+      "height": 0.1,
+      "vertical_offset": 150
+    },
+
     "projectile": {
       "directory": "engine/prop/projectile",
       "frames": 1,
