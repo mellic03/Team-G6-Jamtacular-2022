@@ -143,6 +143,8 @@ class Map {
             enemy.height = obj.height;
             enemy.voffset = obj.vertical_offset;
             
+            enemy.speed = obj.speed;
+            
             enemy.follow_range = obj.follow_range;
             enemy.chase_range = obj.chase_range;
             enemy.attack_range = obj.attack_range;

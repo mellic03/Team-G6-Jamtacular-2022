@@ -173,14 +173,14 @@ class EnemyType_1 {
   draw(world_data) {
 
     if (frameCount % floor(frameRate()) == 0) {
-      let frame_delay = floor( 2/9 * ceil(frameRate()));
+      let frame_delay = floor( 2/9 * ceil(frameRate()) / this.speed);
       this.sprite.animations.walkback.frameDelay        = frame_delay;
       this.sprite.animations.walkbackangle.frameDelay   = frame_delay;
       this.sprite.animations.walkfront.frameDelay       = frame_delay;
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
       this.sprite.animations.attack.frameDelay          = frame_delay;
-      this.sprite.animations.death.frameDelay           = frame_delay;
+      this.sprite.animations.death.frameDelay           = frame_delay  * this.speed;
     }
 
     this.collide_against_enemies(world_data.map_handler.active_map.enemies);

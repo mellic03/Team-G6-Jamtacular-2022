@@ -76,14 +76,11 @@ const behaviour_scripts = {
     else if (dist <= enemy.chase_range) {
       enemy.dir.lerp(enemy.to_this, 0.01);
       enemy.dir.normalise();
-
-      movement_x = enemy.dir.x;
-      movement_y = enemy.dir.y;
     }
 
     else if (dist <= enemy.follow_range) {
       
-      if (enemy.player_delta_dist < 0.01) {
+      if (enemy.player_delta_dist < 0.1) {
 
         let dot = -1;
         for (let i=0; i<4; i++) {
@@ -95,21 +92,31 @@ const behaviour_scripts = {
           }
         }
       }
-      movement_x = enemy.dir.x;
-      movement_y = enemy.dir.y;
+    }
+
+    if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*enemy.push_range, enemy.pos.y+movement_y*enemy.push_range)) {
+      let index = floor(random(0, 4));
+      console.log(index)
+      enemy.dir.x = enemy.dirs[index].x;
+      enemy.dir.y = enemy.dirs[index].y;
     }
 
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
     enemy.player_last_dist = dist;
 
+    movement_x = enemy.dir.x;
+    movement_y = enemy.dir.y;
+
     mag = sqrt(movement_x**2 + movement_y**2);
     movement_x = (mag != 0) ? movement_x/mag : 0;
     movement_y = (mag != 0) ? movement_y/mag : 0;
 
-    if (!world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*enemy.push_range, enemy.pos.y+movement_y*enemy.push_range)) {
-      enemy.pos.x += movement_x * 0.1;
-      enemy.pos.y += movement_y * 0.1;
-    }
+    movement_x *= enemy.speed;
+    movement_y *= enemy.speed;
+
+    enemy.pos.x += movement_x * 0.01 * deltaTime;
+    enemy.pos.y += movement_y * 0.01 * deltaTime;
+
   },
 
   killable(enemy, world_data) {
