@@ -147,7 +147,6 @@ class Map {
             if (tok1.length == 2) {
 
               for (let j=0; j<+tok1[1]; j++) {
-                console.log("eee")
                 enemy = new EnemyType_1((i%25)*25 + 12.5 + random(-5, 5), floor(i/25)*25 + 12.5 + random(-5, 5), obj.directory);
 
                 for (let script of obj.behaviour_scripts) {

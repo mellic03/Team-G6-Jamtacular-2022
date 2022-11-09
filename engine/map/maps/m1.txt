@@ -124,32 +124,32 @@ WALL: 050,050,050
 WALL: 050,050,050
 WALL: 050,050,050
 WALL: 050,050,050
+NULL
+WALL: 050,050,050
+NULL
+WALL: 050,050,050
+NULL
+NULL
+NULL
+WALL: 050,050,050
+PROP: pillar_reflect
+NULL
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+WALL: 050,050,050
+WALL: 050,050,050
 PICKUP: ritalin
-WALL: 050,050,050
-NULL
-WALL: 050,050,050
-NULL
-NULL
-NULL
-WALL: 050,050,050
-PROP: pillar_reflect
-NULL
-PROP: pillar_reflect
-NULL
-PROP: pillar_reflect
-NULL
-PROP: pillar_reflect
-ENEMY: pinky
-PROP: pillar_reflect
-ENEMY: pinky
-PROP: pillar_reflect
-NULL
-PROP: pillar_reflect
-NULL
-PROP: pillar_reflect
-WALL: 050,050,050
-WALL: 050,050,050
-NULL
 WALL: 050,050,050
 NULL
 NULL
@@ -158,20 +158,20 @@ ENEMY: zombie
 NULL
 NULL
 NULL
-PROP: light
 NULL
-PROP: light
 NULL
-PROP: light
 NULL
-PROP: light
-ENEMY: pinky
-PROP: light
-ENEMY: pinky
-PROP: light
 NULL
-PROP: light
 NULL
+NULL
+NULL
+NULL
+ENEMY: pinky:5
+NULL
+NULL
+NULL
+NULL
+PROP: pillar_reflect
 WALL: 050,050,050
 WALL: 050,050,050
 NULL
@@ -185,17 +185,17 @@ WALL: 050,050,050
 PROP: pillar_reflect
 NULL
 PROP: pillar_reflect
-NULL
 PROP: pillar_reflect
-NULL
 PROP: pillar_reflect
-ENEMY: pinky
 PROP: pillar_reflect
-ENEMY: pinky
 PROP: pillar_reflect
-NULL
 PROP: pillar_reflect
-NULL
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
+PROP: pillar_reflect
 PROP: pillar_reflect
 WALL: 050,050,050
 WALL: 050,050,050
@@ -249,37 +249,37 @@ NULL
 NULL
 WALL: 050,050,050
 WALL: 050,050,050
-PICKUP: health
+NULL
 WALL: 050,050,050
 NULL
 WALL: 050,050,050
 WALL: 050,050,050
-WALL: 050,050,050
-WALL: 050,050,050
-WALL: 050,050,050
-WALL: 050,050,050
-NULL
-WALL: 050,050,050
-WALL: 050,050,050
-WALL: 050,050,050
-NULL
-WALL: 050,050,050
-WALL: 050,050,050
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
-NULL
 WALL: 050,050,050
 WALL: 050,050,050
 WALL: 050,050,050
 WALL: 050,050,050
 NULL
 WALL: 050,050,050
+WALL: 050,050,050
+WALL: 050,050,050
 NULL
-PICKUP: armor
+WALL: 050,050,050
+WALL: 050,050,050
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+WALL: 050,050,050
+WALL: 050,050,050
+WALL: 050,050,050
+WALL: 050,050,050
+NULL
+WALL: 050,050,050
+NULL
+NULL
 NULL
 WALL: 050,050,050
 PROP: stool:north
@@ -353,9 +353,9 @@ NULL
 NULL
 NULL
 WALL: 050,050,050
-PICKUP: health
 NULL
 PICKUP: health
+NULL
 WALL: 050,050,050
 WALL: 050,050,050
 WALL: 050,050,050
