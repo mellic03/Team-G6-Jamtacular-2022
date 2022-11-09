@@ -28,6 +28,9 @@ const behaviour_scripts = {
     enemy.to_player.x = player.pos.x - enemy.pos.x;
     enemy.to_player.y = player.pos.y - enemy.pos.y;
 
+    enemy.to_player.normalise();
+    enemy.to_player.scale(0.1);
+
     enemy.to_this.x = enemy.pos.x - player.pos.x;
     enemy.to_this.y = enemy.pos.y - player.pos.y;
 
@@ -58,6 +61,12 @@ const behaviour_scripts = {
     fill(0, 255, 0);
     circle(400+player.pos.x, 50+player.pos.y, 10);
 
+    if (dist <= enemy.push_range) {
+      player.vel.x = 0;
+      player.vel.y = 0;
+      player.vel.x += enemy.to_player.x;
+      player.vel.y += enemy.to_player.y;
+    }
 
     if (dist <= enemy.attack_range) {
       enemy.sprite.changeAnimation("attack");
@@ -93,15 +102,13 @@ const behaviour_scripts = {
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
     enemy.player_last_dist = dist;
 
-    let mag = sqrt(movement_x**2 + movement_y**2);
+    mag = sqrt(movement_x**2 + movement_y**2);
     movement_x = (mag != 0) ? movement_x/mag : 0;
     movement_y = (mag != 0) ? movement_y/mag : 0;
-    movement_x *= 0.1;
-    movement_y *= 0.1;
 
-    if (!world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*50, enemy.pos.y+movement_y*50)) {
-      enemy.pos.x += movement_x;
-      enemy.pos.y += movement_y;
+    if (!world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*enemy.push_range, enemy.pos.y+movement_y*enemy.push_range)) {
+      enemy.pos.x += movement_x * 0.1;
+      enemy.pos.y += movement_y * 0.1;
     }
   },
 
