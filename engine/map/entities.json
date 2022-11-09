@@ -147,7 +147,11 @@
       "vertical_offset": 2300,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 150,
+      "chase_range": 150,
+      "attack_range": 70,
+      "push_range": 7
     },
 
     "zombie_reflect": {
@@ -158,7 +162,11 @@
       "vertical_offset": 6000,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 100,
+      "chase_range": 20,
+      "attack_range": 15,
+      "push_range": 7
     },
   
     "cyberdemon": {
@@ -169,7 +177,11 @@
       "vertical_offset": -1200,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 300,
+      "chase_range": 300,
+      "attack_range": 150,
+      "push_range": 15
     },
   
     "notzi": {
@@ -180,7 +192,11 @@
       "vertical_offset": 2300,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 100,
+      "chase_range": 20,
+      "attack_range": 15,
+      "push_range": 7
     },
 
     "revenant": {
@@ -191,7 +207,11 @@
       "vertical_offset": 2300,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 100,
+      "chase_range": 20,
+      "attack_range": 15,
+      "push_range": 7
     },
 
     "pinky": {
@@ -202,7 +222,11 @@
       "vertical_offset": 2300,
       "health": 100,
       "damage": 10,
-      "speed": 2
+      "speed": 2,
+      "follow_range": 250,
+      "chase_range": 20,
+      "attack_range": 15,
+      "push_range": 7
     }
 
   }

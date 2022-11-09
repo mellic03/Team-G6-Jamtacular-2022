@@ -143,6 +143,11 @@ class Map {
             enemy.frames = obj.frames;
             enemy.height = obj.height;
             enemy.voffset = obj.vertical_offset;
+            
+            enemy.follow_range = obj.follow_range;
+            enemy.chase_range = obj.chase_range;
+            enemy.attack_range = obj.attack_range;
+            enemy.push_range = obj.push_range;
 
             this.enemies.push(enemy);
           }

@@ -16,14 +16,6 @@ const behaviour_scripts = {
     enemy.pos.y += dv_y;
   },
 
-  follow_player(enemy, world_data) {
-    let player = world_data.players[0];
-
-    let dir = vector2_sub(player.pos, enemy.pos);
-    dir.normalise();
-    enemy.pos.add(dir);
-  },
-
   follow_player_zigzag(enemy, world_data) {
 
     if (enemy.health <= 0) {
@@ -33,77 +25,84 @@ const behaviour_scripts = {
 
     let player = world_data.players[0];
 
-    let dist = vector2_dist(player.pos, enemy.pos);
+    enemy.to_player.x = player.pos.x - enemy.pos.x;
+    enemy.to_player.y = player.pos.y - enemy.pos.y;
 
-    let enemy_to_player = vector2_sub(player.pos, enemy.pos);
-    enemy_to_player.normalise();
-    let player_to_enemy = vector2_sub(enemy.pos, player.pos);
+    enemy.to_this.x = enemy.pos.x - player.pos.x;
+    enemy.to_this.y = enemy.pos.y - player.pos.y;
+
+
+    let movement_x = 0;
+    let movement_y = 0;
+
+    let dist = vector2_dist(player.pos, enemy.pos);
 
     // Move towards the player at the nearest 45 degree angle,
     // keep track of delta_dist, if delta_dist becomes too small, 
     // recalculate nearest 45 degree angle
 
-    // circle(enemy.pos.x, enemy.pos.y, 10);
+    circle(400+enemy.pos.x, 50+enemy.pos.y, 10);
 
-    // stroke(0, 255, 0);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dir.x*40, enemy.pos.y+enemy.dir.y*40);
+    stroke(0, 255, 0);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dir.x*40, 50+enemy.pos.y+enemy.dir.y*40);
 
-    // stroke(0, 0, 255);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[0].x*20, enemy.pos.y+enemy.dirs[0].y*20);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[1].x*20, enemy.pos.y+enemy.dirs[1].y*20);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[2].x*20, enemy.pos.y+enemy.dirs[2].y*20);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy.dirs[3].x*20, enemy.pos.y+enemy.dirs[3].y*20);
+    stroke(0, 0, 255);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[0].x*20, 50+enemy.pos.y+enemy.dirs[0].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[1].x*20, 50+enemy.pos.y+enemy.dirs[1].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[2].x*20, 50+enemy.pos.y+enemy.dirs[2].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[3].x*20, 50+enemy.pos.y+enemy.dirs[3].y*20);
 
-    // stroke(0, 0, 0);
-    // line(enemy.pos.x, enemy.pos.y, enemy.pos.x+enemy_to_player.x*30, enemy.pos.y+enemy_to_player.y*30);
+    stroke(0, 0, 0);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.to_player.x*30, 50+enemy.pos.y+enemy.to_player.y*30);
 
-    // fill(0, 255, 0);
-    // circle(player.pos.x, player.pos.y, 10);
+    fill(0, 255, 0);
+    circle(400+player.pos.x, 50+player.pos.y, 10);
 
-    if (enemy.player_delta_dist < 0.005*deltaTime) {
-      let closest_dot = -1;
+
+    if (dist <= enemy.attack_range) {
+      enemy.sprite.changeAnimation("attack");
+      return;
+    }
+
+    else if (dist <= enemy.chase_range) {
+      enemy.dir.lerp(enemy.to_this, 0.01);
+      enemy.dir.normalise();
+
+      movement_x = enemy.dir.x;
+      movement_y = enemy.dir.y;
+    }
+
+    else if (dist <= enemy.follow_range) {
       
-      for (let i=0; i<4; i++) {
-        let dot = vector2_dot(enemy.dirs[i], enemy_to_player);
-        if (dot > closest_dot) {
-          closest_dot = dot;
-          enemy.dir.x = enemy.dirs[i].x
-          enemy.dir.y = enemy.dirs[i].y;
+      if (enemy.player_delta_dist < 0.01) {
+
+        let dot = -1;
+        for (let i=0; i<4; i++) {
+          let new_dot = vector2_dot(enemy.dirs[i], enemy.to_player);
+          if (new_dot > dot) {
+            dot = new_dot;
+            enemy.dir.x = enemy.dirs[i].x;
+            enemy.dir.y = enemy.dirs[i].y;
+          }
         }
       }
-    }
-
-    if (dist > enemy.chase_range) {
-      if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x + enemy.dir.get_scaled(4).x, enemy.pos.y + enemy.dir.get_scaled(4).y) == false)
-        enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
-      
-      else {
-        enemy.dir.rotate(0.78);
-        enemy.pos.add(enemy.dir.get_scaled(2));
-        enemy.time1 = enemy.time2 + 3
-      }
-    }
-
-    else if (dist > enemy.chase_range/2) {
-      enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
-      enemy.dir.normalise();
-      enemy.pos.add(enemy.dir.get_scaled(0.02*deltaTime));
-    }
-
-    else if (dist <= enemy.attack_range) {
-      enemy.dir.lerp(player_to_enemy, 0.005*deltaTime);
-      enemy.dir.normalise();
-      enemy.sprite.changeAnimation("attack");
-    }
-
-    if (dist <= enemy.push_range) {
-      player.vel.add(enemy.dir.get_scaled(0.2));
+      movement_x = enemy.dir.x;
+      movement_y = enemy.dir.y;
     }
 
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
     enemy.player_last_dist = dist;
 
-    enemy.time2 = floor((new Date()).getTime() / 1000);
+    let mag = sqrt(movement_x**2 + movement_y**2);
+    movement_x = (mag != 0) ? movement_x/mag : 0;
+    movement_y = (mag != 0) ? movement_y/mag : 0;
+    movement_x *= 0.1;
+    movement_y *= 0.1;
+
+    if (!world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*50, enemy.pos.y+movement_y*50)) {
+      enemy.pos.x += movement_x;
+      enemy.pos.y += movement_y;
+    }
   },
 
   killable(enemy, world_data) {

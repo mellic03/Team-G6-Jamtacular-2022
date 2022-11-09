@@ -14,16 +14,19 @@ class EnemyType_1 {
   health = 50;
   damage = 5;
   speed = 1;
+
+  follow_range = 100;
   chase_range = 100;
   attack_range = 50;
   push_range = 7;
+
+  to_player = new Vector2(0, 0);
+  to_this = new Vector2(0, 0);
 
   on_last_frame = false;
   on_first_frame = true;
 
   sprite;
-
-  occlude_start; occlude_end;
 
   frames;
   active_img;

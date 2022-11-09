@@ -174,8 +174,6 @@ class CyberDemon {
     this.correct_angle(world_data);
   }
 
-  next_pos = new Vector2(0, 0);
-
   follow_player(world_data) {
     let player = world_data.players[0];
 
