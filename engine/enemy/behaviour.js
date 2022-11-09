@@ -96,7 +96,6 @@ const behaviour_scripts = {
 
     if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*enemy.push_range, enemy.pos.y+movement_y*enemy.push_range)) {
       let index = floor(random(0, 4));
-      console.log(index)
       enemy.dir.x = enemy.dirs[index].x;
       enemy.dir.y = enemy.dirs[index].y;
     }
