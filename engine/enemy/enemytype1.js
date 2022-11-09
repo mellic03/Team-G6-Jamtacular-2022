@@ -14,6 +14,7 @@ class EnemyType_1 {
   health = 50;
   damage = 5;
   speed = 1;
+  attack_speed = 1;
 
   follow_range = 100;
   chase_range = 100;
@@ -190,7 +191,7 @@ class EnemyType_1 {
       this.sprite.animations.walkfront.frameDelay       = frame_delay;
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
-      this.sprite.animations.attack.frameDelay          = frame_delay * this.speed;
+      this.sprite.animations.attack.frameDelay          = frame_delay * this.attack_speed;
       this.sprite.animations.death.frameDelay           = frame_delay * this.speed;
     }
 

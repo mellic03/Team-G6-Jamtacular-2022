@@ -193,6 +193,7 @@ class Map {
               enemy.health = obj.health;
               enemy.damage = obj.damage;
               enemy.speed = obj.speed;
+              enemy.attack_speed = (obj.attack_speed != undefined) ? obj.attack_speed : 1;
               
               enemy.follow_range = obj.follow_range;
               enemy.chase_range = obj.chase_range;

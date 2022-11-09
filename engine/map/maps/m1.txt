@@ -55,7 +55,7 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: zombie:5
+ENEMY: shotgunner
 PROP: light
 NULL
 NULL
@@ -237,7 +237,7 @@ NULL
 NULL
 NULL
 NULL
-NULL
+ENEMY: shotgunner
 NULL
 WALL: 050,050,050
 NULL

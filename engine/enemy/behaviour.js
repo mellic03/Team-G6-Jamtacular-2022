@@ -88,7 +88,7 @@ const behaviour_scripts = {
 
     else if (dist <= enemy.follow_range) {
       
-      if (enemy.player_delta_dist < 0.1) {
+      if (enemy.player_delta_dist < 0.01) {
 
         let dot = -1;
         for (let i=0; i<4; i++) {
@@ -202,7 +202,7 @@ const behaviour_scripts = {
       
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
+        world_data.map_handler.active_map.create_projectile(enemy.pos, 1*e2p_x, 1*e2p_y);
         enemy.sound_attack.play();
         console.log(enemy.health);
       }
@@ -215,23 +215,26 @@ const behaviour_scripts = {
     if (enemy.health <= 0)
       return;
 
-
     let player = world_data.players[0];
-    let e2p_x = player.pos.x - enemy.pos.x;
-    let e2p_y = player.pos.y - enemy.pos.y;
     
-    let mag = sqrt(e2p_x**2 + e2p_y**2);
-    
-    e2p_x /= mag;
-    e2p_y /= mag;
-    
+    enemy.temp_dir1.x = player.pos.x - enemy.pos.x;
+    enemy.temp_dir1.y = player.pos.y - enemy.pos.y;
+    enemy.temp_dir1.normalise();
+
     let dist = vector2_dist(player.pos, enemy.pos);
     
     if (dist <= enemy.attack_range) {
       
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
+
+        enemy.temp_dir1.rotate(-0.25);
+
+        for (let i=0; i<10; i++) {
+          world_data.map_handler.active_map.create_projectile(enemy.pos, 1*enemy.temp_dir1.x, 1*enemy.temp_dir1.y);
+          enemy.temp_dir1.rotate(0.05);
+        }
+
         enemy.sound_attack.play();
         console.log(enemy.health);
       }
