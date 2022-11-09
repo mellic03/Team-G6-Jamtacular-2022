@@ -534,6 +534,9 @@ class Player {
           this.armor -= projectile.damage;
         else
           this.health -= projectile.damage;
+     
+        this.stimmed_up_on_ritalin = false;
+        this.damage = 10;
       }
     }
   }

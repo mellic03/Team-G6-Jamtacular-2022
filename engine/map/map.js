@@ -251,8 +251,8 @@ class Map {
         projectile.yvel = 0;
       }
       
-      projectile.pos.x += projectile.xvel;
-      projectile.pos.y += projectile.yvel;
+      projectile.pos.x += projectile.xvel * 0.1 * deltaTime;
+      projectile.pos.y += projectile.yvel * 0.1 * deltaTime;
     }
   }
 
@@ -261,9 +261,8 @@ class Map {
     let xprime = Math.floor(x/this.width);
     let yprime = Math.floor(y/this.width);
   
-    if (this.tilemap[this.width*yprime + xprime] == 1) {
+    if (this.tilemap[this.width*yprime + xprime] == 1)
       return true
-    }
   
     return false;
   }
