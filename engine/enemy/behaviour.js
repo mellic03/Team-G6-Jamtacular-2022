@@ -166,6 +166,8 @@ const behaviour_scripts = {
           player.armor -= enemy.damage;
         else
           player.health -= enemy.damage;
+        player.stimmed_up_on_ritalin = false;
+        player.damage = 10;
       }
     }
   },
