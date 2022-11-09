@@ -52,16 +52,19 @@ class Map {
             this.colourmap[i] = [0, 0, 0, 0];
           }
 
+
           if (tokens[0] == "WALL:") {
             this.tilemap[i] = 1;
             let color = splitTokens(tokens[1], ",");
             this.colourmap[i] = [+color[0], +color[1], +color[2], 255];
           }
 
+
           else if (tokens[0] == "SPAWN") {
             this.spawn_x = (i%25)*25 + 12.5;
             this.spawn_y = floor(i/25)*25 + 12.5
           }
+
 
           else if (tokens[0] == "EXIT") {
             this.exit_x = (i%25)*25 + 12.5;
@@ -74,6 +77,7 @@ class Map {
             prop.collision_radius = obj.collision_radius;
             this.props.push(prop);
           }
+
 
           else if (tokens[0] == "PROP:") {
             let tok1 = splitTokens(tokens[1], ':');
@@ -112,6 +116,7 @@ class Map {
             this.props.push(prop);
           }
 
+
           else if (tokens[0] == "PICKUP:") {
             let pickup_name = tokens[1];
             let obj = entity_data.pickups[pickup_name];
@@ -123,38 +128,79 @@ class Map {
             this.pickups.push(pickup);
           }
 
+
           else if (tokens[0] == "ENEMY:") {
-            let enemy_name = tokens[1];
-            let obj = entity_data.enemies[enemy_name];
 
-            let enemy;
-
-            if (enemy_name == "cyberdemon")
-              enemy = new CyberDemon((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
-
-            else
-              enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
-
-            for (let script of obj.behaviour_scripts) {
-              enemy.behaviour_scripts.push(behaviour_scripts[script]);
+            let tok1 = splitTokens(tokens[1], ':');
+            let enemy_name;
+            if (tok1.length == 2) {
+              enemy_name = tok1[0];
+            }
+            else {
+              enemy_name = tokens[1];
             }
 
-            enemy.frames = obj.frames;
-            enemy.height = obj.height;
-            enemy.voffset = obj.vertical_offset;
-            
-            enemy.health = obj.health;
-            enemy.damage = obj.damage;
-            enemy.speed = obj.speed;
-            
-            enemy.follow_range = obj.follow_range;
-            enemy.chase_range = obj.chase_range;
-            enemy.attack_range = obj.attack_range;
-            enemy.push_range = obj.push_range;
+            let obj = entity_data.enemies[enemy_name];
+            let enemy;
 
-            this.enemies.push(enemy);
+            // If spawning multiple enemies
+            if (tok1.length == 2) {
+
+              for (let j=0; j<+tok1[1]; j++) {
+                console.log("eee")
+                enemy = new EnemyType_1((i%25)*25 + 12.5 + random(-5, 5), floor(i/25)*25 + 12.5 + random(-5, 5), obj.directory);
+
+                for (let script of obj.behaviour_scripts) {
+                  enemy.behaviour_scripts.push(behaviour_scripts[script]);
+                }
+
+                enemy.frames = obj.frames;
+                enemy.height = obj.height;
+                enemy.voffset = obj.vertical_offset;
+                
+                enemy.health = obj.health;
+                enemy.damage = obj.damage;
+                enemy.speed = obj.speed;
+                
+                enemy.follow_range = obj.follow_range;
+                enemy.chase_range = obj.chase_range;
+                enemy.attack_range = obj.attack_range;
+                enemy.push_range = obj.push_range;
+
+                this.enemies.push(enemy);
+              }
+            }
+
+            else {
+              if (enemy_name == "cyberdemon")
+                enemy = new CyberDemon((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
+
+              else
+                enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
+
+              for (let script of obj.behaviour_scripts) {
+                enemy.behaviour_scripts.push(behaviour_scripts[script]);
+              }
+
+              enemy.frames = obj.frames;
+              enemy.height = obj.height;
+              enemy.voffset = obj.vertical_offset;
+              
+              enemy.health = obj.health;
+              enemy.damage = obj.damage;
+              enemy.speed = obj.speed;
+              
+              enemy.follow_range = obj.follow_range;
+              enemy.chase_range = obj.chase_range;
+              enemy.attack_range = obj.attack_range;
+              enemy.push_range = obj.push_range;
+
+              this.enemies.push(enemy);
+            }
+
           }
         }
+
 
         for (let enemy of this.enemies) {
           enemy.preload();
