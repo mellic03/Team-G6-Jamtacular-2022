@@ -7,7 +7,7 @@
       "frames": 1,
       "collision_radius": 5,
       "height": 0.1,
-      "vertical_offset": 650
+      "vertical_offset": 0
     },
 
     "pillar_reflect": {
@@ -15,7 +15,7 @@
       "frames": 1,
       "collision_radius": 5,
       "height": 0.05,
-      "vertical_offset": 6000
+      "vertical_offset": 5100
     },
 
     "barrelfire": {
@@ -80,7 +80,7 @@
       "frames": 1,
       "collision_radius": 0,
       "height": 0.13,
-      "vertical_offset": 3400
+      "vertical_offset": 2900
     },
 
     "vendingmachine": {
@@ -88,23 +88,23 @@
       "frames": 1,
       "collision_radius": 0,
       "height": 0.09,
-      "vertical_offset": 1500
+      "vertical_offset": 800
     },
     
     "exit_portal": {
       "directory": "engine/prop/exit_portal",
       "frames": 4,
       "collision_radius": 0,
-      "height": 0.08,
-      "vertical_offset": -300
+      "height": 0.1,
+      "vertical_offset": 100
     },
 
     "light": {
       "directory": "engine/prop/light",
       "frames": 1,
       "collision_radius": 0,
-      "height": 0.08,
-      "vertical_offset": -300
+      "height": 0.1,
+      "vertical_offset": 150
     },
 
     "projectile": {
@@ -144,7 +144,7 @@
       "frames": 4,
       "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.14,
-      "vertical_offset": 2300,
+      "vertical_offset": 1600,
       "health": 100,
       "damage": 10,
       "speed": 2,
@@ -189,7 +189,7 @@
       "frames": 4,
       "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
       "height": 0.14,
-      "vertical_offset": 2300,
+      "vertical_offset": 1800,
       "health": 100,
       "damage": 10,
       "speed": 2,
@@ -219,7 +219,7 @@
       "frames": 4,
       "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
       "height": 0.14,
-      "vertical_offset": 2300,
+      "vertical_offset": 1800,
       "health": 100,
       "damage": 10,
       "speed": 2,

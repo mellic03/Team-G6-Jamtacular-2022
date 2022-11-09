@@ -90,7 +90,6 @@ class Map {
             // If directional prop
             if (tok1.length == 2) {
               let dir;
-              console.log(obj)
               switch (tok1[1]) {
                 case ("north"): dir = new Vector2(+1,  0); break;
                 case ("east"):  dir = new Vector2( 0, +1); break;
