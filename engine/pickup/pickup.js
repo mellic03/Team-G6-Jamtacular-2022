@@ -5,8 +5,8 @@ class Pickup {
   frames;
   name;
 
-  attribute;
-  amount;
+  attributes = [];
+  amounts = [];
   
   sprite;
 

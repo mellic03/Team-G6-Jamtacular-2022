@@ -504,9 +504,11 @@ class Player {
     for (let pickup of map.pickups) {
       let dist = vector2_dist(this.pos, pickup.pos);
       if (dist < 5) {
-
-        this[pickup.attribute] += pickup.amount;
-        pickup.pos = -100;
+        for (let i=0; i<pickup.attributes.length; i++) {
+          this[pickup.attributes[i]] += pickup.amounts[i];
+        }
+        pickup.pos.x = -100;
+        pickup.pos.y = -100;
 
       }
     }
