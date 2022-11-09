@@ -193,6 +193,14 @@ class Map {
 
     for (let projectile of this.projectiles) {
       projectile.draw(world_data);
+
+      if (this.point_in_grid(projectile.pos.x, projectile.pos.y)) {
+        projectile.pos.x = -100;
+        projectile.pos.y = -100;
+        projectile.xvel = 0;
+        projectile.yvel = 0;
+      }
+      
       projectile.pos.x += projectile.xvel;
       projectile.pos.y += projectile.yvel;
     }
