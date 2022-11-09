@@ -64,19 +64,11 @@ class UI {
 
   draw(world_data) {
 
+    let player = world_data.players[0];
+    player.health = clamp(player.health, 0, 100);
+    player.armor = clamp(player.armor, 0, 100);
 
-    /* Or like this to avoid executing the ui code multiple times:
     
-      let player_pos;
-      let player_health;
-
-      for (let player of world_data.players) {
-        player_pos = player.pos;
-        player_health = player.health;
-      }sa
-
-
-    */
 
     
     if (frameCount % 30 == 0) {

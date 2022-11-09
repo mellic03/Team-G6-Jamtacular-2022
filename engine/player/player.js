@@ -518,7 +518,10 @@ class Player {
       if (vector2_dist(projectile.pos, this.pos) < projectile.radius) {
         projectile.pos.x = -100; projectile.pos.y = -100;
         projectile.xvel = 0; projectile.yvel = 0;
-        this.health -= projectile.damage;
+        if (this.armor > 0)
+          this.armor -= projectile.damage;
+        else
+          this.health -= projectile.damage;
       }
     }
   }

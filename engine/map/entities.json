@@ -150,7 +150,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": [],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 100,
