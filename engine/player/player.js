@@ -3,7 +3,7 @@ class Player {
   health = 100;
   armor = 100;
   stamina = 100;
-  damage = 10;
+  damage = 150;
 
   // POWERUPS
   //---------------------------------

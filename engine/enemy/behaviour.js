@@ -2,15 +2,22 @@ const behaviour_scripts = {
 
   use_velocity(enemy, world_data) {
     enemy.vel.scale(0.95);
-    let dv_x = enemy.vel.x * 0.01 * deltaTime;
-    let dv_y = enemy.vel.y * 0.01 * deltaTime;
+    let dv_x = enemy.vel.x;
+    let dv_y = enemy.vel.y;
 
-    if (point_in_wall(enemy.pos.x+dv_x, enemy.pos.y+dv_y, world_data.map_handler.active_map)) {
+    let mag = sqrt(dv_x**2 + dv_y**2);
+    let dv_xn = dv_x/mag;
+    let dv_yn = dv_y/mag;
+
+    if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x+dv_xn*enemy.push_range, enemy.pos.y+dv_yn*enemy.push_range)) {
       dv_x *= -1;
       dv_y *= -1;
       enemy.vel.x = 0;
       enemy.vel.y = 0;
     }
+
+    dv_x *= 0.01 * deltaTime;
+    dv_y *= 0.01 * deltaTime;
 
     enemy.pos.x += dv_x;
     enemy.pos.y += dv_y;
@@ -61,6 +68,7 @@ const behaviour_scripts = {
     // fill(0, 255, 0);
     // circle(400+player.pos.x, 50+player.pos.y, 10);
 
+
     if (dist <= enemy.push_range) {
       player.vel.x = 0;
       player.vel.y = 0;
@@ -94,7 +102,7 @@ const behaviour_scripts = {
       }
     }
 
-    if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x+movement_x*enemy.push_range, enemy.pos.y+movement_y*enemy.push_range)) {
+    if (world_data.map_handler.active_map.point_in_grid(enemy.pos.x+enemy.dir.x*enemy.push_range, enemy.pos.y+enemy.dir.y*enemy.push_range)) {
       let index = floor(random(0, 4));
       enemy.dir.x = enemy.dirs[index].x;
       enemy.dir.y = enemy.dirs[index].y;
@@ -129,9 +137,11 @@ const behaviour_scripts = {
     let player = world_data.players[0];
 
     if (vector2_dist(player.pos, enemy.pos) < 15 && player.dealing_damage) {
-      let dir = vector2_sub(enemy.pos, player.pos);
-      dir.scale(1);
-      enemy.vel.add(dir);
+      enemy.to_this.x = enemy.pos.x - player.pos.x;
+      enemy.to_this.y = enemy.pos.y - player.pos.y;
+      enemy.to_this.normalise();
+      enemy.to_this.scale(player.damage);
+      enemy.vel.add(enemy.to_this);
    
       enemy.health -= player.damage;
     }
