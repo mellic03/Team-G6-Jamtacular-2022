@@ -43,8 +43,8 @@ function draw() {
 
   // FOR TESTING SPRITE VERTICAL OFFSET
   //---------------------------------------------------------------------
-  stroke(0, 255, 0);
-  line(0, SCREEN_HEIGHT/2 + 40, SCREEN_WIDTH, SCREEN_HEIGHT/2 + 40);
+  // stroke(0, 255, 0);
+  // line(0, SCREEN_HEIGHT/2 + 40, SCREEN_WIDTH, SCREEN_HEIGHT/2 + 40);
   //---------------------------------------------------------------------
 }
 
