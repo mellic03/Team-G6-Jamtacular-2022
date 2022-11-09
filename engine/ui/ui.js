@@ -8,10 +8,12 @@ class UI {
   state;
   helm;
   helmoff;
+  helm_sound;
   ui_display;
   currframe;
   currframe2;
   toggle;
+
 
   preload() {
 
@@ -56,7 +58,7 @@ class UI {
     this.helmsound.setVolume(0.3);
     textFont(this.doom_font);
     this.toggle = false;
-
+    this.helm_sound = true;
     this.ui_display = false;
   }
 
@@ -142,6 +144,7 @@ class UI {
 
 
   helmet_on() {
+
     if(this.helm == true){
       //this.helmeton.setFrame(1);
       image(this.helmeton,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -149,12 +152,16 @@ class UI {
       this.currframe = this.helmeton.getCurrentFrame();
       // console.log(this.currframe);
       this.helmetoff.reset();
-      this.helmoff = false;
+
+      if(this.currframe == 11 && this.helm_sound == true) {
+        this.helmsound.play()
+        this.helm_sound = false;
+      }
 
       if(this.currframe == 15){
         this.helm = false;
-        this.helmsound.play();
         this.ui_display = true;
+        this.helm_sound = true;
 
       }
     }
