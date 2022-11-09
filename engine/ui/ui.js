@@ -4,6 +4,7 @@ class UI {
   faces_middle = [];
   faces_left = [];
   faces_right = [];
+  faces_cocaine = [];
   armor_sprites = [];
   state;
   helm;
@@ -27,6 +28,10 @@ class UI {
     this.helmeton = loadImage('engine/ui/player_sprites/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/player_sprites/helmetoff.gif');
     this.helmsound = loadSound('engine/ui/player_sounds/helmet.mp3');
+
+    this.faces_cocaine[0] = loadImage('engine/ui/faces_cocaine/chad_middle_cocaine.png');
+    this.faces_cocaine[1] = loadImage('engine/ui/faces_cocaine/chad_left_cocaine.png');
+    this.faces_cocaine[2] = loadImage('engine/ui/faces_cocaine/chad_right_cocaine.png');
 
     this.faces_middle[0] = loadImage('engine/ui/player_sprites/skull.png');
     this.faces_middle[1] = loadImage('engine/ui/faces_middle/chad_middle_severe.png');
@@ -80,13 +85,23 @@ class UI {
     this.helmet_on();
     this.helmet_off();
 
-    
+
     if(this.ui_display == true) {
       this.draw_armor_state(world_data);
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
+
+      for(let player of world_data.players) {
+        if(player.stimmed_up_on_ritalin == true){
+          this.draw_cocaine_face();
+        }else{
+          
+        }
+      }
     };
+
+
 
     this.draw_low_health(world_data);
 
@@ -116,17 +131,34 @@ class UI {
       this.state = ceil(player.health/20);
       if (keyIsDown(keycodes.LEFT)) {
         image(this.faces_left[this.state], SCREEN_WIDTH/2.17, 
-                                                        SCREEN_HEIGHT - 100);  
+                                           SCREEN_HEIGHT - 100);  
       }
       else if (keyIsDown(keycodes.RIGHT)) {
         image(this.faces_right[this.state], SCREEN_WIDTH/2.17, 
-                                                         SCREEN_HEIGHT - 100);
+                                            SCREEN_HEIGHT - 100);
       }
       else {
         image(this.faces_middle[this.state], SCREEN_WIDTH/2.17, 
-                                                          SCREEN_HEIGHT - 100);
+                                             SCREEN_HEIGHT - 100);
       }
     }
+  }
+
+  
+  draw_cocaine_face() {
+
+    if (keyIsDown(keycodes.LEFT)) {
+      image(this.faces_cocaine[1], SCREEN_WIDTH / 2.17, 
+                                   SCREEN_HEIGHT - 100);  
+    }else if (keyIsDown(keycodes.RIGHT)) {
+      image(this.faces_cocaine[2], SCREEN_WIDTH/2.17, 
+                                   SCREEN_HEIGHT - 100);
+    }else {
+      image(this.faces_cocaine[0], SCREEN_WIDTH/2.17, 
+                                   SCREEN_HEIGHT - 100);
+    }
+  
+    
   }
 
   draw_armor_state(world_data) {
