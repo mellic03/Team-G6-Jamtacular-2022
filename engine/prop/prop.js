@@ -159,6 +159,8 @@ class DirectionalProp {
   }
 
   this_to_player = new Vector2(0, 0);
+  temp_dir1 = new Vector2(0, 0);
+  temp_dir2 = new Vector2(0, 0);
 
   correct_angle(world_data) {
 
@@ -167,8 +169,16 @@ class DirectionalProp {
     this.this_to_player.y = this.pos.y - player_pos.y;
     this.this_to_player.normalise();
 
-    let dot = vector2_dot(this.dir.get_normalised(), this.this_to_player);
-    let side = vector2_dot(this.dir.get_normalised(), this.this_to_player.get_rotated(-1.57)) < 0 ? -1 : 1;
+    this.temp_dir1.x = this.dir.x;
+    this.temp_dir1.y = this.dir.y;
+    this.temp_dir1.normalise();
+
+    this.temp_dir2.x = this.this_to_player.x;
+    this.temp_dir2.y = this.this_to_player.y;
+    this.temp_dir2.rotate(-1.57);
+
+    let dot = vector2_dot(this.temp_dir1, this.this_to_player);
+    let side = vector2_dot(this.temp_dir1, this.temp_dir2) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
     if (theta > 155.7) {

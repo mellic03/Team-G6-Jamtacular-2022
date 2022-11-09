@@ -18,10 +18,6 @@ class Vector2 {
     this.x *= alpha, this.y *= alpha;
   }
 
-  get_scaled(alpha) {
-    return new Vector2(this.x*alpha, this.y*alpha);
-  }
-
   translate(x, y, z) {
     this.x += x, this.y += y, this.z += z;
   }
@@ -35,9 +31,6 @@ class Vector2 {
     this.y *= -1;
   }
   
-  get_negated() {
-    return new Vector2(-this.x, -this.y);
-  }
 
   mag() {
     return sqrt(this.x**2 + this.y**2);
@@ -47,11 +40,6 @@ class Vector2 {
     let mag = this.mag();
     this.x /= mag;
     this.y /= mag;
-  }
-
-  get_normalised() {
-    let mag = this.mag();
-    return new Vector2(this.x/mag, this.y/mag);
   }
   
   rotate(theta) {
@@ -76,35 +64,21 @@ class Vector2 {
     return new_vec;
   }
 
-  copy() {
-    let new_vec = new Vector2(this.x, this.y);
-    return new_vec;
-  }
-
-
   lerp(v2, alpha) {
-    let dir = vector2_sub(this, v2);
-    dir.normalise();
-    dir.scale(alpha);
-    this.add(dir);
+    let dir_x = this.x - v2.x;
+    let dir_y = this.y - v2.y;
+    let mag = sqrt(dir_x**2 + dir_y**2);
+    dir_x /= mag;
+    dir_y /= mag;
+    dir_x *= alpha;
+    dir_y *= alpha;
+    this.x += dir_x;
+    this.y += dir_y;
   }
 
-  get_lerped(v2, alpha) {
-    let dir = vector2_sub(this, v2);
-    dir.normalise();
-    dir.scale(alpha);
-    return new Vector2(this.x + dir.x, this.y + dir.y);
-  }
 
 }
 
-function vector2_add(v0, v1) {
-  return new Vector2(v0.x+v1.x, v0.y+v1.y);
-}
-
-function vector2_sub(v0, v1) {
-  return new Vector2(v0.x-v1.x, v0.y-v1.y);
-}
 
 function vector2_dist(v0, v1) {
   return Math.sqrt((v0.x-v1.x)*(v0.x-v1.x) + (v0.y-v1.y)*(v0.y-v1.y));
@@ -128,10 +102,6 @@ function vector2_dot(v0, v1) {
 function vector2_angle(v0, v1) {
   // console.log(vector2_dot(v0, v1))
   return (vector2_dot(v0, v1)/(v0.mag()*v1.mag()));
-}
-
-function vector2_scale(v0, alpha) {
-  return new Vector2(v0.x*alpha, v0.y*alpha);
 }
 
 /** Reflect v0 about v1

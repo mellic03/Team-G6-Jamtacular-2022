@@ -340,11 +340,21 @@ class Player {
     }
   }
 
+  plane_pos = new Vector2(0, 0);
+
   occlude_sprites(sprite_buffer) {
     rectMode(CENTER);
     for (let j=0; j<this.sprite_buffer.length; j++) {
 
-      let sprite_dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), this.sprite_buffer[j].pos);
+      this.plane_pos.x = this.pos.x + this.dir.x;
+      this.plane_pos.y = this.pos.y + this.dir.y;
+
+      let sprite_dist = p2oint_plane_dist(
+        this.dir.x, this.dir.y,
+        this.plane_pos.x, this.plane_pos.y,
+        this.sprite_buffer[j].pos.x,
+        this.sprite_buffer[j].pos.y
+      );
 
       let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[0].real_dist;
       let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].real_dist;
