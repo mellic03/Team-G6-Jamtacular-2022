@@ -7,6 +7,7 @@ class CyberDemon {
   height;
 
   health = 10;
+  speed = 1;
 
   chase_range = 200;
   attack_range = 100;
@@ -48,9 +49,19 @@ class CyberDemon {
 
   img_attack;
 
+  sound_attack;
+  sound_injury;
+
   pos; vel; dir;
   to_player = new Vector2(0, 0);
   to_this = new Vector2(0, 0);
+
+  dirs = [
+    new Vector2(+sqrt(2)/2, +sqrt(2)/2),
+    new Vector2(+sqrt(2)/2, -sqrt(2)/2),
+    new Vector2(-sqrt(2)/2, -sqrt(2)/2),
+    new Vector2(-sqrt(2)/2, +sqrt(2)/2)
+  ];
 
   constructor(x, y) {
     this.pos = new Vector2(x, y);
@@ -123,6 +134,14 @@ class CyberDemon {
         this.img_attack, img.width/this.frames, img.height, this.frames
       );
     });
+
+    loadSound("engine/enemy/cyberdemon/sounds/injury.mp3", (sound) => {
+      this.sound_injury = sound;
+    });
+
+    loadSound("engine/enemy/cyberdemon/sounds/attack.mp3", (sound) => {
+      this.sound_attack = sound;
+    });
   }
 
   setup() {
@@ -159,8 +178,8 @@ class CyberDemon {
 
   draw(world_data) {
 
-    if (frameCount % 30 == 0) {
-      let frame_delay = floor( 2/9 * ceil(frameRate()));
+    if (frameCount % floor(frameRate()) == 0) {
+      let frame_delay = floor( 2/9 * ceil(frameRate()) / this.speed);
       this.sprite.animations.walkback.frameDelay        = frame_delay;
       this.sprite.animations.walkbackright.frameDelay   = frame_delay;
       this.sprite.animations.walkbackleft.frameDelay    = frame_delay;
@@ -169,10 +188,12 @@ class CyberDemon {
       this.sprite.animations.walkfrontright.frameDelay  = frame_delay;
       this.sprite.animations.walkright.frameDelay       = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
+      this.sprite.animations.attack.frameDelay          = floor(frame_delay * this.speed / 5);
     }
 
-    this.follow_player(world_data);
-    this.shoot_player(world_data);
+
+
+    // this.follow_player(world_data);
     this.correct_angle(world_data);
 
     for (let i=0; i<this.behaviour_scripts.length; i++) {
@@ -210,28 +231,27 @@ class CyberDemon {
     }
   }
 
-  shoot_player(world_data) {
-    let player = world_data.players[0];
-    let e2p_x = player.pos.x - this.pos.x;
-    let e2p_y = player.pos.y - this.pos.y;
+  // shoot_player(world_data) {
+  //   let player = world_data.players[0];
+  //   let e2p_x = player.pos.x - this.pos.x;
+  //   let e2p_y = player.pos.y - this.pos.y;
   
-    let mag = sqrt(e2p_x**2 + e2p_y**2);
+  //   let mag = sqrt(e2p_x**2 + e2p_y**2);
      
-    e2p_x /= mag;
-    e2p_y /= mag;
+  //   e2p_x /= mag;
+  //   e2p_y /= mag;
 
 
-    let dist = vector2_dist(player.pos, this.pos);
+  //   let dist = vector2_dist(player.pos, this.pos);
 
-    if (dist <= this.attack_range) {
+  //   if (dist <= this.attack_range) {
 
-      if (this.sprite.animations.attack.frame == 3) {
-        this.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(this.pos, e2p_x*0.7, e2p_y*0.7);
-      }
-    }
-
-  }
+  //     if (this.sprite.animations.attack.frame == 3) {
+  //       this.sprite.animations.attack.frame = 0;
+  //       world_data.map_handler.active_map.create_projectile(this.pos, e2p_x*0.7, e2p_y*0.7);
+  //     }
+  //   }
+  // }
 
   correct_angle(world_data) {
 

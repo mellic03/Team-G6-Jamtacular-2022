@@ -134,9 +134,13 @@ const behaviour_scripts = {
       return;
     }
 
+    else if (enemy.health <= 0)
+      return;
+
     let player = world_data.players[0];
 
     if (vector2_dist(player.pos, enemy.pos) < 2*enemy.push_range && player.dealing_damage) {
+      enemy.sound_injury.play();
       enemy.to_this.x = enemy.pos.x - player.pos.x;
       enemy.to_this.y = enemy.pos.y - player.pos.y;
       enemy.to_this.normalise();
@@ -147,6 +151,10 @@ const behaviour_scripts = {
   },
   
   melee_player(enemy, world_data) {
+
+    if (enemy.health <= 0)
+      return;
+
     let player = world_data.players[0];
     let e2p_x = player.pos.x - enemy.pos.x;
     let e2p_y = player.pos.y - enemy.pos.y;
@@ -168,27 +176,64 @@ const behaviour_scripts = {
           player.health -= enemy.damage;
         player.stimmed_up_on_ritalin = false;
         player.damage = 10;
+        enemy.sound_attack.play();
       }
     }
   },
 
   shoot_player(enemy, world_data) {
+
+    if (enemy.health <= 0)
+      return;
+
+
     let player = world_data.players[0];
     let e2p_x = player.pos.x - enemy.pos.x;
     let e2p_y = player.pos.y - enemy.pos.y;
-  
+    
     let mag = sqrt(e2p_x**2 + e2p_y**2);
-     
+    
     e2p_x /= mag;
     e2p_y /= mag;
-
+    
     let dist = vector2_dist(player.pos, enemy.pos);
-
+    
     if (dist <= enemy.attack_range) {
-
+      
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
         world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
+        enemy.sound_attack.play();
+        console.log(enemy.health);
+      }
+    }
+  },
+
+
+  shoot_player_shotgun(enemy, world_data) {
+
+    if (enemy.health <= 0)
+      return;
+
+
+    let player = world_data.players[0];
+    let e2p_x = player.pos.x - enemy.pos.x;
+    let e2p_y = player.pos.y - enemy.pos.y;
+    
+    let mag = sqrt(e2p_x**2 + e2p_y**2);
+    
+    e2p_x /= mag;
+    e2p_y /= mag;
+    
+    let dist = vector2_dist(player.pos, enemy.pos);
+    
+    if (dist <= enemy.attack_range) {
+      
+      if (enemy.sprite.animations.attack.frame == 3) {
+        enemy.sprite.animations.attack.frame = 0;
+        world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
+        enemy.sound_attack.play();
+        console.log(enemy.health);
       }
     }
   }

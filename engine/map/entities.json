@@ -143,8 +143,8 @@
 
     "ritalin": {
       "directory": "engine/pickup/ritalin",
-      "attributes": ["damage", "stimmed_up_on_ritalin"],
-      "amounts": [90, true],
+      "attributes": ["damage", "stimmed_up_on_ritalin", "stamina"],
+      "amounts": [90, true, 100],
       "height": 0.2,
       "vertical_offset": 3500
     }
@@ -183,11 +183,26 @@
       "attack_range": 15,
       "push_range": 7
     },
-  
+
+    "shotgunner": {
+      "directory": "engine/enemy/shotgunner",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player_shotgun"],
+      "height": 0.07,
+      "vertical_offset": 6000,
+      "health": 25,
+      "damage": 10,
+      "speed": 1,
+      "follow_range": 100,
+      "chase_range": 20,
+      "attack_range": 15,
+      "push_range": 7
+    },
+
     "cyberdemon": {
       "directory": "engine/enemy/cyberdemon",
       "frames": 4,
-      "behaviour_scripts": ["killable"],
+      "behaviour_scripts": ["shoot_player", "follow_player_zigzag", "killable"],
       "height": 0.07,
       "vertical_offset": -1200,
       "health": 100,

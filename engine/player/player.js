@@ -86,6 +86,9 @@ class Player {
     
     this.health = clamp(this.health, 0, 100);
     this.armor = clamp(this.armor, 0, 100);
+    this.stamina = clamp(this.stamina, 0, 100);
+
+    this.stamina += 0.003 * deltaTime;
 
     if (world_data.map_handler.active_map == undefined) {
       return;
@@ -446,7 +449,8 @@ class Player {
     }
 
 
-    if (keyIsDown(keycodes.SPACE) && this.can_punch) {
+    if (keyIsDown(keycodes.SPACE) && this.can_punch && this.stamina >= 10) {
+      this.stamina -= 10;
       this.can_punch = false;
       this.dealing_damage = true;
       this.is_punching = true;

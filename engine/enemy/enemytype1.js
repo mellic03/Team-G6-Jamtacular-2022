@@ -57,6 +57,9 @@ class EnemyType_1 {
 
   sound_death;
   death_sound_play;
+  
+  sound_injury;
+  sound_attack;
 
   /**
    * @param {*} x x position of enemy
@@ -138,7 +141,15 @@ class EnemyType_1 {
 
     loadSound(this.directory + "/sounds/death.mp3", (sound) => {
       this.sound_death = sound;
-    })
+    });
+
+    loadSound(this.directory + "/sounds/injury.mp3", (sound) => {
+      this.sound_injury = sound;
+    });
+
+    loadSound(this.directory + "/sounds/attack.mp3", (sound) => {
+      this.sound_attack = sound;
+    });
   }
 
   setup() {
