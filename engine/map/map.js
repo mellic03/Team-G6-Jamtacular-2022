@@ -90,7 +90,6 @@ class Map {
             // If directional prop
             if (tok1.length == 2) {
               let dir;
-              console.log(obj)
               switch (tok1[1]) {
                 case ("north"): dir = new Vector2(+1,  0); break;
                 case ("east"):  dir = new Vector2( 0, +1); break;
@@ -143,6 +142,13 @@ class Map {
             enemy.frames = obj.frames;
             enemy.height = obj.height;
             enemy.voffset = obj.vertical_offset;
+            
+            enemy.speed = obj.speed;
+            
+            enemy.follow_range = obj.follow_range;
+            enemy.chase_range = obj.chase_range;
+            enemy.attack_range = obj.attack_range;
+            enemy.push_range = obj.push_range;
 
             this.enemies.push(enemy);
           }

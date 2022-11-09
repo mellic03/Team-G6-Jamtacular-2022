@@ -14,16 +14,19 @@ class EnemyType_1 {
   health = 50;
   damage = 5;
   speed = 1;
+
+  follow_range = 100;
   chase_range = 100;
   attack_range = 50;
   push_range = 7;
+
+  to_player = new Vector2(0, 0);
+  to_this = new Vector2(0, 0);
 
   on_last_frame = false;
   on_first_frame = true;
 
   sprite;
-
-  occlude_start; occlude_end;
 
   frames;
   active_img;
@@ -170,14 +173,14 @@ class EnemyType_1 {
   draw(world_data) {
 
     if (frameCount % floor(frameRate()) == 0) {
-      let frame_delay = floor( 2/9 * ceil(frameRate()));
+      let frame_delay = floor( 2/9 * ceil(frameRate()) / this.speed);
       this.sprite.animations.walkback.frameDelay        = frame_delay;
       this.sprite.animations.walkbackangle.frameDelay   = frame_delay;
       this.sprite.animations.walkfront.frameDelay       = frame_delay;
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
       this.sprite.animations.attack.frameDelay          = frame_delay;
-      this.sprite.animations.death.frameDelay           = frame_delay;
+      this.sprite.animations.death.frameDelay           = frame_delay  * this.speed;
     }
 
     this.collide_against_enemies(world_data.map_handler.active_map.enemies);
