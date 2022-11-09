@@ -122,6 +122,14 @@
       "directory": "engine/pickup/health",
       "attribute": "health",
       "amount": 10,
+      "height": 0.5,
+      "vertical_offset": 4300
+    },
+
+    "armor": {
+      "directory": "engine/pickup/armor",
+      "attribute": "armor",
+      "amount": 50,
       "height": 0.2,
       "vertical_offset": 3500
     },
