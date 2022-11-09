@@ -23,7 +23,7 @@ class UI {
     this.armor_sprites[1] = loadImage('engine/ui/player_sprites/break1.png');
     this.armor_sprites[0] = loadImage('engine/ui/player_sprites/break2.png');
 
-    this.pain = loadImage('engine/ui/player_sprites/PAIN1.png')
+    this.pain = loadImage('engine/ui/player_sprites/pain.png')
     this.helmeton = loadImage('engine/ui/player_sprites/helmeton.gif');
     this.helmetoff = loadImage('engine/ui/player_sprites/helmetoff.gif');
     this.helmsound = loadSound('engine/ui/player_sounds/helmet.mp3');
@@ -96,6 +96,9 @@ class UI {
       this.draw_face_state(world_data);
     };
 
+    this.draw_low_health(world_data);
+
+
     fill(255);
     textSize(60);
     text(`FPS: ${this.framerate}`, 10, 30);
@@ -140,6 +143,16 @@ class UI {
       image(this.armor_sprites[this.state], -50, 50, SCREEN_WIDTH+50, SCREEN_HEIGHT-200);
     }
 
+  }
+
+  draw_low_health(world_data) {
+    for(let player of world_data.players) {
+      if(player.health < 20) {
+        image(this.pain, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+      }
+    }
+    
   }
 
 
