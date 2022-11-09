@@ -142,7 +142,6 @@ const behaviour_scripts = {
       enemy.to_this.normalise();
       enemy.to_this.scale(player.damage);
       enemy.vel.add(enemy.to_this);
-      console.log(enemy.health)
       enemy.health -= player.damage;
     }
   },
