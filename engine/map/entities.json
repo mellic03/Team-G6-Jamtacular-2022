@@ -136,8 +136,8 @@
 
     "ritalin": {
       "directory": "engine/pickup/ritalin",
-      "attribute": "health",
-      "amount": -50,
+      "attribute": "damage",
+      "amount": 90,
       "height": 0.2,
       "vertical_offset": 3500
     }
@@ -150,7 +150,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
+      "behaviour_scripts": [],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 100,
@@ -180,7 +180,7 @@
     "cyberdemon": {
       "directory": "engine/enemy/cyberdemon",
       "frames": 4,
-      "behaviour_scripts": [],
+      "behaviour_scripts": ["killable"],
       "height": 0.07,
       "vertical_offset": -1200,
       "health": 100,
@@ -225,7 +225,7 @@
     "pinky": {
       "directory": "engine/enemy/pinky",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "melee_player"],
       "height": 0.14,
       "vertical_offset": 1800,
       "health": 100,

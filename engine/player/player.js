@@ -3,7 +3,7 @@ class Player {
   health = 100;
   armor = 100;
   stamina = 100;
-  damage = 150;
+  damage = 10;
 
   // POWERUPS
   //---------------------------------
@@ -86,7 +86,6 @@ class Player {
     
     this.health = clamp(this.health, 0, 100);
     this.armor = clamp(this.armor, 0, 100);
-    this.armor-= 0.01;
 
     if (world_data.map_handler.active_map == undefined) {
       return;
@@ -371,6 +370,7 @@ class Player {
 
   next_pos = new Vector2(0, 0);
   delta_vel = new Vector2(0, 0);
+  move_dir = new Vector2(0, 0);
 
   input(map) {
     if (keyIsDown(13))
@@ -395,16 +395,20 @@ class Player {
     let headbob = false;
 
     if (keyIsDown(keycodes.A)) {
-      let temp = this.dir.get_rotated(-1.57);
-      this.delta_vel.x += temp.x*this.mov_speed;
-      this.delta_vel.y += temp.y*this.mov_speed;
+      this.move_dir.x = this.dir.x;
+      this.move_dir.y = this.dir.y;
+      this.move_dir.rotate(-1.57);
+      this.delta_vel.x += this.move_dir.x*this.mov_speed;
+      this.delta_vel.y += this.move_dir.y*this.mov_speed;
       headbob = true;
     }
 
     if (keyIsDown(keycodes.D)) {
-      let temp = this.dir.get_rotated(+1.57);
-      this.delta_vel.x += temp.x*this.mov_speed;
-      this.delta_vel.y += temp.y*this.mov_speed;
+      this.move_dir.x = this.dir.x;
+      this.move_dir.y = this.dir.y;
+      this.move_dir.rotate(+1.57);
+      this.delta_vel.x += this.move_dir.x*this.mov_speed;
+      this.delta_vel.y += this.move_dir.y*this.mov_speed;
       headbob = true;
     }
 

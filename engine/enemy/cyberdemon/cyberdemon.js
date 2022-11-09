@@ -6,6 +6,8 @@ class CyberDemon {
   sprite;
   height;
 
+  health = 10;
+
   chase_range = 200;
   attack_range = 100;
   push_range = 15;
@@ -172,6 +174,11 @@ class CyberDemon {
     this.follow_player(world_data);
     this.shoot_player(world_data);
     this.correct_angle(world_data);
+
+    for (let i=0; i<this.behaviour_scripts.length; i++) {
+      this.behaviour_scripts[i](this, world_data);
+    }
+
   }
 
   follow_player(world_data) {

@@ -143,6 +143,8 @@ class Map {
             enemy.height = obj.height;
             enemy.voffset = obj.vertical_offset;
             
+            enemy.health = obj.health;
+            enemy.damage = obj.damage;
             enemy.speed = obj.speed;
             
             enemy.follow_range = obj.follow_range;
@@ -153,8 +155,6 @@ class Map {
             this.enemies.push(enemy);
           }
         }
-
-        console.log(this.enemies);
 
         for (let enemy of this.enemies) {
           enemy.preload();

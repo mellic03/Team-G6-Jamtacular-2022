@@ -179,8 +179,8 @@ class EnemyType_1 {
       this.sprite.animations.walkfront.frameDelay       = frame_delay;
       this.sprite.animations.walkfrontangle.frameDelay  = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
-      this.sprite.animations.attack.frameDelay          = frame_delay;
-      this.sprite.animations.death.frameDelay           = frame_delay  * this.speed;
+      this.sprite.animations.attack.frameDelay          = frame_delay * this.speed;
+      this.sprite.animations.death.frameDelay           = frame_delay * this.speed;
     }
 
     this.collide_against_enemies(world_data.map_handler.active_map.enemies);
@@ -221,6 +221,9 @@ class EnemyType_1 {
 
   player_last_dist = 0;
   player_delta_dist = 0;
+  temp_dir1 = new Vector2(0, 0);
+  temp_dir2 = new Vector2(0, 0);
+  temp_dir3 = new Vector2(0, 0);
 
   /** Change active animation to ensure player sees enemy from correct angle
    * @param {*} world_data 
@@ -228,11 +231,21 @@ class EnemyType_1 {
   correct_angle(world_data) {
 
     let player_pos = world_data.players[0].pos;
-    let dir = vector2_sub(this.pos, player_pos);
-    dir.normalise();
 
-    let dot = vector2_dot(this.dir.get_normalised(), dir);
-    let side = vector2_dot(this.dir.get_normalised(), dir.get_rotated(-1.57)) < 0 ? -1 : 1;
+    this.temp_dir1.x = this.pos.x - player_pos.x;
+    this.temp_dir1.y = this.pos.y - player_pos.y;
+    this.temp_dir1.normalise();
+
+    this.temp_dir2.x = this.temp_dir1.x;
+    this.temp_dir2.y = this.temp_dir1.y;
+    this.temp_dir2.rotate(-1.57);
+
+    this.temp_dir3.x = this.dir.x;
+    this.temp_dir3.y = this.dir.y;
+    this.temp_dir3.normalise();
+
+    let dot = vector2_dot(this.temp_dir3, this.temp_dir1);
+    let side = vector2_dot(this.temp_dir3, this.temp_dir2) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
     if (vector2_dist(player_pos, this.pos) < 20) {

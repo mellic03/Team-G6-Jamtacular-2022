@@ -136,17 +136,41 @@ const behaviour_scripts = {
 
     let player = world_data.players[0];
 
-    if (vector2_dist(player.pos, enemy.pos) < 15 && player.dealing_damage) {
+    if (vector2_dist(player.pos, enemy.pos) < 2*enemy.push_range && player.dealing_damage) {
       enemy.to_this.x = enemy.pos.x - player.pos.x;
       enemy.to_this.y = enemy.pos.y - player.pos.y;
       enemy.to_this.normalise();
       enemy.to_this.scale(player.damage);
       enemy.vel.add(enemy.to_this);
-   
+      console.log(enemy.health)
       enemy.health -= player.damage;
     }
   },
   
+  melee_player(enemy, world_data) {
+    let player = world_data.players[0];
+    let e2p_x = player.pos.x - enemy.pos.x;
+    let e2p_y = player.pos.y - enemy.pos.y;
+  
+    let mag = sqrt(e2p_x**2 + e2p_y**2);
+     
+    e2p_x /= mag;
+    e2p_y /= mag;
+
+    let dist = vector2_dist(player.pos, enemy.pos);
+
+    if (dist <= enemy.attack_range) {
+
+      if (enemy.sprite.animations.attack.frame == 3) {
+        enemy.sprite.animations.attack.frame = 0;
+        if (player.armor > 0)
+          player.armor -= enemy.damage;
+        else
+          player.health -= enemy.damage;
+      }
+    }
+  },
+
   shoot_player(enemy, world_data) {
     let player = world_data.players[0];
     let e2p_x = player.pos.x - enemy.pos.x;
@@ -166,7 +190,6 @@ const behaviour_scripts = {
         world_data.map_handler.active_map.create_projectile(enemy.pos, 0.5*e2p_x, 0.5*e2p_y);
       }
     }
-
   }
 
 };
