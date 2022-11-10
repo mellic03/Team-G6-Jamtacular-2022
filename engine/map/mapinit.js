@@ -2,7 +2,7 @@ function map_init() {
 
   let map_handler = new MapHandler();
 
-  let m1 = new Map("m1", "engine/map/maps/m1w.txt");
+  let m1 = new Map("m1", "engine/map/maps/m1.txt");
   map_handler.add(m1);
   
   map_handler.add(new Map("m2", "engine/map/maps/m2.txt"));

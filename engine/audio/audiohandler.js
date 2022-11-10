@@ -42,29 +42,29 @@ class AudioHandler {
       if (this.audio_lock == false)
       {
         this.tracks[0].loop();
-        this.tracks[0].setVolume(0.4);
+        this.tracks[0].setVolume(0.7);
         this.audio_lock = true;
-      }
-    }
-
-    if (world_data.map_handler.active_map.name == "m2")
-    {
-      if (this.audio_lock == true)
-      {
-        this.tracks[0].stop();
-        this.tracks[1].loop();
-        this.tracks[1].setVolume(0.4);
-        this.audio_lock = false;
       }
     }
 
     if (world_data.map_handler.active_map.name == "m3")
     {
-      if (this.audio_lock == false)
+      if (this.audio_lock == true)
       {
-        this.tracks[1].stop();
+        this.tracks[0].stop();
         this.tracks[2].loop();
         this.tracks[2].setVolume(0.4);
+        this.audio_lock = false;
+      }
+    }
+
+    if (world_data.map_handler.active_map.name == "m4")
+    {
+      if (this.audio_lock == false)
+      {
+        this.tracks[2].stop();
+        this.tracks[1].loop();
+        this.tracks[1].setVolume(0.4);
         this.audio_lock = true;
       }
     }
