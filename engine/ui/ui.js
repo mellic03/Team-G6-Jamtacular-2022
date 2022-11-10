@@ -14,6 +14,10 @@ class UI {
   currframe;
   currframe2;
   toggle;
+  playbutton;
+  slider;
+  col;
+
 
 
   preload() {
@@ -58,6 +62,7 @@ class UI {
 
   setup() {
     noSmooth();
+    this.col = color(200, 50, 50, 100);
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     this.helmsound.setVolume(0.3);
@@ -65,13 +70,28 @@ class UI {
     this.toggle = false;
     this.helm_sound = true;
     this.ui_display = false;
+    this.playbutton = createButton('coom');
+    this.playbutton.position(400,500);
+    this.playbutton.size(200,75);
+    this.playbutton.style('background-color', 'red');
+    this.playbutton.style('font-style', this.doom_font);
+ 
+
   }
 
   draw(world_data) {
+    this.col = color(200,50,50);
+
 
     let player = world_data.players[0];
     player.health = clamp(player.health, 0, 100);
     player.armor = clamp(player.armor, 0, 100);
+  
+
+
+   
+
+
 
     
 
@@ -91,6 +111,8 @@ class UI {
       image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
       this.draw_stat_ui(world_data);
       this.draw_face_state(world_data);
+      this.playbutton.hide();
+
 
       for(let player of world_data.players) {
         if(player.stimmed_up_on_ritalin == true){
@@ -100,11 +122,17 @@ class UI {
 
         }
       }
-    };
+    }else {
+      this.playbutton.show();
+
+
+    }
 
 
 
     this.draw_low_health(world_data);
+    this.playbutton.mousePressed(this.draw_rect)
+    
 
 
     fill(255);
@@ -114,7 +142,7 @@ class UI {
     text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
   }
 
-  draw_stat_ui() {
+  draw_stat_ui(world_data) {
     fill(250, 150, 150);
     textSize(130);
     for(let player of world_data.players) {
@@ -144,6 +172,8 @@ class UI {
       }
     }
   }
+
+
 
   
   draw_cocaine_face() {
@@ -243,6 +273,12 @@ class UI {
       this.toggle = true;
 
     }
+  }
+
+  draw_rect() {
+
+    rect(700,700,100,100);
+
   }
 
 }
