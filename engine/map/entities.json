@@ -95,7 +95,7 @@
       "frames": 1,
       "collision_radius": 5,
       "height": 0.2,
-      "vertical_offset": 3000
+      "vertical_offset": 2700
     },
 
     "chair": {
@@ -103,7 +103,7 @@
       "frames": 1,
       "collision_radius": 5,
       "height": 0.1,
-      "vertical_offset": 1200
+      "vertical_offset": 200
     },
 
     "trashcan": {

@@ -49,14 +49,20 @@ class Map {
 
           if (tokens[0] != "WALL:") {
             this.tilemap[i] = 0;
-            this.colourmap[i] = [0, 0, 0, 0];
+            this.colourmap[4*i+0] = 0;
+            this.colourmap[4*i+1] = 0;
+            this.colourmap[4*i+2] = 0;
+            this.colourmap[4*i+3] = 0;
           }
 
 
           if (tokens[0] == "WALL:") {
             this.tilemap[i] = 1;
             let color = splitTokens(tokens[1], ",");
-            this.colourmap[i] = [+color[0], +color[1], +color[2], 255];
+            this.colourmap[4*i+0] = +color[0];
+            this.colourmap[4*i+1] = +color[1];
+            this.colourmap[4*i+2] = +color[2];
+            this.colourmap[4*i+3] = 255;
           }
 
 
@@ -205,7 +211,6 @@ class Map {
 
           }
         }
-
 
         for (let enemy of this.enemies) {
           enemy.preload();

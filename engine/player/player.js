@@ -36,7 +36,6 @@ class Player {
   ray_width = SCREEN_WIDTH/this.scan_res;
   depth_buffer = [];
   sprite_buffer = []; // buffer of sprites waiting for occlusion test
-  sprite_width_buffer = []; // screen width of each sprite waiting for occlusion test
 
   self_group;
   fist_R_img
@@ -51,6 +50,16 @@ class Player {
   constructor(x, y) {
     this.pos.x = x;
     this.pos.y = y;
+
+
+    for (let i=0; i<SCREEN_WIDTH; i++) {
+      this.depth_buffer[i] = {
+        dist: 0,
+        side: 0,
+        index: 0
+      }
+    }
+    console.log(this.depth_buffer);
   }
 
   preload() {
@@ -96,13 +105,12 @@ class Player {
 
     translate(0, 5*cos(0.1*this.headbob_count));
 
-    this.depth_buffer = [];
     this.input(world_data.map_handler.active_map);
     this.collide_with_props(world_data.map_handler.active_map);
     this.collide_with_pickups(world_data.map_handler.active_map);
     this.collide_with_projectiles(world_data.map_handler.active_map)
     this.march(world_data.map_handler.active_map);
-    this.world_render();
+    this.world_render(world_data.map_handler.active_map);
     this.sprite_render(
       world_data.map_handler.active_map.enemies.concat(
       world_data.map_handler.active_map.props).concat(
@@ -167,7 +175,6 @@ class Player {
   march_dir = new Vector2(0, 0);
 
   march(map) {
-    this.depth_buffer = [];
 
     for (let x=0; x<SCREEN_WIDTH; x+=1) {
 
@@ -209,8 +216,6 @@ class Player {
       let hit = 0;
       let side;
 
-      let colour = false;
-
       let steps = 0;
 
       while (hit == 0 && steps < 1000) {
@@ -225,50 +230,41 @@ class Player {
           mapY += step_y;
           side = 1;
         }
-        colour = point_in_cell(mapX, mapY, map);
-        if (colour != false) {
+
+        if (point_in_cell(mapX, mapY, map)) {
           hit = 1;
-          this.ray_intersections.push({x: mapX, y: mapY});
         }
       }
 
-      if (side == 0)
-        this.depth_buffer[x] = {
-          dist: ((sideDistX - dx)*angle) / 10,
-          real_dist: (sideDistX - dx)*angle,
-          side: side,
-          x: mapX,
-          y: mapY,
-          colour: colour
-        };
-      else
-        this.depth_buffer[x] = {
-          dist: ((sideDistY - dy)*angle) / 10,
-          real_dist: (sideDistY - dy)*angle,
-          side: side,
-          x: mapX,
-          y: mapY,
-          colour: colour
-        };
+      if (side == 0) {
+        this.depth_buffer[x].dist = angle * (sideDistX - dx);
+        this.depth_buffer[x].side = side;
+        this.depth_buffer[x].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+      }
+      else {
+        this.depth_buffer[x].dist = angle * (sideDistY - dy);
+        this.depth_buffer[x].side = side;
+        this.depth_buffer[x].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+      }
     }
   }
 
-  world_render() {
-        
+  world_render(active_map) {
+
     let r, g, b;
     let line_height, line_start, line_end;
 
     for (let i=0; i<SCREEN_WIDTH; i+=1) {
 
-      r = this.depth_buffer[i].colour[0];
-      g = this.depth_buffer[i].colour[1];
-      b = this.depth_buffer[i].colour[2];
+      r = active_map.colourmap[4*this.depth_buffer[i].index+0];
+      g = active_map.colourmap[4*this.depth_buffer[i].index+1];
+      b = active_map.colourmap[4*this.depth_buffer[i].index+2];
 
       if (this.depth_buffer[i].side) {
         r/=2, g/=2, b/=2;
       }
 
-      line_height = SCREEN_HEIGHT/this.depth_buffer[i].dist;
+      line_height = SCREEN_HEIGHT/this.depth_buffer[i].dist*10;
 
       line_start = -line_height/2 + SCREEN_HEIGHT/2;
       line_end = line_height/2 + SCREEN_HEIGHT/2;
@@ -309,7 +305,6 @@ class Player {
         let transformX = invDet * (this.dir.y*this.newpos.x - this.dir.x*this.newpos.y);
         let transformY = invDet * (-this.plane.y*this.newpos.x + this.plane.x*this.newpos.y);
 
-        // let dist = point_plane_dist(this.dir, vector2_add(this.pos, this.dir), sprite_array[i].pos);
         let dist = p2oint_plane_dist(this.dir.x, this.dir.y, (this.pos.x+this.dir.x), (this.pos.y+this.dir.y), sprite_array[i].pos.x, sprite_array[i].pos.y);
 
         dist = (dist < 3) ? 3 : dist;
@@ -330,10 +325,6 @@ class Player {
 
         sprite_array[i].sprite.scale = scaling_factor;
         sprite_array[i].sprite.position.y = (drawStartY + drawEndY)/2;
-
-        // console.log(`height: ${sprite_height} * scale: ${scaling_factor} == ${sprite_height*scaling_factor}, y = ${sprite_array[i].sprite.position.y}`);
-
-        this.sprite_width_buffer[i] = sprite_height*(sprite_array[i].active_img.width/sprite_array[i].active_img.height)/sprite_array[i].frames;
       }
 
       else {
@@ -359,8 +350,8 @@ class Player {
         this.sprite_buffer[j].pos.y
       );
 
-      let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[0].real_dist;
-      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].real_dist;
+      let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[0].dist;
+      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].dist;
 
       if (c1 || c2) {
         drawSprite(this.sprite_buffer[j].sprite);
@@ -371,7 +362,7 @@ class Player {
         continue;
       }
 
-      let wall_dist = this.depth_buffer[floor(this.sprite_buffer[j].sprite.position.x)].real_dist;
+      let wall_dist = this.depth_buffer[floor(this.sprite_buffer[j].sprite.position.x)].dist;
 
       if (wall_dist > sprite_dist) {
         drawSprite(this.sprite_buffer[j].sprite);
@@ -569,21 +560,10 @@ function point_in_cell(x, y, grid) {
   let xprime = Math.floor(x/grid.width);
   let yprime = Math.floor(y/grid.width);
 
-  if (!(grid.tilemap[grid.width*yprime + xprime])) {
-    return false
+  if (grid.tilemap[grid.width*yprime + xprime]) {
+    return true;
   }
-
-  else {
-    return grid.colourmap[grid.width*yprime + xprime];
-  }
-}
-
-function keyReleased(event) {
-
-  if (event.code == "Space") {
-    // world_data.players[0].can_punch = true;
-  }
-
+  return false;
 }
 
 
@@ -591,5 +571,4 @@ function mouseMoved(event) {
 
   world_data.players[0].plane.rotate(0.0003 * event.movementX * deltaTime);
   world_data.players[0].dir.rotate(0.0003 * event.movementX * deltaTime);
-
 }
