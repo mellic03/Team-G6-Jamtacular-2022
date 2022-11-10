@@ -89,6 +89,38 @@
       "height": 0.09,
       "vertical_offset": 800
     },
+
+    "table": {
+      "directory": "engine/prop/table",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.2,
+      "vertical_offset": 3000
+    },
+
+    "chair": {
+      "directory": "engine/prop/chair",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.1,
+      "vertical_offset": 1200
+    },
+
+    "toilet": {
+      "directory": "engine/prop/toilet",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.3,
+      "vertical_offset": 3200
+    },
+
+    "bed": {
+      "directory": "engine/prop/bed",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.2,
+      "vertical_offset": 4800
+    },
     
     "exit_portal": {
       "directory": "engine/prop/exit_portal",
@@ -128,7 +160,7 @@
     "health": {
       "directory": "engine/pickup/health",
       "attributes": ["health"],
-      "amounts": [10],
+      "amounts": [50],
       "height": 0.5,
       "vertical_offset": 4300
     },
@@ -218,7 +250,7 @@
     "notzi": {
       "directory": "engine/enemy/notzi",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["shoot_player", "follow_player_zigzag", "killable"],
       "height": 0.14,
       "vertical_offset": 1800,
       "health": 25,

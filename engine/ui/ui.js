@@ -95,8 +95,9 @@ class UI {
       for(let player of world_data.players) {
         if(player.stimmed_up_on_ritalin == true){
           this.draw_cocaine_face();
+          player.stamina += 0.1;
         }else{
-          
+
         }
       }
     };
