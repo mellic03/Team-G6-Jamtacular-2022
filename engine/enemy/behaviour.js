@@ -203,6 +203,7 @@ const behaviour_scripts = {
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
         world_data.map_handler.active_map.create_projectile(enemy.pos, 1*e2p_x, 1*e2p_y);
+        enemy.sound_attack.setVolume(0.7);
         enemy.sound_attack.play();
         console.log(enemy.health);
       }
@@ -235,6 +236,7 @@ const behaviour_scripts = {
           enemy.temp_dir1.rotate(0.05);
         }
 
+        enemy.sound_attack.setVolume(0.4);
         enemy.sound_attack.play();
         console.log(enemy.health);
       }

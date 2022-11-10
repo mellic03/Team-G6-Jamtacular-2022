@@ -134,7 +134,7 @@
       "directory": "engine/prop/rubble1",
       "frames": 1,
       "random_placement": true,
-      "collision_radius": 5,
+      "collision_radius": 0,
       "height": 0.3,
       "vertical_offset": 3200
     },
@@ -143,7 +143,7 @@
       "directory": "engine/prop/rubble2",
       "frames": 1,
       "random_placement": true,
-      "collision_radius": 5,
+      "collision_radius": 0,
       "height": 0.3,
       "vertical_offset": 3200
     },
@@ -152,7 +152,7 @@
       "directory": "engine/prop/rubble3",
       "frames": 1,
       "random_placement": true,
-      "collision_radius": 5,
+      "collision_radius": 0,
       "height": 0.3,
       "vertical_offset": 3500
     },
