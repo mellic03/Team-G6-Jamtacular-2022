@@ -154,7 +154,7 @@ NULL
 NULL
 NULL
 NULL
-PROP: chair:west
+PROP: chair:north:north
 WALL: 200,175,175
 NULL
 NULL
@@ -375,7 +375,7 @@ NULL
 WALL: 200,175,175
 WALL: 200,175,175
 NULL
-PROP: chair:east
+PROP: chair:south:south
 NULL
 NULL
 NULL
@@ -425,7 +425,7 @@ NULL
 WALL: 200,175,175
 WALL: 200,175,175
 NULL
-PROP: chair:west
+PROP: chair:north:north
 NULL
 NULL
 NULL
@@ -482,7 +482,7 @@ NULL
 NULL
 WALL: 200,175,175
 PROP: table
-PROP: chair:south
+PROP: chair:west:west
 NULL
 NULL
 NULL
@@ -506,7 +506,7 @@ WALL: 200,175,175
 NULL
 NULL
 WALL: 200,175,175
-PROP: chair:west
+PROP: chair:north:north
 NULL
 NULL
 NULL

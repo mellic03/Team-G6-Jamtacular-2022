@@ -88,7 +88,7 @@ class Map {
           else if (tokens[0] == "PROP:") {
             let tok1 = splitTokens(tokens[1], ':');
             let prop_name;
-            if (tok1.length == 2) {
+            if (tok1.length >= 2) {
               prop_name = tok1[0];
             }
             else {
@@ -98,15 +98,25 @@ class Map {
             let prop;
 
             // If directional prop
-            if (tok1.length == 2) {
+            if (tok1.length >= 2) {
               let dir;
+              let prop_x = (i%25)*25 + 12.5;
+              let prop_y = floor(i/25)*25 + 12.5;
               switch (tok1[1]) {
-                case ("north"): dir = new Vector2(+1,  0); break;
-                case ("east"):  dir = new Vector2( 0, +1); break;
-                case ("south"): dir = new Vector2(-1,  0); break;
-                case ("west"):  dir = new Vector2( 0, -1); break;
+                case ("north"): dir = new Vector2( 0, -1); break;
+                case ("east"):  dir = new Vector2(+1,  0); break;
+                case ("south"): dir = new Vector2( 0,  1); break;
+                case ("west"):  dir = new Vector2(-1,  0); break;
               }
-              prop = new DirectionalProp((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, dir.x, dir.y, obj.directory, obj.frames, prop_name);
+              if (tok1.length == 3) {
+                switch (tok1[2]) {
+                  case ("north"): prop_x += 0,  prop_y -= 10; break;
+                  case ("east"):  prop_x += 10, prop_y += 0;  break;
+                  case ("south"): prop_x += 0,  prop_y += 10; break;
+                  case ("west"):  prop_x -= 10, prop_y += 0;  break;
+                }
+              }
+              prop = new DirectionalProp(prop_x, prop_y, dir.x, dir.y, obj.directory, obj.frames, prop_name);
             }
 
             else if (obj.random_placement != undefined) {
