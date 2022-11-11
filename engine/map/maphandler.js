@@ -17,6 +17,7 @@ class MapHandler {
         this.active_map = map;
         player.pos.x = map.spawn_x;
         player.pos.y = map.spawn_y;
+        player.set_dir(map.spawn_dir_x, map.spawn_dir_y);
         this.transitioning = true;
       }
     }
