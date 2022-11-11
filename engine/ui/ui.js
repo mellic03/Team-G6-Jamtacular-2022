@@ -16,13 +16,15 @@ function draw_button(txt, x, y, callback, param = "")
       callback(param);
   }
 
+  textAlign(CENTER, CENTER);
+
   rectMode(CORNER);
   fill(rectfill);
   rect(x, y, width, height, 10);
   
   fill(textfill);
   textSize(64 * (SCREEN_HEIGHT/1000));
-  text(txt, x+5, y+22);
+  text(txt, x+width/2, y+height/2 - 5);
 
 }
 
@@ -165,6 +167,11 @@ class UI {
   }
 
   draw_menu() {
+
+    textSize(128);
+    textAlign(CENTER, CENTER);
+    text(`"COOM"`, 500, 200);
+
     draw_button("Start Cooming", 100 * (SCREEN_WIDTH/1000), 500 * (SCREEN_HEIGHT/1000), this.unpause, this.music_volume_slider);
     
 

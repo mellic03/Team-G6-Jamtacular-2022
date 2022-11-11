@@ -536,6 +536,17 @@ class Player {
     }
   }
 
+  set_dir(x, y) {
+    this.dir.x = x;
+    this.dir.y = y;
+
+    this.plane.x = x;
+    this.plane.y = y;
+    this.plane.rotate(Math.PI/2);
+    this.plane.normalise();
+
+  }
+
 }
 
 

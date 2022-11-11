@@ -13,8 +13,12 @@ class Map {
   pickups = [];
   enemies = [];
 
+  spawn_dir_x = 1; spawn_dir_y = 0;
+
   spawn_x; spawn_y;
   exit_x;  exit_y;
+  exit_xs = []; exit_ys = [];
+  exit_mapnames = [];
 
   width = 25;
   tilemap = [];   // Raycasting and collisions against walls, 1/4 size of colourmap
@@ -73,8 +77,9 @@ class Map {
 
 
           else if (tokens[0] == "EXIT") {
+
             this.exit_x = (i%25)*25 + 12.5;
-            this.exit_y = floor(i/25)*25 + 12.5
+            this.exit_y = floor(i/25)*25 + 12.5;
             let prop_name = "exit_portal";
             let obj = entity_data.static_props[prop_name];
             let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
@@ -88,6 +93,38 @@ class Map {
           else if (tokens[0] == "PROP:") {
             let tok1 = splitTokens(tokens[1], ':');
             let prop_name;
+
+            // Jank entrance/exit prop (lord forgive me)
+            //------------------------------------------
+            if (tok1.length == 2) {
+
+              if (tok1[0] == "SPAWN") {
+                this.spawn_x = (i%25)*25 + 12.5;
+                this.spawn_y = floor(i/25)*25 + 12.5;
+                switch (tok1[1]) {
+                  case ("north"): this.spawn_dir_x =  0, this.spawn_dir_y = -1; break;
+                  case ("east"):  this.spawn_dir_x = +1, this.spawn_dir_y =  0; break;
+                  case ("south"): this.spawn_dir_x =  0, this.spawn_dir_y = +1; break;
+                  case ("west"):  this.spawn_dir_x = -1, this.spawn_dir_y =  0; break;
+                }
+              }
+
+              if (tok1[0] == "EXIT") {
+                this.exit_xs.push((i%25)*25 + 12.5);
+                this.exit_ys.push(floor(i/25)*25 + 12.5);
+                this.exit_mapnames.push(tok1[1]);
+                let prop_name = "exit_portal";
+                let obj = entity_data.static_props[prop_name];
+                let prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
+                prop.height = obj.height;
+                prop.voffset = obj.vertical_offset;
+                prop.collision_radius = obj.collision_radius;
+                this.props.push(prop);
+              }
+              continue;
+            }
+            //------------------------------------------
+
             if (tok1.length >= 2) {
               prop_name = tok1[0];
             }
@@ -97,11 +134,13 @@ class Map {
             let obj = entity_data.static_props[prop_name];
             let prop;
 
+
             // If directional prop
             if (tok1.length >= 2) {
               let dir;
               let prop_x = (i%25)*25 + 12.5;
               let prop_y = floor(i/25)*25 + 12.5;
+
               switch (tok1[1]) {
                 case ("north"): dir = new Vector2( 0, -1); break;
                 case ("east"):  dir = new Vector2(+1,  0); break;
