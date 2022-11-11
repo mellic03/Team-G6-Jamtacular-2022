@@ -3,6 +3,8 @@ class MapHandler {
   map_number = 1;
   active_map;
 
+  transitioning = true;
+
   assets = {};
 
   constructor() {
@@ -15,6 +17,7 @@ class MapHandler {
         this.active_map = map;
         player.pos.x = map.spawn_x;
         player.pos.y = map.spawn_y;
+        this.transitioning = true;
       }
     }
   }
