@@ -3,11 +3,16 @@ class Player {
   health = 100;
   armor = 100;
   stamina = 100;
+
+  DEFAULT_DAMAGE = 10;
   damage = 10;
 
   // POWERUPS
   //---------------------------------
-  stimmed_up_on_ritalin = false; 
+  stimmed_up_on_ritalin = false;
+  hitpoints_until_nostim = 0;
+
+  frames_since_ritalin = 0;
   //---------------------------------
 
   can_punch = true;
@@ -17,6 +22,7 @@ class Player {
 
   headbob_count = 0;
 
+  DEFAULT_MOV_SPEED = 2;
   mov_speed = 2;
   max_delta_v = 0.15;
   mov_friction = 0.94;
@@ -108,6 +114,19 @@ class Player {
     this.collide_with_props(world_data.map_handler.active_map);
     this.collide_with_pickups(world_data.map_handler.active_map);
     this.collide_with_projectiles(world_data.map_handler.active_map)
+
+    if (this.stimmed_up_on_ritalin)
+      this.frames_since_ritalin += 1;
+    else
+      this.frames_since_ritalin = 0;
+
+    if (this.mov_speed > 2*this.DEFAULT_MOV_SPEED && this.stimmed_up_on_ritalin) {
+      this.mov_speed -= 0.05 / sqrt(this.frames_since_ritalin);
+    }
+    else if (this.mov_speed > this.DEFAULT_MOV_SPEED) {
+      this.mov_speed -= 0.05 / sqrt(this.frames_since_ritalin);
+    }
+    
     this.march(world_data.map_handler.active_map);
     this.world_render(world_data.map_handler.active_map);
     this.sprite_render(
@@ -509,7 +528,6 @@ class Player {
   }
 
   collide_with_pickups(map) {
-
     for (let pickup of map.pickups) {
       let dist = vector2_dist(this.pos, pickup.pos);
       if (dist < 5) {
@@ -518,10 +536,8 @@ class Player {
         }
         pickup.pos.x = -100;
         pickup.pos.y = -100;
-
       }
     }
-
   }
 
   collide_with_projectiles(map) {
@@ -529,13 +545,20 @@ class Player {
       if (vector2_dist(projectile.pos, this.pos) < projectile.radius) {
         projectile.pos.x = -100; projectile.pos.y = -100;
         projectile.xvel = 0; projectile.yvel = 0;
+
         if (this.armor > 0)
           this.armor -= projectile.damage;
         else
           this.health -= projectile.damage;
-     
-        this.stimmed_up_on_ritalin = false;
-        this.damage = 10;
+        
+        if (this.hitpoints_until_nostim > 0)
+          this.hitpoints_until_nostim -= projectile.damage;
+
+        else {
+          this.stimmed_up_on_ritalin = false;
+          this.damage = this.DEFAULT_DAMAGE;
+          this.mov_speed = this.DEFAULT_MOV_SPEED;
+        }
       }
     }
   }

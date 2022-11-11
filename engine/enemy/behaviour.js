@@ -207,13 +207,17 @@ const behaviour_scripts = {
     
     if (dist <= enemy.attack_range) {
       enemy.sprite.changeAnimation("attack");
-      
-      if (enemy.sprite.animations.attack.frame == 3) {
+
+      if (enemy.sprite.animations.attack.frame == 3)
+      {
+        let map = world_data.map_handler.active_map;
+        if (obstructed(player.pos.x, player.pos.y, enemy.pos.x, enemy.pos.y, map))
+          return;
+
         enemy.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(enemy.pos, 1*e2p_x, 1*e2p_y);
+        world_data.map_handler.active_map.create_projectile(enemy.pos, 1*e2p_x, 1*e2p_y, enemy.damage);
         enemy.sound_attack.setVolume(0.7);
         enemy.sound_attack.play();
-        console.log(enemy.health);
       }
     }
   },
@@ -252,7 +256,6 @@ const behaviour_scripts = {
 
         enemy.sound_attack.setVolume(0.4);
         enemy.sound_attack.play();
-        console.log(enemy.health);
       }
     }
   }

@@ -227,12 +227,11 @@
 
     "ritalin": {
       "directory": "engine/pickup/ritalin",
-      "attributes": ["damage", "stimmed_up_on_ritalin", "stamina"],
-      "amounts": [90, true, 100],
+      "attributes": ["damage", "stimmed_up_on_ritalin", "hitpoints_until_nostim", "stamina", "mov_speed"],
+      "amounts": [90, true, 50, 100, 5],
       "height": 0.2,
       "vertical_offset": 3500
     }
-
   },
 
 
