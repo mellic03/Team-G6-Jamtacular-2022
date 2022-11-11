@@ -30,7 +30,6 @@ class Vector2 {
     this.x *= -1;
     this.y *= -1;
   }
-  
 
   mag() {
     return sqrt(this.x**2 + this.y**2);
@@ -65,17 +64,23 @@ class Vector2 {
   }
 
   lerp(v2, alpha) {
-    let dir_x = this.x - v2.x;
-    let dir_y = this.y - v2.y;
+
+    let dist = sqrt((this.x-v2.x)**2 + (this.y-v2.y)**2);
+
+    let dir_x = v2.x - this.x;
+    let dir_y = v2.y - this.y;
+
     let mag = sqrt(dir_x**2 + dir_y**2);
+
     dir_x /= mag;
     dir_y /= mag;
-    dir_x *= alpha;
-    dir_y *= alpha;
+
+    dir_x *= alpha*dist;
+    dir_y *= alpha*dist;
+
     this.x += dir_x;
     this.y += dir_y;
   }
-
 
 }
 

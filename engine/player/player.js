@@ -6,6 +6,7 @@ class Player {
 
   DEFAULT_DAMAGE = 10;
   damage = 10;
+  damage_range = 10;
 
   // POWERUPS
   //---------------------------------

@@ -219,7 +219,7 @@ class CyberDemon {
     this.to_player.normalise();
     this.to_player.scale(0.1);
 
-    this.dir.lerp(this.to_this, 0.01);
+    this.dir.lerp(this.to_player, 0.01);
     this.dir.normalise();
 
     this.to_player.x = this.dir.x;

@@ -262,7 +262,7 @@ class EnemyType_1 {
     let side = vector2_dot(this.temp_dir3, this.temp_dir2) < 0 ? -1 : 1;
     let theta = (acos(dot)*180)/3.14159;
 
-    if (vector2_dist(player_pos, this.pos) < 20) {
+    if (vector2_dist(player_pos, this.pos) <= this.attack_range) {
       return;
     }
 

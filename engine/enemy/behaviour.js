@@ -35,11 +35,6 @@ const behaviour_scripts = {
     enemy.to_player.y = player.pos.y - enemy.pos.y;
 
     enemy.to_player.normalise();
-    enemy.to_player.scale(0.1);
-
-    enemy.to_this.x = enemy.pos.x - player.pos.x;
-    enemy.to_this.y = enemy.pos.y - player.pos.y;
-
 
     let movement_x = 0;
     let movement_y = 0;
@@ -50,29 +45,30 @@ const behaviour_scripts = {
     // keep track of delta_dist, if delta_dist becomes too small, 
     // recalculate nearest 45 degree angle
 
-    // circle(400+enemy.pos.x, 50+enemy.pos.y, 10);
+    circle(400+enemy.pos.x, 50+enemy.pos.y, 10);
 
-    // stroke(0, 255, 0);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dir.x*40, 50+enemy.pos.y+enemy.dir.y*40);
+    stroke(0, 255, 0);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dir.x*40, 50+enemy.pos.y+enemy.dir.y*40);
 
-    // stroke(0, 0, 255);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[0].x*20, 50+enemy.pos.y+enemy.dirs[0].y*20);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[1].x*20, 50+enemy.pos.y+enemy.dirs[1].y*20);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[2].x*20, 50+enemy.pos.y+enemy.dirs[2].y*20);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[3].x*20, 50+enemy.pos.y+enemy.dirs[3].y*20);
+    stroke(0, 0, 255);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[0].x*20, 50+enemy.pos.y+enemy.dirs[0].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[1].x*20, 50+enemy.pos.y+enemy.dirs[1].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[2].x*20, 50+enemy.pos.y+enemy.dirs[2].y*20);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.dirs[3].x*20, 50+enemy.pos.y+enemy.dirs[3].y*20);
 
-    // stroke(0, 0, 0);
-    // line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.to_player.x*30, 50+enemy.pos.y+enemy.to_player.y*30);
+    stroke(0, 0, 0);
+    line(400+enemy.pos.x, 50+enemy.pos.y, 400+enemy.pos.x+enemy.to_player.x*30, 50+enemy.pos.y+enemy.to_player.y*30);
 
-    // fill(0, 255, 0);
-    // circle(400+player.pos.x, 50+player.pos.y, 10);
+    fill(0, 255, 0);
+    circle(400+player.pos.x, 50+player.pos.y, 10);
+
 
     if (dist <= enemy.attack_range) {
       return;
     }
 
     else if (dist <= enemy.chase_range) {
-      enemy.dir.lerp(enemy.to_this, 0.01);
+      enemy.dir.lerp(enemy.to_player, 0.03);
       enemy.dir.normalise();
     }
 
@@ -101,31 +97,36 @@ const behaviour_scripts = {
     enemy.player_delta_dist = abs(dist - enemy.player_last_dist);
     enemy.player_last_dist = dist;
 
-    movement_x = enemy.dir.x;
-    movement_y = enemy.dir.y;
+    // movement_x = enemy.dir.x;
+    // movement_y = enemy.dir.y;
 
-    mag = sqrt(movement_x**2 + movement_y**2);
-    movement_x = (mag != 0) ? movement_x/mag : 0;
-    movement_y = (mag != 0) ? movement_y/mag : 0;
+    // mag = sqrt(movement_x**2 + movement_y**2);
+    // movement_x = (mag != 0) ? movement_x/mag : 0;
+    // movement_y = (mag != 0) ? movement_y/mag : 0;
 
-    movement_x *= enemy.speed;
-    movement_y *= enemy.speed;
+    // movement_x *= enemy.speed;
+    // movement_y *= enemy.speed;
 
-    enemy.pos.x += movement_x * 0.01 * deltaTime;
-    enemy.pos.y += movement_y * 0.01 * deltaTime;
+    enemy.pos.x += enemy.dir.x * 0.01 * deltaTime;
+    enemy.pos.y += enemy.dir.y * 0.01 * deltaTime;
   },
 
   push_player(enemy, world_data) {
+
+    if (enemy.health <= 0)
+      return;
+
     let player = world_data.players[0];
     let dist = vector2_dist(player.pos, enemy.pos);
 
-    enemy.to_player.x = player.pos.x - enemy.pos.x;
-    enemy.to_player.y = player.pos.y - enemy.pos.y;
-
-    enemy.to_player.normalise();
-    enemy.to_player.scale(0.1);
-
     if (dist <= enemy.push_range) {
+
+      enemy.to_player.x = player.pos.x - enemy.pos.x;
+      enemy.to_player.y = player.pos.y - enemy.pos.y;
+  
+      enemy.to_player.normalise();
+      enemy.to_player.scale(0.1);
+
       player.vel.x = 0;
       player.vel.y = 0;
       player.vel.x += enemy.to_player.x;
@@ -147,7 +148,14 @@ const behaviour_scripts = {
 
     let player = world_data.players[0];
 
-    if (vector2_dist(player.pos, enemy.pos) < 2*enemy.push_range && player.dealing_damage) {
+    enemy.to_this.x = enemy.pos.x - player.pos.x;
+    enemy.to_this.y = enemy.pos.y - player.pos.y;
+    enemy.to_this.normalise();
+
+    const cond1 = vector2_dist(player.pos, enemy.pos) <= player.damage_range && player.dealing_damage;
+    const cond2 = vector2_dot(player.dir, enemy.to_this) > 0;
+
+    if (cond1 && cond2) {
       enemy.sound_injury.play();
       enemy.to_this.x = enemy.pos.x - player.pos.x;
       enemy.to_this.y = enemy.pos.y - player.pos.y;
@@ -164,27 +172,35 @@ const behaviour_scripts = {
       return;
 
     let player = world_data.players[0];
-    let e2p_x = player.pos.x - enemy.pos.x;
-    let e2p_y = player.pos.y - enemy.pos.y;
-  
-    let mag = sqrt(e2p_x**2 + e2p_y**2);
-     
-    e2p_x /= mag;
-    e2p_y /= mag;
 
     let dist = vector2_dist(player.pos, enemy.pos);
 
-    if (dist <= enemy.attack_range) {
+    const cond1 = dist <= enemy.attack_range;
+    const cond2 = vector2_dot(player.dir, enemy.dir) < 0;
+
+    if (cond1 && cond2) {
+      enemy.sprite.changeAnimation("attack");
+
+      enemy.dir.lerp(enemy.to_player, 0.03);
+      enemy.dir.normalise();
 
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
+        enemy.sound_attack.play();
+
         if (player.armor > 0)
           player.armor -= enemy.damage;
         else
           player.health -= enemy.damage;
-        player.stimmed_up_on_ritalin = false;
-        player.damage = 10;
-        enemy.sound_attack.play();
+        
+        if (player.hitpoints_until_nostim > 0)
+          player.hitpoints_until_nostim -= enemy.damage;
+
+        else {
+          player.stimmed_up_on_ritalin = false;
+          player.damage = player.DEFAULT_DAMAGE;
+          player.mov_speed = player.DEFAULT_MOV_SPEED;
+        }
       }
     }
   },
