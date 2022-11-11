@@ -19,21 +19,6 @@ const keycodes = {
   Y: 89, Z: 90,
 };
 
-function copy_image(src) {
-  
-  let width = src.width;
-  let height = src.height;
-  let new_image = createImage(width, height);
-  
-  src.loadPixels();
-  new_image.loadPixels();
-  for (let i=0; i<src.pixels.length; i++) {
-    new_image.pixels[i] = +src.pixels[i];
-  }
-  new_image.updatePixels();
-  return new_image;
-}
-
 function MIN(value1, value2) {
   return value1 < value2 ? value1 : value2;
 }
@@ -44,4 +29,41 @@ function MAX(value1, value2) {
 
 function clamp(value, min, max) {
   return MIN(MAX(value, min), max);
+}
+
+let ray;
+
+/** Determine if two points have clear line-of-sight
+ */
+function obstructed(x1, y1, x2, y2, map) {
+
+  if (ray == undefined)
+    ray =  new Vector2(0, 0);
+
+  let dist = sqrt((x1-x2)**2 + (y1-y2)**2);
+
+  let dir_x = x2 - x1;
+  let dir_y = y2 - y1;
+  let mag = sqrt(dir_x**2 + dir_y**2);
+
+  dir_x /= mag;
+  dir_y /= mag;
+
+  ray.x = dir_x;
+  ray.y = dir_y;
+
+  const resolution = 2;
+  let steps = 1;
+
+  while (ray.mag() < dist) {
+    ray.normalise();
+    ray.scale(steps);
+
+    if (map.point_in_grid(x1 + ray.x, y1 + ray.y))
+      return true;
+
+    steps += resolution;
+  }
+
+  return false;
 }

@@ -268,8 +268,11 @@ class Player {
       line_start = -line_height/2 + SCREEN_HEIGHT/2;
       line_end = line_height/2 + SCREEN_HEIGHT/2;
 
+      // let fog =  this.depth_buffer[i].dist / 400;
+
       // strokeWeight(2);
       stroke(r, g, b);
+      // stroke((1-fog) * r, (1-fog) * g, (1-fog) * b);
       line(i, line_start, i+1, line_end);
     }
     stroke(0);

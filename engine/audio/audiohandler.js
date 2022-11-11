@@ -26,7 +26,7 @@ class AudioHandler {
     if (world_data.map_handler.transitioning == true)
     {
       this.active_track?.pause();
-      this.tracks[world_data.map_handler.active_map.name]?.play();
+      this.tracks[world_data.map_handler.active_map.name]?.loop();
       this.active_track = this.tracks[world_data.map_handler.active_map.name];
       world_data.map_handler.transitioning = false;
     }

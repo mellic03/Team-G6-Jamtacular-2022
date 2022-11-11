@@ -10,8 +10,8 @@ class Prop {
   voffset = 0;
   collision_radius = 0;
 
-  active_img; og_active_img;
-  spritesheet; og_spritesheet;
+  active_img;
+  spritesheet;
   
   pos = new Vector2(0, 0);
   xvel = 0; yvel = 0;
@@ -31,8 +31,6 @@ class Prop {
     loadImage(`${this.directory}/${this.name}.png`, (img) => {
       this.img_front = img;
       this.active_img = this.img_front;
-      this.og_active_img = copy_image(this.img_front);
-
       this.spritesheet = loadSpriteSheet(img, img.width/this.frames, img.height, this.frames);
     });
 

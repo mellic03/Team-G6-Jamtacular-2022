@@ -325,12 +325,13 @@ class Map {
     return false;
   }
  
-  create_projectile(pos, xvel, yvel) {
+  create_projectile(pos, xvel, yvel, damage) {
     this.projectile_count = (this.projectile_count+1)%this.max_projectiles;
     this.projectiles[this.projectile_count].pos.x = pos.x;
     this.projectiles[this.projectile_count].pos.y = pos.y;
     this.projectiles[this.projectile_count].xvel = xvel;
     this.projectiles[this.projectile_count].yvel = yvel;
+    this.projectiles[this.projectile_count].damage = damage;
   }
   
 }

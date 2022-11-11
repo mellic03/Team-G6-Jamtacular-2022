@@ -218,12 +218,11 @@ const behaviour_scripts = {
     }
   },
 
-
   shoot_player_shotgun(enemy, world_data) {
 
     if (enemy.health <= 0)
       return;
-
+      
     let player = world_data.players[0];
     
     enemy.temp_dir1.x = player.pos.x - enemy.pos.x;
@@ -239,10 +238,15 @@ const behaviour_scripts = {
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
 
+        let map = world_data.map_handler.active_map;
+        if (obstructed(player.pos.x, player.pos.y, enemy.pos.x, enemy.pos.y, map)) {
+          return;
+        }
+
         enemy.temp_dir1.rotate(-0.25);
 
         for (let i=0; i<10; i++) {
-          world_data.map_handler.active_map.create_projectile(enemy.pos, 1*enemy.temp_dir1.x, 1*enemy.temp_dir1.y);
+          world_data.map_handler.active_map.create_projectile(enemy.pos, 1*enemy.temp_dir1.x, 1*enemy.temp_dir1.y, enemy.damage);
           enemy.temp_dir1.rotate(0.05);
         }
 

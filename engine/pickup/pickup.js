@@ -12,8 +12,8 @@ class Pickup {
 
   height = 1;
 
-  active_img; og_active_img;
-  spritesheet; og_spritesheet;
+  active_img;
+  spritesheet;
 
   pos = new Vector2(0, 0);
   
@@ -30,8 +30,6 @@ class Pickup {
     loadImage(`${this.directory}/${this.name}.png`, (img) => {
       this.img_front = img;
       this.active_img = this.img_front;
-      this.og_active_img = copy_image(this.img_front);
-
       this.spritesheet = loadSpriteSheet(img, img.width, img.height, 1);
     });
   }
