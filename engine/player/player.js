@@ -377,8 +377,9 @@ class Player {
   move_dir = new Vector2(0, 0);
 
   input(map) {
-    if (keyIsDown(13))
-      requestPointerLock();
+
+    if (game_paused)
+      return;
 
     this.vel.scale(this.mov_friction);
 
@@ -470,6 +471,8 @@ class Player {
 
     this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
     this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+
+
     
     if (keyIsDown(LEFT_ARROW)) {
       this.plane.rotate(-this.rot_speed * deltaTime);
@@ -480,9 +483,6 @@ class Player {
       this.plane.rotate(+this.rot_speed * deltaTime);
       this.dir.rotate(+this.rot_speed * deltaTime);
     }
-
-
-
   }
 
   prop_dir = new Vector2(0, 0);
@@ -568,7 +568,8 @@ function point_in_cell(x, y, grid) {
 
 
 function mouseMoved(event) {
-
-  world_data.players[0].plane.rotate(0.0003 * event.movementX * deltaTime);
-  world_data.players[0].dir.rotate(0.0003 * event.movementX * deltaTime);
+  if (game_paused == false) {
+    world_data.players[0].plane.rotate(0.0003 * event.movementX * deltaTime);
+    world_data.players[0].dir.rotate(0.0003 * event.movementX * deltaTime);
+  }
 }

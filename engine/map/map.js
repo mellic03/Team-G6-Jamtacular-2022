@@ -239,6 +239,9 @@ class Map {
   }
 
   draw(world_data) {
+    if (game_paused)
+      return;
+    
     for (let enemy of this.enemies) {
       enemy.draw(world_data);
     }

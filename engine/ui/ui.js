@@ -1,3 +1,32 @@
+function draw_button(txt, x, y, callback, param = "")
+{
+  const width = 180, height = 30;
+
+  const xcond = mouseX > x && mouseX < x+width;
+  const ycond = mouseY > y && mouseY < y+height;
+
+  let rectfill = 255;
+  let textfill = 0;
+
+  if (xcond && ycond) {
+    rectfill = 0;
+    textfill = 255;
+
+    if (mouseIsPressed)
+      callback(param);
+  }
+
+  rectMode(CORNER);
+  fill(rectfill);
+  rect(x, y, width, height, 10);
+  
+  fill(textfill);
+  textSize(64 * (SCREEN_HEIGHT/1000));
+  text(txt, x+5, y+22);
+
+}
+
+
 class UI {
 
   face_sprites = {};
@@ -14,11 +43,8 @@ class UI {
   currframe;
   currframe2;
   toggle;
-  playbutton;
-  slider;
-  col;
 
-
+  music_volume_slider;
 
   preload() {
 
@@ -62,7 +88,6 @@ class UI {
 
   setup() {
     noSmooth();
-    this.col = color(200, 50, 50, 100);
     this.doom_font = loadFont('fonts/game_over.ttf');
     this.doom_font2 = loadFont('fonts/doom2.ttf');
     this.helmsound.setVolume(0.3);
@@ -70,82 +95,86 @@ class UI {
     this.toggle = false;
     this.helm_sound = true;
     this.ui_display = false;
-    this.playbutton = createButton('coom');
-    this.playbutton.position(400,500);
-    this.playbutton.size(200,75);
-    this.playbutton.style('background-color', 'red');
-    this.playbutton.style('font-style', this.doom_font);
- 
 
+    this.music_volume_slider = createSlider(0, 1, 0.5, 0.1);
+    this.music_volume_slider.style('width', '180px');
+    this.music_volume_slider.position(100, 600);
   }
 
   draw(world_data) {
-    this.col = color(200,50,50);
-
-
     let player = world_data.players[0];
     player.health = clamp(player.health, 0, 100);
     player.armor = clamp(player.armor, 0, 100);
-  
 
-
-   
-
-
-
-    
-
-    
     if (frameCount % 30 == 0) {
       this.framerate = Math.floor(frameRate());
     }
+
+
     this.keyPressed();
     this.keyPressed2();
 
     this.helmet_on();
     this.helmet_off();
 
-
-    if(this.ui_display == true) {
-      this.draw_armor_state(world_data);
-      image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      this.draw_stat_ui(world_data);
-      this.draw_face_state(world_data);
-      this.playbutton.hide();
-
-
-      for(let player of world_data.players) {
-        if(player.stimmed_up_on_ritalin == true){
-          this.draw_cocaine_face();
-          player.stamina += 0.1;
-        }else{
-
-        }
-      }
-    }else {
-      this.playbutton.show();
-
-
+    if (game_paused) {
+      this.draw_menu();
     }
 
+    else {
 
+      if (keyIsDown(keycodes.ESC)) {
+        this.pause();
+      }
 
-    this.draw_low_health(world_data);
-    this.playbutton.mousePressed(this.draw_rect)
+  
+      if (this.ui_display == true) {
+        this.draw_armor_state(world_data);
+        image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.draw_stat_ui(world_data);
+        this.draw_face_state(world_data);
+  
+  
+        for (let player of world_data.players) {
+          if (player.stimmed_up_on_ritalin == true){
+            this.draw_cocaine_face();
+            player.stamina += 0.1;
+          }
+        }
+      }
+  
+      this.draw_low_health(world_data);
+      
+      fill(255);
+      textSize(60);
+      text(`FPS: ${this.framerate}`, 10, 30);
+      text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
+      text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
+    }
+  }
+
+  unpause(music_volume_slider) {
+    game_paused = false;
+    requestPointerLock();
+    music_volume_slider.hide();
+  }
+
+  pause() {
+    game_paused = true;
+    this.music_volume_slider.show();
+  }
+
+  draw_menu() {
+    draw_button("Start Cooming", 100 * (SCREEN_WIDTH/1000), 500 * (SCREEN_HEIGHT/1000), this.unpause, this.music_volume_slider);
     
 
-
-    fill(255);
-    textSize(60);
-    text(`FPS: ${this.framerate}`, 10, 30);
-    text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
-    text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
   }
+
 
   draw_stat_ui(world_data) {
     fill(250, 150, 150);
     textSize(130);
-    for(let player of world_data.players) {
+    for (let player of world_data.players) {
       fill(250, 150, 150);
       text(floor(player.health), 175 * (SCREEN_WIDTH / 1000), 855);
       fill(150, 150, 250);
@@ -181,10 +210,12 @@ class UI {
     if (keyIsDown(keycodes.LEFT)) {
       image(this.faces_cocaine[1], SCREEN_WIDTH / 2.17, 
                                    SCREEN_HEIGHT - 100);  
-    }else if (keyIsDown(keycodes.RIGHT)) {
+    }
+    else if (keyIsDown(keycodes.RIGHT)) {
       image(this.faces_cocaine[2], SCREEN_WIDTH/2.17, 
                                    SCREEN_HEIGHT - 100);
-    }else {
+    }
+    else {
       image(this.faces_cocaine[0], SCREEN_WIDTH/2.17, 
                                    SCREEN_HEIGHT - 100);
     }
@@ -201,8 +232,8 @@ class UI {
   }
 
   draw_low_health(world_data) {
-    for(let player of world_data.players) {
-      if(player.health < 20) {
+    for (let player of world_data.players) {
+      if (player.health < 20) {
         image(this.pain, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
       }
@@ -213,7 +244,7 @@ class UI {
 
   helmet_on() {
 
-    if(this.helm == true){
+    if (this.helm == true){
       //this.helmeton.setFrame(1);
       image(this.helmeton,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
       this.helmeton.play();
@@ -221,12 +252,12 @@ class UI {
       // console.log(this.currframe);
       this.helmetoff.reset();
 
-      if(this.currframe == 11 && this.helm_sound == true) {
+      if (this.currframe == 11 && this.helm_sound == true) {
         this.helmsound.play()
         this.helm_sound = false;
       }
 
-      if(this.currframe == 15){
+      if (this.currframe == 15){
         this.helm = false;
         this.ui_display = true;
         this.helm_sound = true;
@@ -235,8 +266,8 @@ class UI {
     }
   }
 
-  helmet_off(){
-    if(this.helmoff == true) {
+  helmet_off() {
+    if (this.helmoff == true) {
       this.ui_display = false;
       this.currframe2 = this.helmetoff.getCurrentFrame();
       //hjthis.helmetoff.setFrame(1);
@@ -244,19 +275,15 @@ class UI {
       // console.log(this.currframe2);
       this.helmeton.reset();
 
-
-      if(this.currframe2 == 14) {
+      if (this.currframe2 == 14) {
         this.helmoff = false;
-
-
       }
     }
-
    
   }
 
   keyPressed() {
-    if(keyCode == keycodes.H && this.toggle == true) {
+    if (game_paused == true && this.toggle == true) {
       this.helmoff = true;
       this.helmon = false;
       this.helmsound.play();
@@ -267,18 +294,12 @@ class UI {
 
 
   keyPressed2() {
-    if(keyCode == keycodes.J && this.toggle == false){
+    if (game_paused == false && this.toggle == false){
       this.helm = true;
       this.helmoff = false;
       this.toggle = true;
 
     }
-  }
-
-  draw_rect() {
-
-    rect(700,700,100,100);
-
   }
 
 }
