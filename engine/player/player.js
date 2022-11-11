@@ -17,7 +17,7 @@ class Player {
 
   headbob_count = 0;
 
-  mov_speed = 0.4;
+  mov_speed = 2;
   max_delta_v = 0.15;
   mov_friction = 0.94;
 
@@ -59,7 +59,6 @@ class Player {
         index: 0
       }
     }
-    console.log(this.depth_buffer);
   }
 
   preload() {
@@ -383,19 +382,21 @@ class Player {
 
     this.vel.scale(this.mov_friction);
 
-    let deltav_x = this.vel.x * this.mov_speed * deltaTime;
-    let deltav_y = this.vel.y * this.mov_speed * deltaTime;
+    let deltav_x = this.vel.x * this.mov_speed;
+    let deltav_y = this.vel.y * this.mov_speed;
 
-    if (point_in_wall(this.pos.x+deltav_x, this.pos.y+deltav_y, map)) {
+    let dv_mag = sqrt(deltav_x**2 + deltav_y**2);
+
+    if (point_in_wall(this.pos.x+(deltav_x/dv_mag)*5, this.pos.y+(deltav_y/dv_mag)*5, map)) {
       deltav_x = 0;
       deltav_y = 0;
     }
 
-    this.pos.x += deltav_x;
-    this.pos.y += deltav_y;
-
     this.delta_vel.x = 0;
     this.delta_vel.y = 0;
+
+    this.pos.x += deltav_x * (deltaTime/7);
+    this.pos.y += deltav_y * (deltaTime/7);
 
     let headbob = false;
 
@@ -544,9 +545,7 @@ class Player {
     this.plane.y = y;
     this.plane.rotate(Math.PI/2);
     this.plane.normalise();
-
   }
-
 }
 
 
@@ -577,10 +576,9 @@ function point_in_cell(x, y, grid) {
   return false;
 }
 
-
 function mouseMoved(event) {
   if (game_paused == false) {
-    world_data.players[0].plane.rotate(0.0003 * event.movementX * deltaTime);
-    world_data.players[0].dir.rotate(0.0003 * event.movementX * deltaTime);
+    world_data.players[0].plane.rotate(0.003 * event.movementX * 1);
+    world_data.players[0].dir.rotate(0.003 * event.movementX * 1);
   }
 }

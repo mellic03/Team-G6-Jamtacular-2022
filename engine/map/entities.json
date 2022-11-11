@@ -241,7 +241,7 @@
     "zombie": {
       "directory": "engine/enemy/zombie",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 25,
@@ -256,7 +256,7 @@
     "zombie_reflect": {
       "directory": "engine/enemy/zombie_reflect",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player"],
       "height": 0.07,
       "vertical_offset": 6000,
       "health": 25,
@@ -271,7 +271,7 @@
     "shotgunner": {
       "directory": "engine/enemy/shotgunner",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "shoot_player_shotgun"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player_shotgun"],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 25,
@@ -281,6 +281,22 @@
       "follow_range": 100,
       "chase_range": 70,
       "attack_range": 70,
+      "push_range": 7
+    },
+
+    "shotgunner_still": {
+      "directory": "engine/enemy/shotgunner",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "push_player", "killable", "shoot_player_shotgun"],
+      "height": 0.14,
+      "vertical_offset": 1600,
+      "health": 25,
+      "damage": 10,
+      "speed": 1,
+      "attack_speed": 2,
+      "follow_range": 200,
+      "chase_range": 200,
+      "attack_range": 150,
       "push_range": 7
     },
 
@@ -302,7 +318,7 @@
     "notzi": {
       "directory": "engine/enemy/notzi",
       "frames": 4,
-      "behaviour_scripts": ["shoot_player", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["shoot_player", "push_player", "follow_player_zigzag", "killable"],
       "height": 0.14,
       "vertical_offset": 1800,
       "health": 25,
@@ -332,7 +348,7 @@
     "pinky": {
       "directory": "engine/enemy/pinky",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable", "melee_player"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "melee_player"],
       "height": 0.14,
       "vertical_offset": 1800,
       "health": 50,

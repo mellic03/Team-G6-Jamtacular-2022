@@ -26,7 +26,6 @@ const behaviour_scripts = {
   follow_player_zigzag(enemy, world_data) {
 
     if (enemy.health <= 0) {
-      enemy.sprite.changeAnimation("death");
       return;
     }
 
@@ -68,16 +67,7 @@ const behaviour_scripts = {
     // fill(0, 255, 0);
     // circle(400+player.pos.x, 50+player.pos.y, 10);
 
-
-    if (dist <= enemy.push_range) {
-      player.vel.x = 0;
-      player.vel.y = 0;
-      player.vel.x += enemy.to_player.x;
-      player.vel.y += enemy.to_player.y;
-    }
-
     if (dist <= enemy.attack_range) {
-      enemy.sprite.changeAnimation("attack");
       return;
     }
 
@@ -123,7 +113,24 @@ const behaviour_scripts = {
 
     enemy.pos.x += movement_x * 0.01 * deltaTime;
     enemy.pos.y += movement_y * 0.01 * deltaTime;
+  },
 
+  push_player(enemy, world_data) {
+    let player = world_data.players[0];
+    let dist = vector2_dist(player.pos, enemy.pos);
+
+    enemy.to_player.x = player.pos.x - enemy.pos.x;
+    enemy.to_player.y = player.pos.y - enemy.pos.y;
+
+    enemy.to_player.normalise();
+    enemy.to_player.scale(0.1);
+
+    if (dist <= enemy.push_range) {
+      player.vel.x = 0;
+      player.vel.y = 0;
+      player.vel.x += enemy.to_player.x;
+      player.vel.y += enemy.to_player.y;
+    }
   },
 
   killable(enemy, world_data) {
@@ -131,6 +138,7 @@ const behaviour_scripts = {
     if (enemy.health <= 0 && enemy.death_sound_play == false) {
       enemy.sound_death.play();
       enemy.death_sound_play = true;
+      enemy.sprite.changeAnimation("death");
       return;
     }
 
@@ -186,7 +194,6 @@ const behaviour_scripts = {
     if (enemy.health <= 0)
       return;
 
-
     let player = world_data.players[0];
     let e2p_x = player.pos.x - enemy.pos.x;
     let e2p_y = player.pos.y - enemy.pos.y;
@@ -199,6 +206,7 @@ const behaviour_scripts = {
     let dist = vector2_dist(player.pos, enemy.pos);
     
     if (dist <= enemy.attack_range) {
+      enemy.sprite.changeAnimation("attack");
       
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
@@ -226,6 +234,8 @@ const behaviour_scripts = {
     
     if (dist <= enemy.attack_range) {
       
+      enemy.sprite.changeAnimation("attack");
+
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;
 

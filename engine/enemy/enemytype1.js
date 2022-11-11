@@ -81,8 +81,7 @@ class EnemyType_1 {
 
 
   preload() {
-    console.log("preloading enemy")
-  
+
     loadImage(this.directory + "/spritesheets/walkfront-sheet.png", (img) => {
       this.img_front = img;
       this.active_img = this.img_front;
@@ -241,6 +240,9 @@ class EnemyType_1 {
    * @param {*} world_data 
    */
   correct_angle(world_data) {
+
+    if (this.health <= 0)
+      return;
 
     let player_pos = world_data.players[0].pos;
 
