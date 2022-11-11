@@ -32,34 +32,27 @@ class Player {
   pos = new Vector2();
   vel = new Vector2(0, 0);
   dir = new Vector2(1, 0);
-  plane = new Vector2(0, +SCREEN_WIDTH/SCREEN_HEIGHT);
+  plane = new Vector2(0, 0);
+  fov = 1;
+  inv_fov = 1;
+  fov_modifier = 1;
 
   fist_offset = 0;
   dir_L; dir_R;
 
-  fov = 3.14159/2;
-  scan_res = SCREEN_WIDTH;
-
-  ray_width = SCREEN_WIDTH/this.scan_res;
   depth_buffer = [];
-  sprite_buffer = []; // buffer of sprites waiting for occlusion test
+  sprite_buffer = [];
 
   self_group;
   fist_R_img
   fist_L_sprite;
   fist_R_sprite;
 
-  mmap_x = 700;
-  mmap_width = 250;
-
-  ray_intersections = [];
-
   constructor(x, y) {
     this.pos.x = x;
     this.pos.y = y;
 
-
-    for (let i=0; i<SCREEN_WIDTH; i++) {
+    for (let i=0; i<scr_wdth; i++) {
       this.depth_buffer[i] = {
         dist: 0,
         side: 0,
@@ -105,6 +98,9 @@ class Player {
 
     this.stamina += 0.003 * deltaTime;
 
+    this.fov = this.fov_modifier * (scr_hght/scr_wdth);
+    this.inv_fov = 1 / this.fov;
+
     if (world_data.map_handler.active_map == undefined) {
       return;
     }
@@ -147,57 +143,15 @@ class Player {
     translate(0, -5*cos(0.1*this.headbob_count));
   }
 
-  draw_minimap(map) {
-
-    if (this.ray_intersections.length == 0)
-      return;
-
-    fill(10);
-    rectMode(CORNER)
-    rect(this.mmap_x, 0, this.mmap_width, this.mmap_width);
-    for (let x=0; x<map.width; x++) {
-      for (let y=0; y<map.width; y++) {
-        if (map.tilemap[map.width*y + x] > 0) {
-
-          fill(
-            map.colourmap[map.width*y + x],
-            map.colourmap[map.width*y + x+1],
-            map.colourmap[map.width*y + x+2]
-          );
-
-          rect(this.mmap_x+x*map.width/2, y*map.width/2, 10, 10);
-        }
-      }
-    }
-    stroke(255);
-    circle(this.mmap_x+this.pos.x/2, this.pos.y/2, 5);
-    
-    line(
-      this.mmap_x+this.pos.x/2,
-      this.pos.y/2,
-      this.mmap_x+this.ray_intersections[0].x/2,
-      this.ray_intersections[0].y/2
-    )
-    line(
-      this.mmap_x+this.pos.x/2,
-      this.pos.y/2,
-      this.mmap_x+this.ray_intersections[SCREEN_WIDTH-1].x/2,
-      this.ray_intersections[SCREEN_WIDTH-1].y/2
-    )
-
-    for (let i=1; i<this.ray_intersections.length-1; i+=10) {
-      circle(this.mmap_x+this.ray_intersections[i].x/2, this.ray_intersections[i].y/2, 2);
-    }
-    this.ray_intersections = [];
-  }
-
   march_dir = new Vector2(0, 0);
 
   march(map) {
 
-    for (let x=0; x<SCREEN_WIDTH; x+=1) {
+    this.dir.normalise();
+    this.dir.scale(this.fov);
 
-      let camx = (2*x)/(SCREEN_WIDTH)-1;
+    for (let x=0; x<scr_wdth; x+=1) {
+      let camx = (2*x)/(scr_wdth)-1;
 
       this.march_dir.x = this.dir.x + this.plane.x*camx;
       this.march_dir.y = this.dir.y + this.plane.y*camx;
@@ -266,6 +220,8 @@ class Player {
         this.depth_buffer[x].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
       }
     }
+
+    this.dir.normalise();
   }
 
   world_render(active_map) {
@@ -273,7 +229,7 @@ class Player {
     let r, g, b;
     let line_height, line_start, line_end;
 
-    for (let i=0; i<SCREEN_WIDTH; i+=1) {
+    for (let i=0; i<scr_wdth; i+=1) {
 
       r = active_map.colourmap[4*this.depth_buffer[i].index+0];
       g = active_map.colourmap[4*this.depth_buffer[i].index+1];
@@ -283,17 +239,14 @@ class Player {
         r/=2, g/=2, b/=2;
       }
 
-      line_height = SCREEN_HEIGHT/this.depth_buffer[i].dist*10;
+      line_height = 10 * (scr_hght/this.depth_buffer[i].dist);
 
-      line_start = -line_height/2 + SCREEN_HEIGHT/2;
-      line_end = line_height/2 + SCREEN_HEIGHT/2;
+      line_start = (-line_height + scr_hght) / 2;
+      line_end   = (+line_height + scr_hght) / 2;
 
-      // let fog =  this.depth_buffer[i].dist / 400;
-
-      // strokeWeight(2);
+      strokeWeight(2);
       stroke(r, g, b);
-      // stroke((1-fog) * r, (1-fog) * g, (1-fog) * b);
-      line(i, line_start, i+1, line_end);
+      line(i, line_start, i, line_end);
     }
     stroke(0);
     rectMode(CORNER);
@@ -303,8 +256,8 @@ class Player {
   newpos = new Vector2(0, 0); 
 
   sprite_render(sprite_array) {
-    
-    // Sort sprites by distance, from furthest to nearest
+
+    // Sort sprites by distance
     sprite_array.sort((a, b) => {
       if (vector2_dist(a.pos, this.pos) > vector2_dist(b.pos, this.pos))
         return -1;
@@ -317,7 +270,9 @@ class Player {
       this.player_to_sprite.y = this.pos.y - sprite_array[i].pos.y;
       this.player_to_sprite.normalise();
 
-      if (vector2_dot(this.dir, this.player_to_sprite) < -0.1) {
+      if (vector2_dot(this.dir, this.player_to_sprite) < 0) {
+        this.dir.normalise();
+        this.dir.scale(this.fov);
 
         this.sprite_buffer.push(sprite_array[i]);
         
@@ -331,18 +286,19 @@ class Player {
 
         dist = (dist < 3) ? 3 : dist;
 
-        sprite_array[i].sprite.position.x = (SCREEN_WIDTH/2) * (1 + transformX/dist);
+        sprite_array[i].sprite.position.x = Math.floor(scr_wdth/2) * (1 + transformX/transformY);
         
-        let vdiv = sprite_array[i].height;
-        let vmove = sprite_array[i].voffset;
+        let vdiv = sprite_array[i].height * (this.inv_fov);
+        let vmove = sprite_array[i].voffset * (this.inv_fov);
         let vMoveScreen = floor(vmove / transformY);
 
-        let sprite_height = abs(SCREEN_HEIGHT / dist) / vdiv;
+
+        let sprite_height = abs(scr_hght/(dist*vdiv));
         let scaling_factor = sprite_height / sprite_array[i].active_img.height;
 
 
-        let drawStartY = -sprite_height / 2 + SCREEN_HEIGHT / 2 + vMoveScreen;
-        let drawEndY = sprite_height / 2 + SCREEN_HEIGHT / 2 + vMoveScreen;
+        let drawStartY = -sprite_height/2 + scr_hght/2 + vMoveScreen;
+        let drawEndY = sprite_height/2 + scr_hght/2 + vMoveScreen;
 
 
         sprite_array[i].sprite.scale = scaling_factor;
@@ -354,6 +310,7 @@ class Player {
         sprite_array[i].sprite.position.x = -100;
       }
     }
+    this.dir.normalise();
   }
 
   plane_pos = new Vector2(0, 0);
@@ -373,14 +330,14 @@ class Player {
       );
 
       let c1 = this.sprite_buffer[j].sprite.position.x < 0 && sprite_dist < this.depth_buffer[0].dist;
-      let c2 = this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH && sprite_dist < this.depth_buffer[SCREEN_WIDTH-1].dist;
+      let c2 = this.sprite_buffer[j].sprite.position.x >= scr_wdth && sprite_dist < this.depth_buffer[scr_wdth-1].dist;
 
       if (c1 || c2) {
         drawSprite(this.sprite_buffer[j].sprite);
         continue;
       }
 
-      else if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= SCREEN_WIDTH) {
+      else if (this.sprite_buffer[j].sprite.position.x < 0 || this.sprite_buffer[j].sprite.position.x >= scr_wdth) {
         continue;
       }
 
@@ -485,16 +442,19 @@ class Player {
       }
     }
 
+    this.fist_L_sprite.scale = 3 * scr_hght/1000;
+    this.fist_R_sprite.scale = 3 * scr_hght/1000;
+
     if (this.is_punching) {
-      this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
+      this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (scr_hght/1000);
     }
     if (!this.is_punching) {
-      this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
-      this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+      this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (scr_hght/1000);
+      this.fist_R_sprite.position.x = (750 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (scr_wdth/1000);
     }
 
-    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (SCREEN_HEIGHT/1000);
-    this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (SCREEN_WIDTH/1000);
+    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (scr_hght/1000);
+    this.fist_L_sprite.position.x = (250 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (scr_wdth/1000);
 
 
     
@@ -571,7 +531,6 @@ class Player {
     this.plane.x = x;
     this.plane.y = y;
     this.plane.rotate(Math.PI/2);
-    this.plane.normalise();
   }
 }
 

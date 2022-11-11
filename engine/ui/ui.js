@@ -1,3 +1,8 @@
+// Dirty globals
+ratio_x = 1;
+ratio_y = 1;
+
+
 function draw_button(txt, x, y, callback, param = "")
 {
   const width = 180, height = 30;
@@ -18,16 +23,18 @@ function draw_button(txt, x, y, callback, param = "")
 
   textAlign(CENTER, CENTER);
 
+  strokeWeight(0);
+
   rectMode(CORNER);
   fill(rectfill);
   rect(x, y, width, height, 10);
   
   fill(textfill);
-  textSize(64 * (SCREEN_HEIGHT/1000));
+  textSize(64);
   text(txt, x+width/2, y+height/2 - 5);
-
 }
 
+const MAIN_MENU = 0, SETTINGS_MENU = 1;
 
 class UI {
 
@@ -47,6 +54,9 @@ class UI {
   toggle;
 
   music_volume_slider;
+  fov_slider;
+
+  menu_state = MAIN_MENU;
 
   preload() {
 
@@ -101,17 +111,28 @@ class UI {
     this.music_volume_slider = createSlider(0, 1, 0.5, 0.1);
     this.music_volume_slider.style('width', '180px');
     this.music_volume_slider.position(100, 600);
+    this.music_volume_slider.hide();
+
+    this.fov_slider = createSlider(0.1, 5, 1, 0.1);
+    this.fov_slider.style('width', '180px');
+    this.fov_slider.position(100, 650);
+    this.fov_slider.hide();
   }
 
   draw(world_data) {
+
+    ratio_x = scr_wdth/1000;
+    ratio_y = scr_hght/1000;
+
     let player = world_data.players[0];
     player.health = clamp(player.health, 0, 100);
     player.armor = clamp(player.armor, 0, 100);
 
+    player.fov_modifier = this.fov_slider.value();
+
     if (frameCount % 30 == 0) {
       this.framerate = Math.floor(frameRate());
     }
-
 
     this.keyPressed();
     this.keyPressed2();
@@ -129,10 +150,9 @@ class UI {
         this.pause();
       }
 
-  
       if (this.ui_display == true) {
         this.draw_armor_state(world_data);
-        image(this.hud,0,0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        image(this.hud,0,0, scr_wdth, scr_hght);
         this.draw_stat_ui(world_data);
         this.draw_face_state(world_data);
   
@@ -170,61 +190,78 @@ class UI {
 
     textSize(128);
     textAlign(CENTER, CENTER);
-    text(`"COOM"`, 500, 200);
+    text(`"COOM"`, scr_wdth/2,  scr_hght/8);
 
-    draw_button("Start Cooming", 100 * (SCREEN_WIDTH/1000), 500 * (SCREEN_HEIGHT/1000), this.unpause, this.music_volume_slider);
-    
+    switch (this.menu_state)
+    {
+      case (MAIN_MENU):     this.draw_main_menu();      break;
+      case (SETTINGS_MENU): this.draw_settings_menu();  break;
 
+    }
+  }
+  
+  draw_main_menu() {
+
+    this.music_volume_slider.hide();
+    this.fov_slider.hide();
+
+    draw_button("Start Cooming", 100, 500, this.unpause, this.music_volume_slider);
+    draw_button("Controls", 100, 550, () => console.log("Bro"));
+    draw_button("Settings", 100, 600, (ui) => ui.menu_state = SETTINGS_MENU, this);
   }
 
+  draw_settings_menu() {
+    textAlign(CORNER, CORNER);
+    draw_button("Back", 100, 450, (ui) => ui.menu_state = MAIN_MENU, this);
+    text("Music volume:", 100, 600);
+    this.music_volume_slider.show();
+    text("FOV:", 100, 650);
+    this.fov_slider.show();
+  }
 
   draw_stat_ui(world_data) {
     fill(250, 150, 150);
-    textSize(130);
-    for (let player of world_data.players) {
-      fill(250, 150, 150);
-      text(floor(player.health), 175 * (SCREEN_WIDTH / 1000), 855);
-      fill(150, 150, 250);
-      text(floor(player.armor), 175 * (SCREEN_WIDTH / 1000), 925);
-      fill(150, 250, 150);
-      text(floor(player.stamina), 750 * (SCREEN_WIDTH / 1000), 915);
-    }
+    textSize(130*ratio_y);
+    let player = world_data.players[0];
+    fill(250, 150, 150);
+    text(floor(player.health), 175*ratio_x, 855*ratio_y);
+    fill(150, 150, 250);
+    text(floor(player.armor), 175*ratio_x, 925*ratio_y);
+    fill(150, 250, 150);
+    text(floor(player.stamina), 750*ratio_x, 915*ratio_y);
   }
 
   draw_face_state(world_data) {
-    for (let player of world_data.players) {
-      this.state = ceil(player.health/20);
-      if (keyIsDown(keycodes.LEFT)) {
-        image(this.faces_left[this.state], SCREEN_WIDTH/2.17, 
-                                           SCREEN_HEIGHT - 100);  
-      }
-      else if (keyIsDown(keycodes.RIGHT)) {
-        image(this.faces_right[this.state], SCREEN_WIDTH/2.17, 
-                                            SCREEN_HEIGHT - 100);
-      }
-      else {
-        image(this.faces_middle[this.state], SCREEN_WIDTH/2.17, 
-                                             SCREEN_HEIGHT - 100);
-      }
+    let player = world_data.players[0];
+
+    this.state = ceil(player.health/20);
+    if (keyIsDown(keycodes.LEFT)) {
+      image(this.faces_left[this.state], scr_wdth/2.17, 
+                                          scr_hght - 100);  
+    }
+    else if (keyIsDown(keycodes.RIGHT)) {
+      image(this.faces_right[this.state], scr_wdth/2.17, 
+                                          scr_hght - 100);
+    }
+    else {
+      image(this.faces_middle[this.state], scr_wdth/2.17, 
+                                            scr_hght - 100);
     }
   }
-
-
-
   
   draw_cocaine_face() {
 
     if (keyIsDown(keycodes.LEFT)) {
-      image(this.faces_cocaine[1], SCREEN_WIDTH / 2.17, 
-                                   SCREEN_HEIGHT - 100);  
+      image(this.faces_cocaine[1], scr_wdth / 2.17, 
+                                   scr_hght - 100);  
     }
     else if (keyIsDown(keycodes.RIGHT)) {
-      image(this.faces_cocaine[2], SCREEN_WIDTH/2.17, 
-                                   SCREEN_HEIGHT - 100);
+      image(this.faces_cocaine[2], scr_wdth/2.17, 
+                                   scr_hght - 100);
     }
     else {
-      image(this.faces_cocaine[0], SCREEN_WIDTH/2.17, 
-                                   SCREEN_HEIGHT - 100);
+      image(this.faces_cocaine[0], scr_wdth/2.17, 
+                                   scr_hght - 100);
     }
   
     
@@ -233,7 +270,7 @@ class UI {
   draw_armor_state(world_data) {
     for (let player of world_data.players) {
       this.state = ceil(player.armor/50);
-      image(this.armor_sprites[this.state], -50, 50, SCREEN_WIDTH+50, SCREEN_HEIGHT-200);
+      image(this.armor_sprites[this.state], -50, 50, scr_wdth+50, scr_hght-200);
     }
 
   }
@@ -241,7 +278,7 @@ class UI {
   draw_low_health(world_data) {
     for (let player of world_data.players) {
       if (player.health < 20) {
-        image(this.pain, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        image(this.pain, 0, 0, scr_wdth, scr_hght);
 
       }
     }
@@ -253,7 +290,7 @@ class UI {
 
     if (this.helm == true){
       //this.helmeton.setFrame(1);
-      image(this.helmeton,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+      image(this.helmeton,0,0,scr_wdth,scr_hght);
       this.helmeton.play();
       this.currframe = this.helmeton.getCurrentFrame();
       // console.log(this.currframe);
@@ -278,7 +315,7 @@ class UI {
       this.ui_display = false;
       this.currframe2 = this.helmetoff.getCurrentFrame();
       //hjthis.helmetoff.setFrame(1);
-      image(this.helmetoff, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      image(this.helmetoff, 0, 0, scr_wdth, scr_hght);
       // console.log(this.currframe2);
       this.helmeton.reset();
 

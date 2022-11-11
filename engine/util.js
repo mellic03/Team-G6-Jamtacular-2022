@@ -1,5 +1,5 @@
-const SCREEN_WIDTH = 1000;
-const SCREEN_HEIGHT = 1000;
+let scr_wdth = 800;
+let scr_hght = 800;
 
 let game_paused = true;
 

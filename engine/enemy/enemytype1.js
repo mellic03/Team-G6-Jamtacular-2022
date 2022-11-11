@@ -75,7 +75,7 @@ class EnemyType_1 {
 
 
   pos = new Vector2(0, 0);
-  pos_screen = new Vector2(0, SCREEN_HEIGHT/2);
+  pos_screen = new Vector2(0, scr_hght/2);
   vel = new Vector2(0, 0);
   dir = new Vector2(-1, 0);
 

@@ -15,7 +15,12 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+  // scr_wdth = (windowWidth < windowHeight) ? windowWidth : windowHeight;
+  // scr_hght = scr_wdth;
+  scr_wdth = windowWidth;
+  scr_hght = windowHeight;
+  windowResized();
+  createCanvas(scr_wdth, scr_hght);
   frameRate(144); pixelDensity(1); noSmooth();
 
   player_handler.setup();
@@ -34,7 +39,8 @@ let world_data = {
 };
 
 function draw() {
-  image(world_data.map_handler.active_map.background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  resizeCanvas(scr_wdth, scr_hght);
+  image(world_data.map_handler.active_map.background, 0, 0, scr_wdth, scr_hght);
 
   map_handler.draw(world_data);
   player_handler.draw(world_data);
@@ -44,7 +50,21 @@ function draw() {
   // FOR TESTING SPRITE VERTICAL OFFSET
   //---------------------------------------------------------------------
   // stroke(0, 255, 0);
-  // line(0, SCREEN_HEIGHT/2 + 40, SCREEN_WIDTH, SCREEN_HEIGHT/2 + 40);
+  // line(0, scr_hght/2 + 40, scr_wdth, scr_hght/2 + 40);
   //---------------------------------------------------------------------
 }
 
+function windowResized() {
+  // scr_wdth = (windowWidth < windowHeight) ? windowWidth : windowHeight;
+  scr_wdth = windowWidth;
+  scr_hght = windowHeight;
+
+  for (let i=0; i<scr_wdth; i++) {
+    world_data.players[0].depth_buffer[i] = {
+      dist: 0,
+      side: 0,
+      index: 0
+    }
+  }
+
+}
