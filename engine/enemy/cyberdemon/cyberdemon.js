@@ -52,7 +52,8 @@ class CyberDemon {
   sound_attack;
   sound_injury;
 
-  pos; vel; dir;
+  pos; default_pos;
+  vel; dir;
   to_player = new Vector2(0, 0);
   to_this = new Vector2(0, 0);
 
@@ -65,6 +66,7 @@ class CyberDemon {
 
   constructor(x, y) {
     this.pos = new Vector2(x, y);
+    this.default_pos = new Vector2(x, y);
     this.vel = new Vector2(0, 0);
     this.dir = new Vector2(-1, 0);
   }
@@ -314,7 +316,12 @@ class CyberDemon {
       this.sprite.changeAnimation("walkbackright");
       this.active_img = this.img_walk_back_right;
     }
-
   }
 
+  reset() {
+    this.health = this.default_health;
+    this.pos.x = this.default_pos.x;
+    this.pos.y = this.default_pos.y;
+    this.death_sound_play = false;
+  }
 }

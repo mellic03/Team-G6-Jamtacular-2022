@@ -53,6 +53,7 @@ class UI {
   currframe2;
   toggle;
 
+  effects_volume_slider;
   music_volume_slider;
   fov_slider;
   res_slider;
@@ -108,6 +109,11 @@ class UI {
     this.toggle = false;
     this.helm_sound = true;
     this.ui_display = false;
+
+    this.effects_volume_slider = createSlider(0, 1, 0.3, 0.1);
+    this.effects_volume_slider.style('width', '180px');
+    this.effects_volume_slider.position(100, 225);
+    this.effects_volume_slider.hide();
 
     this.music_volume_slider = createSlider(0, 1, 1, 0.1);
     this.music_volume_slider.style('width', '180px');
@@ -212,6 +218,7 @@ class UI {
   
   draw_main_menu() {
 
+    this.effects_volume_slider.hide();
     this.music_volume_slider.hide();
     this.fov_slider.hide();
     this.res_slider.hide();
@@ -247,6 +254,14 @@ class UI {
     textAlign(LEFT, CENTER);
     stroke(0);
     fill(0);
+    text(`Effects Volume: ${this.effects_volume_slider.value()*100}%`, 100, 200);
+    this.effects_volume_slider.show();
+    const val = this.effects_volume_slider.value();
+    for (let enemy of map_handler.active_map.enemies) {
+      enemy.sound_death.setVolume(val);
+      enemy.sound_injury.setVolume(val);
+      enemy.sound_attack.setVolume(val);
+    }
     text(`Music Volume: ${this.music_volume_slider.value()*100}%`, 100, 275);
     this.music_volume_slider.show();
     text(`FOV Scale: ${this.fov_slider.value()}`, 100, 350);

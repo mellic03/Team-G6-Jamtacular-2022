@@ -23,8 +23,8 @@ class Player {
 
   headbob_count = 0;
 
-  DEFAULT_MOV_SPEED = 2;
-  mov_speed = 2;
+  DEFAULT_MOV_SPEED = 2.5;
+  mov_speed = 2.5;
   max_delta_v = 0.15;
   mov_friction = 0.94;
 

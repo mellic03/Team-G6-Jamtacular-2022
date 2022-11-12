@@ -62,8 +62,8 @@ class EnemyType_1 {
   anim_attack;
   anim_death;
 
-  sound_death;
   death_sound_play;
+  sound_death;
   
   sound_injury;
   sound_attack;
@@ -156,6 +156,11 @@ class EnemyType_1 {
   }
 
   setup() {
+
+    this.sound_death.setVolume(0.3);
+    this.sound_injury.setVolume(0.3);
+    this.sound_attack.setVolume(0.3);
+
     this.sprite = new Sprite();
     this.anim_front = loadAnimation(this.sheet_front);
     this.sprite.addAnimation('walkfront', this.anim_front);

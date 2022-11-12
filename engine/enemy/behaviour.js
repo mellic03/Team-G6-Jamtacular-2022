@@ -270,7 +270,6 @@ const behaviour_scripts = {
           enemy.temp_dir1.rotate(0.05);
         }
 
-        enemy.sound_attack.setVolume(0.4);
         enemy.sound_attack.play();
       }
     }
