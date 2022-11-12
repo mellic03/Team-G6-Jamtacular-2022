@@ -25,6 +25,10 @@ class AudioHandler {
 
   draw(world_data) {
 
+    if (user_clicked_on_page == false) {
+      return;
+    }
+
     if (world_data.map_handler.transitioning == true)
     {
       this.active_track?.pause();

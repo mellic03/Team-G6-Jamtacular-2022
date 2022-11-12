@@ -150,6 +150,10 @@ class UI {
 
   draw(world_data) {
 
+    if (mouseIsPressed()) {
+      user_clicked_on_page = true;
+    }
+
     if (this.intro_playing) {
       background(0);
 

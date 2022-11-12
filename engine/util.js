@@ -2,6 +2,7 @@ let scr_wdth = 800;
 let scr_hght = 800;
 
 let game_paused = true;
+let user_clicked_on_page = false;
 
 const keycodes = {
   
