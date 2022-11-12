@@ -70,6 +70,7 @@ class UI {
       this.intro_video.position(0, 0);
       this.intro_video.volume(1);
       this.intro_video.speed(1);
+      this.intro_video.showControls();
       this.intro_video.onended((vid) => {
         vid.hide();
         world_data.ui_handler.intro_playing = false;
@@ -150,7 +151,7 @@ class UI {
 
   draw(world_data) {
 
-    if (mouseIsPressed()) {
+    if (mouseIsPressed) {
       user_clicked_on_page = true;
     }
 
@@ -162,7 +163,7 @@ class UI {
         this.intro_video.hide();
         this.intro_playing = false;
         world_data.ui_handler.intro_playing = false;
-        world_data.audio_handler.active_track.setVolume(
+        world_data.audio_handler?.active_track.setVolume(
           world_data.ui_handler.music_volume_slider.value()
         );
       })
