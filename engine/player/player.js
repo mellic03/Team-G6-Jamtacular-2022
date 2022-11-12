@@ -25,6 +25,8 @@ class Player {
   pistol = new Pistol(scr_wdth/2, scr_hght);
   shoot_sound;
 
+  snort_sound;
+
   //---------------------------------
  
   can_punch = true;
@@ -97,6 +99,10 @@ class Player {
       this.injury_sound = sound;
     });
 
+    loadSound("engine/player/snort.mp3", (sound) => {
+      this.snort_sound = sound;
+    });
+
     this.pistol.preload();
   }
 
@@ -123,8 +129,6 @@ class Player {
   delta_armor = 0;
 
   draw(world_data) {
-
-
 
     if (this.health <= 0) {
       world_data.map_handler.active_map.reset(this);
@@ -608,6 +612,10 @@ class Player {
         }
         pickup.pos.x = -100;
         pickup.pos.y = -100;
+      
+        if (pickup.name == "ritalin") {
+          this.snort_sound.play();
+        }
       }
     }
   }

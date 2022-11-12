@@ -61,6 +61,8 @@ class UI {
   fov_slider;
   res_slider;
 
+  pistol_checkbox;
+
   menu_state = MAIN_MENU;
 
   preload() {
@@ -147,6 +149,12 @@ class UI {
     this.res_slider.style('width', '180px');
     this.res_slider.position(100, 450);
     this.res_slider.hide();
+  
+
+    this.pistol_checkbox = createSlider(0, 1, 0, 1);
+    this.pistol_checkbox.style('width', '180px');
+    this.pistol_checkbox.position(100, 525);
+    this.pistol_checkbox.hide();
   }
 
   draw(world_data) {
@@ -255,6 +263,7 @@ class UI {
     this.music_volume_slider.hide();
     this.fov_slider.hide();
     this.res_slider.hide();
+    this.pistol_checkbox.hide();
 
     draw_button("Get Morbin'", 100, 200, this.unpause, this.music_volume_slider);
     draw_button("Controls", 100, 250, (ui) => ui.menu_state = CONTROLS_MENU, this);
@@ -302,6 +311,11 @@ class UI {
     text(`Raycast Quality: 1/${this.res_slider.value()}`, 100, 425);
     this.res_slider.show();
     world_data.audio_handler.active_track.setVolume(this.music_volume_slider.value());
+    
+    text(`${this.pistol_checkbox.value() == 0 ? "Europe" : "Uvalde"}`, 100, 500);
+    this.pistol_checkbox.show();
+    world_data.players[0].has_pistol = this.pistol_checkbox.value();
+    
   }
 
   draw_stat_ui(world_data) {
