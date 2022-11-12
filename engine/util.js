@@ -8,7 +8,7 @@ const keycodes = {
   LEFT: 37, RIGHT: 39,
   UP: 38, DOWN: 40,
   SPACE: 32,
-  ESC: 27,
+  ESC: 27, TAB: 9,
 
   A: 65, B: 66, C: 67, D: 68,
   E: 69, F: 70, G: 71, H: 72,

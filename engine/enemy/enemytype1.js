@@ -11,10 +11,16 @@ class EnemyType_1 {
 
   behaviour_scripts = []; // Array of functions to be executed in draw()
 
-  health = 50;
+  health = 50; default_health = 50;
   damage = 5;
   speed = 1;
   attack_speed = 1;
+
+  pos = new Vector2(0, 0);
+  default_pos = new Vector2(0, 0);
+  pos_screen = new Vector2(0, scr_hght/2);
+  vel = new Vector2(0, 0);
+  dir = new Vector2(-1, 0);
 
   follow_range = 100;
   chase_range = 100;
@@ -32,13 +38,13 @@ class EnemyType_1 {
   frames;
   active_img;
 
-  img_front;        og_img_front;
-  img_back;         og_img_back;
-  img_side;         og_img_side;
-  img_front_angle;  og_img_front_angle;
-  img_back_angle;   og_img_back_angle;
-  img_attack;       og_img_attack;
-  img_death;        og_img_death;
+  img_front;
+  img_back;
+  img_side;
+  img_front_angle;
+  img_back_angle;
+  img_attack;
+  img_death;
 
   sheet_back
   sheet_front;
@@ -62,22 +68,19 @@ class EnemyType_1 {
   sound_injury;
   sound_attack;
 
+
   /**
    * @param {*} x x position of enemy
    * @param {*} y y position of enemy
    */
   constructor(x, y, directory, frames) {
-    this.pos = new Vector2(x, y);
+    this.pos.x = x;
+    this.pos.y = y;
+    this.default_pos.x = x;
+    this.default_pos.y = y;
     this.directory = directory;
     this.frames = frames;
   }
-
-
-
-  pos = new Vector2(0, 0);
-  pos_screen = new Vector2(0, scr_hght/2);
-  vel = new Vector2(0, 0);
-  dir = new Vector2(-1, 0);
 
 
   preload() {
@@ -177,8 +180,6 @@ class EnemyType_1 {
     this.sprite.addAnimation('death', this.anim_death);
 
     this.death_sound_play = false;
-
-    this.og_active_img = this.og_img_front;
   }
 
   draw(world_data) {
@@ -297,6 +298,15 @@ class EnemyType_1 {
       this.active_img = this.img_back;
     }
   }
+
+
+  reset() {
+    this.health = this.default_health;
+    this.pos.x = this.default_pos.x;
+    this.pos.y = this.default_pos.y;
+    this.death_sound_play = false;
+  }
+
 }
 
 

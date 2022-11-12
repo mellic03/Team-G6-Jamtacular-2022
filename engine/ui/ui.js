@@ -154,7 +154,7 @@ class UI {
 
     else {
 
-      if (keyIsDown(keycodes.ESC)) {
+      if (keyIsDown(keycodes.P)) {
         this.pause();
       }
 
@@ -191,6 +191,7 @@ class UI {
 
   pause() {
     game_paused = true;
+    exitPointerLock();
     this.music_volume_slider.show();
   }
 
@@ -234,7 +235,7 @@ class UI {
     strokeWeight(2);
     stroke(0);
     fill(255);
-    text("PAUSE: ESC twice", 100, 200);
+    text("PAUSE: P", 100, 200);
     text("ATTACK: SPACEBAR", 100, 225);
     text("MOVEMENT: WASD", 100, 250);
     text("LOOK: arrows or mouse", 100, 275);
@@ -339,9 +340,7 @@ class UI {
     if (this.helmoff == true) {
       this.ui_display = false;
       this.currframe2 = this.helmetoff.getCurrentFrame();
-      //hjthis.helmetoff.setFrame(1);
       image(this.helmetoff, 0, 0, scr_wdth, scr_hght);
-      // console.log(this.currframe2);
       this.helmeton.reset();
 
       if (this.currframe2 == 14) {

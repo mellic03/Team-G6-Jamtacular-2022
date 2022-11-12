@@ -218,6 +218,7 @@ class Map {
                 enemy.voffset = obj.vertical_offset;
                 
                 enemy.health = obj.health;
+                enemy.default_health = obj.health;
                 enemy.damage = obj.damage;
                 enemy.speed = obj.speed;
                 
@@ -334,5 +335,15 @@ class Map {
     this.projectiles[this.projectile_count].damage = damage;
   }
   
+  reset(player) {
+    player.pos.x = this.spawn_x;
+    player.pos.y = this.spawn_y;
+    player.set_dir(this.spawn_dir_x, this.spawn_dir_y);
+
+    for (let enemy of this.enemies) {
+      enemy.reset();
+    }
+  }
+
 }
 
