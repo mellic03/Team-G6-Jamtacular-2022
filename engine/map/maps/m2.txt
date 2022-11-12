@@ -24,8 +24,8 @@ WALL: 082,032,022
 WALL: 082,032,022
 WALL: 082,032,022
 WALL: 082,032,022
-PROP: EXIT:m1
 PROP: SPAWN:east
+NULL
 NULL
 NULL
 PROP: rubble1
@@ -161,7 +161,7 @@ NULL
 WALL: 082,032,022
 WALL: 082,032,022
 WALL: 082,032,022
-PROP: vendingmachine:north
+PROP: vendingmachine:east:west
 NULL
 NULL
 NULL
@@ -186,7 +186,7 @@ NULL
 NULL
 PROP: trashcan
 WALL: 082,032,022
-PROP: vendingmachine:north
+PROP: vendingmachine:east:west
 NULL
 NULL
 NULL
@@ -262,7 +262,7 @@ NULL
 NULL
 WALL: 082,032,022
 NULL
-EXIT
+PROP: EXIT:m6
 NULL
 NULL
 NULL

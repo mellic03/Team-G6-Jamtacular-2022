@@ -15,6 +15,7 @@ class AudioHandler {
     this.tracks.m2 = this.tracks.m1;
     this.tracks.m3 = loadSound('engine/audio/sounds/music/track3.mp3');
     this.tracks.m4 = loadSound('engine/audio/sounds/music/track4.mp3');
+    this.tracks.m5 = loadSound('engine/audio/sounds/music/track5.mp3');
   }
 
   setup() {
