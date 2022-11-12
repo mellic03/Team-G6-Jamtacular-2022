@@ -53,6 +53,9 @@ class UI {
   currframe2;
   toggle;
 
+  intro_video;
+  intro_playing = true;
+
   effects_volume_slider;
   music_volume_slider;
   fov_slider;
@@ -61,6 +64,22 @@ class UI {
   menu_state = MAIN_MENU;
 
   preload() {
+
+    this.intro_video = createVideo("engine/ui/intro.mp4", () => {
+      this.intro_video.looping = false;
+      this.intro_video.position(0, 0);
+      this.intro_video.volume(1);
+      this.intro_video.show();
+      this.intro_video.play();
+      this.intro_video.speed(1);
+      this.intro_video.onended((vid) => {
+        vid.hide();
+        world_data.ui_handler.intro_playing = false;
+        world_data.audio_handler.active_track.setVolume(
+          world_data.ui_handler.music_volume_slider.value()
+        );
+      })
+    });
 
     this.hud = loadImage('engine/ui/player_sprites/hud.png');
 
@@ -132,6 +151,21 @@ class UI {
   }
 
   draw(world_data) {
+
+    if (this.intro_playing) {
+      background(0);
+
+      draw_button("SKIP", 10, 525, () => {
+        this.intro_video.stop();
+        this.intro_video.hide();
+        this.intro_playing = false;
+        world_data.ui_handler.intro_playing = false;
+        world_data.audio_handler.active_track.setVolume(
+          world_data.ui_handler.music_volume_slider.value()
+        );
+      })
+      return;
+    }
 
     ratio_x = scr_wdth/1000;
     ratio_y = scr_hght/1000;

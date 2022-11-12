@@ -2,7 +2,6 @@
 
 "use strict";
 
-let vid;
 
 let player_handler = player_init();
 let map_handler = map_init();
@@ -23,10 +22,6 @@ function setup() {
   windowResized();
   createCanvas(scr_wdth, scr_hght);
   frameRate(144); pixelDensity(1); noSmooth();
-
-  vid = createVideo("engine/ui/intro.mp4");
-  vid.speed(1);
-  vid.play();
 
   player_handler.setup();
   map_handler.setup(player_handler);
@@ -51,8 +46,6 @@ function draw() {
   player_handler.draw(world_data);
   ui_handler.draw(world_data);
   audio_handler.draw(world_data);
-
-
 
   // FOR TESTING SPRITE VERTICAL OFFSET
   //---------------------------------------------------------------------

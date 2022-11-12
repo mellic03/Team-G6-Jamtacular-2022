@@ -31,6 +31,10 @@ class AudioHandler {
       this.tracks[world_data.map_handler.active_map.name]?.loop();
       this.active_track = this.tracks[world_data.map_handler.active_map.name];
       world_data.map_handler.transitioning = false;
+
+      if (world_data.ui_handler.intro_playing) {
+        this.active_track?.setVolume(0);
+      }
     }
 
   }
