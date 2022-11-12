@@ -25,6 +25,13 @@ class AudioHandler {
 
   draw(world_data) {
 
+    if (world_data.ui_handler.intro_playing || world_data.ui_handler.outro_playing)
+      this.active_track?.setVolume(0);
+
+    else
+      this.active_track?.setVolume(world_data.ui_handler.music_volume_slider.value());
+
+
     if (world_data.map_handler.transitioning == true)
     {
       this.active_track?.pause();

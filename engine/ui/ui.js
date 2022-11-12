@@ -54,7 +54,10 @@ class UI {
   toggle;
 
   intro_video;
-  intro_playing = false;
+  intro_playing = true;
+
+  outro_video;
+  outro_playing = false;
 
   effects_volume_slider;
   music_volume_slider;
@@ -72,13 +75,25 @@ class UI {
       this.intro_video.position(0, 0);
       this.intro_video.volume(1);
       this.intro_video.speed(1);
-      this.intro_video.hide();
+      this.intro_video.showControls();
       this.intro_video.onended((vid) => {
         vid.hide();
         world_data.ui_handler.intro_playing = false;
         world_data.audio_handler.active_track.setVolume(
           world_data.ui_handler.music_volume_slider.value()
         );
+      })
+    });
+
+    this.outro_video = createVideo("engine/ui/ending.webm", () => {
+      this.outro_video.looping = false;
+      this.outro_video.position(0, 0);
+      this.outro_video.volume(1);
+      this.outro_video.speed(1);
+      this.outro_video.hide();
+      this.outro_video.onended((vid) => {
+        vid.hide();
+        world_data.ui_handler.outro_playing = false;
       })
     });
 
@@ -155,6 +170,8 @@ class UI {
     this.pistol_checkbox.style('width', '180px');
     this.pistol_checkbox.position(100, 525);
     this.pistol_checkbox.hide();
+
+    console.log(this.intro_video)
   }
 
   draw(world_data) {
