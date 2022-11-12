@@ -1,3 +1,6 @@
+space_released = true;
+
+
 class Player {
 
   health = 100;
@@ -14,8 +17,16 @@ class Player {
   hitpoints_until_nostim = 0;
 
   frames_since_ritalin = 0;
-  //---------------------------------
 
+  injury_sound;
+
+  can_shoot = true;
+  has_pistol = true;
+  pistol = new Pistol(scr_wdth/2, scr_hght);
+  shoot_sound;
+
+  //---------------------------------
+ 
   can_punch = true;
   is_punching = false;
   dealing_damage = false;
@@ -38,6 +49,8 @@ class Player {
   fov_modifier = 1;
   res = 1;
 
+  tempvec_1 = new Vector2(0, 0);
+  tempvec_2 = new Vector2(0, 0);
 
   fist_offset = 0;
   dir_L; dir_R;
@@ -75,6 +88,16 @@ class Player {
       this.fist_L_sprite.scale = 3;
       this.fist_L_sprite.mirrorX(-1);
     });
+
+    loadSound("engine/player/dspistol.mp3", (sound) => {
+      this.shoot_sound = sound;
+    });
+
+    loadSound("engine/player/dsoof.mp3", (sound) => {
+      this.injury_sound = sound;
+    });
+
+    this.pistol.preload();
   }
 
   setup() {
@@ -87,11 +110,21 @@ class Player {
   
     this.active_fist = this.fist_R_sprite;
     this.inactive_fist = this.fist_L_sprite;
+  
+    this.pistol.setup();
   }
 
   count = 0;
 
+  last_health = this.health;
+  delta_health = 0;
+
+  last_armor = this.armor;
+  delta_armor = 0;
+
   draw(world_data) {
+
+
 
     if (this.health <= 0) {
       world_data.map_handler.active_map.reset(this);
@@ -147,11 +180,31 @@ class Player {
     this.occlude_sprites(this.sprite_buffer);
 
     if (world_data.ui_handler.helmeton.getCurrentFrame() >= 14) {
-      drawSprite(this.fist_L_sprite);
-      drawSprite(this.fist_R_sprite);
+      if (this.has_pistol) {
+        drawSprite(this.pistol.sprite);
+      }
+      else {
+        drawSprite(this.fist_L_sprite);
+        drawSprite(this.fist_R_sprite);
+      }
     }
 
     translate(0, -5*cos(0.1*this.headbob_count));
+
+    this.delta_health = this.health - this.last_health;
+    this.last_health = this.health;
+
+    this.delta_armor = this.armor - this.last_armor;
+    this.last_armor = this.armor;
+
+    if (this.delta_health < 0 || this.delta_armor < 0) {
+      this.injury_sound.setVolume(1);
+      this.injury_sound.play();
+    
+      rectMode(CORNER);
+      fill(255, 0, 0);
+      rect(0, 0, scr_wdth, scr_hght);
+    }
   }
 
   march_dir = new Vector2(0, 0);
@@ -435,51 +488,85 @@ class Player {
       this.vel.scale(this.max_delta_v);
     }
 
-    if (keyIsDown(keycodes.SPACE) && this.can_punch && this.stamina >= 10) {
-      this.stamina -= 10;
-      this.can_punch = false;
-      this.dealing_damage = true;
-      this.is_punching = true;
-      this.frames_since_punch = 0;
-    }
+    
+    if (this.has_pistol) {
+      this.pistol.sprite.position.x = scr_wdth/2;
+      this.pistol.sprite.position.y = scr_hght - 200;
 
-    if (this.is_punching) {
-      this.frames_since_punch += 1;
-    }
+      if (keyIsDown(keycodes.SPACE) && this.can_shoot && space_released) {
+        this.shoot_sound.play();
+        this.can_shoot = false;
+        space_released = false;
+        this.pistol.sprite.animation.play();
+        this.tempvec_1.x = this.dir.x;
+        this.tempvec_1.y = this.dir.y;
+        this.tempvec_1.normalise();
+        this.tempvec_1.scale(10);
 
-    if (this.frames_since_punch > 1) {
-      this.dealing_damage = false;
-      if (!keyIsDown(keycodes.SPACE) && this.frames_since_punch > 10) {
-        this.is_punching = false;
-        this.can_punch = true;
+        this.tempvec_2.x = this.pos.x;
+        this.tempvec_2.y = this.pos.y;
+        this.tempvec_2.add(this.tempvec_1);
+        this.tempvec_1.normalise();
+        this.tempvec_1.scale(5);
 
-        if (this.using_left_fist == true) {
-          this.active_fist = this.fist_R_sprite;
-          this.inactive_fist = this.fist_L_sprite;
-        }
-        else {
-          this.active_fist = this.fist_L_sprite;
-          this.inactive_fist = this.fist_R_sprite;
-        }
-  
-        this.using_left_fist = !this.using_left_fist;
+        world_data.map_handler.active_map.create_projectile(this.tempvec_2, this.tempvec_1.x, this.tempvec_1.y, 5, 2);
+      }
+
+      if (this.pistol.sprite.animation.frame == 4) {
+        this.pistol.sprite.animation.stop();
+        this.can_shoot = true;
+        this.pistol.sprite.animation.frame = 0;
       }
     }
 
-    this.fist_L_sprite.scale = 3 * scr_hght/1000;
-    this.fist_R_sprite.scale = 3 * scr_hght/1000;
+    else {
 
-    if (this.is_punching) {
-      this.active_fist.position.y = (800 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * ratio_y;
-    }
-    if (!this.is_punching) {
-      this.active_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
-    }
-
-    this.inactive_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
+      if (keyIsDown(keycodes.SPACE) && this.can_punch && this.stamina >= 10) {
+        this.stamina -= 10;
+        this.can_punch = false;
+        this.dealing_damage = true;
+        this.is_punching = true;
+        this.frames_since_punch = 0;
+      }
+  
+      if (this.is_punching) {
+        this.frames_since_punch += 1;
+      }
+  
+      if (this.frames_since_punch > 1) {
+        this.dealing_damage = false;
+        if (!keyIsDown(keycodes.SPACE) && this.frames_since_punch > 10) {
+          this.is_punching = false;
+          this.can_punch = true;
+  
+          if (this.using_left_fist == true) {
+            this.active_fist = this.fist_R_sprite;
+            this.inactive_fist = this.fist_L_sprite;
+          }
+          else {
+            this.active_fist = this.fist_L_sprite;
+            this.inactive_fist = this.fist_R_sprite;
+          }
     
-    this.fist_R_sprite.position.x = (scr_wdth/2)+this.fist_L_sprite.scale*100 + (10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y))));
-    this.fist_L_sprite.position.x = (scr_wdth/2)-this.fist_L_sprite.scale*100 + (10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y))));
+          this.using_left_fist = !this.using_left_fist;
+        }
+      }
+
+      this.fist_L_sprite.scale = 3 * scr_hght/1000;
+      this.fist_R_sprite.scale = 3 * scr_hght/1000;
+  
+      if (this.is_punching) {
+        this.active_fist.position.y = (800 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * ratio_y;
+      }
+      if (!this.is_punching) {
+        this.active_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
+      }
+  
+      this.inactive_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
+      
+      this.fist_R_sprite.position.x = (scr_wdth/2)+this.fist_L_sprite.scale*100 + (10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y))));
+      this.fist_L_sprite.position.x = (scr_wdth/2)-this.fist_L_sprite.scale*100 + (10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y))));
+    }
 
     
     if (keyIsDown(LEFT_ARROW)) {
@@ -590,5 +677,11 @@ function mouseMoved(event) {
   if (game_paused == false) {
     world_data.players[0].plane.rotate(0.003 * event.movementX * 1);
     world_data.players[0].dir.rotate(0.003 * event.movementX * 1);
+  }
+}
+
+function keyReleased(event) {
+  if (event.keyCode == 32) {
+    space_released = true;
   }
 }

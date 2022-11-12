@@ -10,7 +10,7 @@ class CyberDemon {
   speed = 1;
 
   projectile_speed = 2;
-
+  
   chase_range = 200;
   attack_range = 100;
   push_range = 15;
@@ -29,6 +29,7 @@ class CyberDemon {
   img_walk_back_right;
   img_walk_back;
   img_attack;
+  img_death;
 
   anim_walk_front;
   anim_walk_front_left;
@@ -39,6 +40,7 @@ class CyberDemon {
   anim_walk_back_right;
   anim_walk_back;
   anim_attack;
+  anim_death;
 
   sheet_walk_front;
   sheet_walk_front_left;
@@ -49,12 +51,14 @@ class CyberDemon {
   sheet_walk_back_right;
   sheet_walk_back;
   sheet_attack;
+  sheet_death;
 
   img_attack;
 
   sound_attack;
   sound_injury;
   sound_death;
+  death_sound_play = false;
 
   pos; default_pos;
   vel; dir;
@@ -145,6 +149,13 @@ class CyberDemon {
       );
     });
 
+    loadImage("engine/enemy/cyberdemon/spritesheets/death-sheet.png", (img) => {
+      this.img_death = img;
+      this.sheet_death = loadSpriteSheet(
+        this.img_death, img.width/this.frames, img.height, this.frames
+      );
+    });
+
     loadSound("engine/enemy/cyberdemon/sounds/injury.mp3", (sound) => {
       this.sound_injury = sound;
     });
@@ -192,7 +203,15 @@ class CyberDemon {
 
     this.anim_attack = loadAnimation(this.sheet_attack);
     this.sprite.addAnimation("attack", this.anim_attack);
+
+    this.anim_death = loadAnimation(this.sheet_death);
+    this.anim_death.looping = false;
+    this.sprite.addAnimation("death", this.anim_death);
+
+
     this.sprite.changeAnimation("attack");
+
+
   }
 
   draw(world_data) {
@@ -210,6 +229,8 @@ class CyberDemon {
       this.sprite.animations.attack.frameDelay          = floor(frame_delay * this.speed / 5);
     }
 
+    console.log(this.health);
+
     let player = world_data.players[0];
     let dist = vector2_dist(player.pos, this.pos);
     
@@ -217,7 +238,10 @@ class CyberDemon {
       behaviour_scripts.shoot_player_shotgun(this, world_data);
     }
     
-    this.shoot_player(world_data);
+    else if (dist < this.attack_range) {
+      behaviour_scripts.shoot_player(this, world_data);
+    }
+
     this.correct_angle(world_data);
 
     for (let i=0; i<this.behaviour_scripts.length; i++) {
@@ -254,46 +278,49 @@ class CyberDemon {
     }
   }
 
-  shoot_player(world_data) {
+  // shoot_player(world_data) {
+
+  //   if (this.health <= 0)
+  //     return;
+
+  //   let player = world_data.players[0];
+  //   this.to_player.x = player.pos.x - this.pos.x;
+  //   this.to_player.y = player.pos.y - this.pos.y;
+
+  //   this.to_player.normalise();
+  //   this.to_player.rotate(-1.57);
+  //   this.to_player.scale(6);
+  //   this.to_player.add(this.pos);
+    
+  //   let e2p_x = player.pos.x - this.to_player.x;
+  //   let e2p_y = player.pos.y - this.to_player.y;
+  //   let mag = sqrt(e2p_x**2 + e2p_y**2);
+  //   e2p_x /= mag;
+  //   e2p_y /= mag;
+
+
+  //   let dist = vector2_dist(player.pos, this.pos);
+    
+  //   if (dist <= this.attack_range) {
+  //     this.sprite.changeAnimation("attack");
+
+  //     if (this.sprite.animations.attack.frame == 3)
+  //     {
+  //       let map = world_data.map_handler.active_map;
+  //       if (obstructed(player.pos.x, player.pos.y, this.pos.x, this.pos.y, map))
+  //         return;
+
+  //       this.sprite.animations.attack.frame = 0;
+  //       world_data.map_handler.active_map.create_projectile(this.to_player, e2p_x*this.projectile_speed, e2p_y*this.projectile_speed, this.damage);
+  //       this.sound_attack.play();
+  //     }
+  //   }
+  // }
+
+  correct_angle(world_data) {
 
     if (this.health <= 0)
       return;
-
-    let player = world_data.players[0];
-    this.to_player.x = player.pos.x - this.pos.x;
-    this.to_player.y = player.pos.y - this.pos.y;
-
-    this.to_player.normalise();
-    this.to_player.rotate(-1.57);
-    this.to_player.scale(6);
-    this.to_player.add(this.pos);
-    
-    let e2p_x = player.pos.x - this.to_player.x;
-    let e2p_y = player.pos.y - this.to_player.y;
-    let mag = sqrt(e2p_x**2 + e2p_y**2);
-    e2p_x /= mag;
-    e2p_y /= mag;
-
-
-    let dist = vector2_dist(player.pos, this.pos);
-    
-    if (dist <= this.attack_range) {
-      this.sprite.changeAnimation("attack");
-
-      if (this.sprite.animations.attack.frame == 3)
-      {
-        let map = world_data.map_handler.active_map;
-        if (obstructed(player.pos.x, player.pos.y, this.pos.x, this.pos.y, map))
-          return;
-
-        this.sprite.animations.attack.frame = 0;
-        world_data.map_handler.active_map.create_projectile(this.to_player, e2p_x*this.projectile_speed, e2p_y*this.projectile_speed, this.damage);
-        this.sound_attack.play();
-      }
-    }
-  }
-
-  correct_angle(world_data) {
 
     let player_pos = world_data.players[0].pos;
 

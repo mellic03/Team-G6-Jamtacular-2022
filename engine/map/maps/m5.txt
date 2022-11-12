@@ -358,11 +358,11 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: shotgunner_long
+ENEMY: shotgunner_long_reflect
 NULL
 ENEMY: cyberdemon
 NULL
-ENEMY: shotgunner_long
+ENEMY: shotgunner_long_reflect
 NULL
 NULL
 NULL

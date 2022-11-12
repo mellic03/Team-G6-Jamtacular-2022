@@ -311,6 +311,18 @@ class Map {
         projectile.yvel = 0;
       }
       
+      else if (projectile.player_projectile) {
+        for (let enemy of this.enemies) {
+          if (enemy.health > 0 && vector2_dist(enemy.pos, projectile.pos) < projectile.radius) {
+            enemy.health -= projectile.damage;
+            projectile.pos.x = -100;
+            projectile.pos.y = -100;
+            projectile.xvel = 0;
+            projectile.yvel = 0;
+          }
+        }
+      }
+
       projectile.pos.x += projectile.xvel * 0.1 * deltaTime;
       projectile.pos.y += projectile.yvel * 0.1 * deltaTime;
     }
@@ -327,13 +339,14 @@ class Map {
     return false;
   }
  
-  create_projectile(pos, xvel, yvel, damage) {
+  create_projectile(pos, xvel, yvel, damage, player_projectile = false) {
     this.projectile_count = (this.projectile_count+1)%this.max_projectiles;
     this.projectiles[this.projectile_count].pos.x = pos.x;
     this.projectiles[this.projectile_count].pos.y = pos.y;
     this.projectiles[this.projectile_count].xvel = xvel;
     this.projectiles[this.projectile_count].yvel = yvel;
     this.projectiles[this.projectile_count].damage = damage;
+    this.projectiles[this.projectile_count].player_projectile = player_projectile;
   }
   
   reset(player) {

@@ -11,6 +11,8 @@ class Projectile {
   radius = 5;
   damage = 5;
 
+  player_projectile = false;
+
   sprite;
   active_img;
 
@@ -19,7 +21,6 @@ class Projectile {
     this.xvel = xv;
     this.yvel = yv;
   }
-
 
   // Assumes projectile sprite has already been loaded
   init(projectile_img) {
