@@ -61,6 +61,10 @@ class CyberDemon {
   to_player = new Vector2(0, 0);
   to_this = new Vector2(0, 0);
 
+  temp_dir1 = new Vector2(0, 0);
+  temp_dir2 = new Vector2(0, 0);
+  temp_dir3 = new Vector2(0, 0);
+
   dirs = [
     new Vector2(+sqrt(2)/2, +sqrt(2)/2),
     new Vector2(+sqrt(2)/2, -sqrt(2)/2),
@@ -206,6 +210,13 @@ class CyberDemon {
       this.sprite.animations.attack.frameDelay          = floor(frame_delay * this.speed / 5);
     }
 
+    let player = world_data.players[0];
+    let dist = vector2_dist(player.pos, this.pos);
+    
+    if (dist < this.attack_range/2) {
+      behaviour_scripts.shoot_player_shotgun(this, world_data);
+    }
+    
     this.shoot_player(world_data);
     this.correct_angle(world_data);
 

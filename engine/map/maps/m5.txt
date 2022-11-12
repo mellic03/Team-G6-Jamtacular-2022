@@ -310,7 +310,7 @@ NULL
 NULL
 NULL
 NULL
-NULL
+ENEMY: pinky_reflect
 NULL
 NULL
 NULL
@@ -358,11 +358,11 @@ NULL
 NULL
 NULL
 NULL
-ENEMY: shotgunner
+ENEMY: shotgunner_reflect
 NULL
 ENEMY: cyberdemon
 NULL
-ENEMY: shotgunner
+ENEMY: shotgunner_reflect
 NULL
 NULL
 NULL
@@ -410,7 +410,7 @@ NULL
 NULL
 NULL
 NULL
-NULL
+ENEMY: pinky_reflect
 NULL
 NULL
 NULL
