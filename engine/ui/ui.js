@@ -54,7 +54,7 @@ class UI {
   toggle;
 
   intro_video;
-  intro_playing = true;
+  intro_playing = false;
 
   effects_volume_slider;
   music_volume_slider;
@@ -70,7 +70,7 @@ class UI {
       this.intro_video.position(0, 0);
       this.intro_video.volume(1);
       this.intro_video.speed(1);
-      this.intro_video.showControls();
+      this.intro_video.hide();
       this.intro_video.onended((vid) => {
         vid.hide();
         world_data.ui_handler.intro_playing = false;
@@ -150,10 +150,6 @@ class UI {
   }
 
   draw(world_data) {
-
-    if (mouseIsPressed) {
-      user_clicked_on_page = true;
-    }
 
     if (this.intro_playing) {
       background(0);
