@@ -4,8 +4,8 @@ class Player {
   armor = 100;
   stamina = 100;
 
-  DEFAULT_DAMAGE = 10;
-  damage = 10;
+  DEFAULT_DAMAGE = 15;
+  damage = 15;
   damage_range = 10;
 
   // POWERUPS
@@ -36,6 +36,8 @@ class Player {
   fov = 1;
   inv_fov = 1;
   fov_modifier = 1;
+  res = 1;
+
 
   fist_offset = 0;
   dir_L; dir_R;
@@ -43,10 +45,11 @@ class Player {
   depth_buffer = [];
   sprite_buffer = [];
 
-  self_group;
   fist_R_img
   fist_L_sprite;
   fist_R_sprite;
+  using_left_fist = false;
+  active_fist; inactive_fist;
 
   constructor(x, y) {
     this.pos.x = x;
@@ -81,6 +84,9 @@ class Player {
     this.fist_R_sprite.height = 200;
     this.fist_L_sprite.width = 200;
     this.fist_L_sprite.height = 200;
+  
+    this.active_fist = this.fist_R_sprite;
+    this.inactive_fist = this.fist_L_sprite;
   }
 
   count = 0;
@@ -93,6 +99,7 @@ class Player {
 
     this.stamina += 0.003 * deltaTime;
 
+    this.res = world_data.ui_handler.res_slider.value();
     this.fov = this.fov_modifier * (scr_hght/scr_wdth);
     this.inv_fov = 1 / this.fov;
 
@@ -145,7 +152,7 @@ class Player {
     this.dir.normalise();
     this.dir.scale(this.fov);
 
-    for (let x=0; x<scr_wdth; x+=1) {
+    for (let x=0; x<scr_wdth; x+=this.res) {
       let camx = (2*x)/(scr_wdth)-1;
 
       this.march_dir.x = this.dir.x + this.plane.x*camx;
@@ -205,14 +212,22 @@ class Player {
       }
 
       if (side == 0) {
-        this.depth_buffer[x].dist = angle * (sideDistX - dx);
-        this.depth_buffer[x].side = side;
-        this.depth_buffer[x].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+        for (let i=x; i<x+this.res; i++) {
+          if (i >= scr_wdth)
+            break;
+          this.depth_buffer[i].dist = angle * (sideDistX - dx);
+          this.depth_buffer[i].side = side;
+          this.depth_buffer[i].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+        }
       }
       else {
-        this.depth_buffer[x].dist = angle * (sideDistY - dy);
-        this.depth_buffer[x].side = side;
-        this.depth_buffer[x].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+        for (let i=x; i<x+this.res; i++) {
+          if (i >= scr_wdth)
+            break;
+          this.depth_buffer[i].dist = angle * (sideDistY - dy);
+          this.depth_buffer[i].side = side;
+          this.depth_buffer[i].index = 25*Math.floor(mapY/25) + Math.floor(mapX/25);
+        }
       }
     }
 
@@ -224,7 +239,7 @@ class Player {
     let r, g, b;
     let line_height, line_start, line_end;
 
-    for (let i=0; i<scr_wdth; i+=1) {
+    for (let i=0; i<scr_wdth; i+=this.res) {
 
       r = active_map.colourmap[4*this.depth_buffer[i].index+0];
       g = active_map.colourmap[4*this.depth_buffer[i].index+1];
@@ -239,7 +254,7 @@ class Player {
       line_start = (-line_height + scr_hght) / 2;
       line_end   = (+line_height + scr_hght) / 2;
 
-      strokeWeight(2);
+      strokeWeight(this.res+1);
       stroke(r, g, b);
       line(i, line_start, i, line_end);
     }
@@ -288,13 +303,11 @@ class Player {
         // let vmove = sprite_array[i].voffset / this.fov;
         let vMoveScreen = floor(vmove/transformY);
 
-
         let sprite_height = abs(scr_hght/(dist*vdiv)) * (scr_hght / 1000);
         let scaling_factor = sprite_height / sprite_array[i].active_img.height;
 
-
         sprite_array[i].sprite.scale = scaling_factor * this.fov_modifier;
-        sprite_array[i].sprite.position.y = scr_hght/2 + vMoveScreen;
+        sprite_array[i].sprite.position.y = scr_hght/2 + vMoveScreen * this.fov_modifier;
       }
 
       else {
@@ -413,7 +426,6 @@ class Player {
       this.vel.scale(this.max_delta_v);
     }
 
-
     if (keyIsDown(keycodes.SPACE) && this.can_punch && this.stamina >= 10) {
       this.stamina -= 10;
       this.can_punch = false;
@@ -431,6 +443,17 @@ class Player {
       if (!keyIsDown(keycodes.SPACE) && this.frames_since_punch > 10) {
         this.is_punching = false;
         this.can_punch = true;
+
+        if (this.using_left_fist == true) {
+          this.active_fist = this.fist_R_sprite;
+          this.inactive_fist = this.fist_L_sprite;
+        }
+        else {
+          this.active_fist = this.fist_L_sprite;
+          this.inactive_fist = this.fist_R_sprite;
+        }
+  
+        this.using_left_fist = !this.using_left_fist;
       }
     }
 
@@ -438,16 +461,16 @@ class Player {
     this.fist_R_sprite.scale = 3 * scr_hght/1000;
 
     if (this.is_punching) {
-      this.fist_R_sprite.position.y = (700 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * (scr_hght/1000);
+      this.active_fist.position.y = (800 + 20*(sin(0.2*this.pos.x) + sin(0.2*(this.pos.y)))) * ratio_y;
     }
     if (!this.is_punching) {
-      this.fist_R_sprite.position.y = (900 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * (scr_hght/1000);
-      this.fist_R_sprite.position.x = (scr_wdth/2)+255 + (10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y))));
+      this.active_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
     }
 
-    this.fist_L_sprite.position.y = (900 + 10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y)))) * (scr_hght/1000);
-    this.fist_L_sprite.position.x = (scr_wdth/2)-255 - (10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y))));
-
+    this.inactive_fist.position.y = (1000 + 10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y)))) * ratio_y;
+    
+    this.fist_R_sprite.position.x = (scr_wdth/2)+this.fist_L_sprite.scale*100 + (10*(sin(0.1*this.pos.x) + sin(0.1*(this.pos.y))));
+    this.fist_L_sprite.position.x = (scr_wdth/2)-this.fist_L_sprite.scale*100 + (10*(cos(0.1*this.pos.x) + cos(0.1*(this.pos.y))));
 
     
     if (keyIsDown(LEFT_ARROW)) {

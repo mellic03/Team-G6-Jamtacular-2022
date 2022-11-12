@@ -55,6 +55,7 @@ class UI {
 
   music_volume_slider;
   fov_slider;
+  res_slider;
 
   menu_state = MAIN_MENU;
 
@@ -108,7 +109,7 @@ class UI {
     this.helm_sound = true;
     this.ui_display = false;
 
-    this.music_volume_slider = createSlider(0, 1, 0.5, 0.1);
+    this.music_volume_slider = createSlider(0, 1, 1, 0.1);
     this.music_volume_slider.style('width', '180px');
     this.music_volume_slider.position(100, 300);
     this.music_volume_slider.hide();
@@ -117,6 +118,11 @@ class UI {
     this.fov_slider.style('width', '180px');
     this.fov_slider.position(100, 375);
     this.fov_slider.hide();
+
+    this.res_slider = createSlider(1, 64, 1, 1);
+    this.res_slider.style('width', '180px');
+    this.res_slider.position(100, 450);
+    this.res_slider.hide();
   }
 
   draw(world_data) {
@@ -170,18 +176,17 @@ class UI {
   
       this.draw_low_health(world_data);
       
+      strokeWeight(1);
       fill(255);
       textSize(60);
       text(`FPS: ${this.framerate}`, 10, 30);
       text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
-      text(`(${floor(world_data.players[0].vel.x)}, ${floor(world_data.players[0].vel.y)})`, 10, 80);
     }
   }
 
-  unpause(music_volume_slider) {
+  unpause() {
     game_paused = false;
     requestPointerLock();
-    music_volume_slider.hide();
   }
 
   pause() {
@@ -192,6 +197,7 @@ class UI {
   draw_menu() {
 
     textSize(128);
+    strokeWeight(1);
     textAlign(CENTER, CENTER);
     text(`"COOM"`, scr_wdth/2,  scr_hght/8);
 
@@ -207,8 +213,9 @@ class UI {
 
     this.music_volume_slider.hide();
     this.fov_slider.hide();
+    this.res_slider.hide();
 
-    draw_button("Start Cooming", 100, 200, this.unpause, this.music_volume_slider);
+    draw_button("Get Morbin'", 100, 200, this.unpause, this.music_volume_slider);
     draw_button("Controls", 100, 250, (ui) => ui.menu_state = CONTROLS_MENU, this);
     draw_button("Settings", 100, 300, (ui) => ui.menu_state = SETTINGS_MENU, this);
   }
@@ -239,10 +246,13 @@ class UI {
     textAlign(LEFT, CENTER);
     stroke(0);
     fill(0);
-    text("Music Volume:", 100, 275);
+    text(`Music Volume: ${this.music_volume_slider.value()*100}%`, 100, 275);
     this.music_volume_slider.show();
     text(`FOV Scale: ${this.fov_slider.value()}`, 100, 350);
     this.fov_slider.show();
+    text(`Raycast Quality: 1/${this.res_slider.value()}`, 100, 425);
+    this.res_slider.show();
+    world_data.audio_handler.active_track.setVolume(this.music_volume_slider.value());
   }
 
   draw_stat_ui(world_data) {
@@ -274,13 +284,13 @@ class UI {
   draw_cocaine_face() {
 
     if (keyIsDown(keycodes.LEFT)) {
-      image(this.faces_cocaine[1], scr_wdth/2, scr_hght-100);  
+      image(this.faces_cocaine[1], scr_wdth/2, scr_hght-50);  
     }
     else if (keyIsDown(keycodes.RIGHT)) {
-      image(this.faces_cocaine[2], scr_wdth/2, scr_hght-100);
+      image(this.faces_cocaine[2], scr_wdth/2, scr_hght-50);
     }
     else {
-      image(this.faces_cocaine[0], scr_wdth/2, scr_hght-100);
+      image(this.faces_cocaine[0], scr_wdth/2, scr_hght-50);
     }
   }
 
