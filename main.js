@@ -2,6 +2,8 @@
 
 "use strict";
 
+let vid;
+
 let player_handler = player_init();
 let map_handler = map_init();
 let ui_handler = ui_init();
@@ -15,13 +17,16 @@ function preload() {
 }
 
 function setup() {
-  // scr_wdth = (windowWidth < windowHeight) ? windowWidth : windowHeight;
-  // scr_hght = scr_wdth;
+
   scr_wdth = windowWidth;
   scr_hght = windowHeight;
   windowResized();
   createCanvas(scr_wdth, scr_hght);
   frameRate(144); pixelDensity(1); noSmooth();
+
+  vid = createVideo("engine/ui/intro.mp4");
+  vid.speed(1);
+  vid.play();
 
   player_handler.setup();
   map_handler.setup(player_handler);
@@ -47,6 +52,8 @@ function draw() {
   ui_handler.draw(world_data);
   audio_handler.draw(world_data);
 
+
+
   // FOR TESTING SPRITE VERTICAL OFFSET
   //---------------------------------------------------------------------
   // stroke(0, 255, 0);
@@ -55,7 +62,6 @@ function draw() {
 }
 
 function windowResized() {
-  // scr_wdth = (windowWidth < windowHeight) ? windowWidth : windowHeight;
   scr_wdth = windowWidth;
   scr_hght = windowHeight;
 

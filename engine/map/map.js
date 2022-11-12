@@ -343,6 +343,10 @@ class Map {
     for (let enemy of this.enemies) {
       enemy.reset();
     }
+
+    for (let pickup of this.pickups) {
+      pickup.reset();
+    }
   }
 
 }

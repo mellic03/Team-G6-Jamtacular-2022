@@ -181,7 +181,7 @@ const behaviour_scripts = {
     if (cond1 && cond2) {
       enemy.sprite.changeAnimation("attack");
 
-      enemy.dir.lerp(enemy.to_player, 0.03);
+      enemy.dir.lerp(enemy.to_player, enemy.track_speed);
       enemy.dir.normalise();
 
       if (enemy.sprite.animations.attack.frame == 3) {
@@ -224,6 +224,9 @@ const behaviour_scripts = {
     if (dist <= enemy.attack_range) {
       enemy.sprite.changeAnimation("attack");
 
+      enemy.dir.lerp(enemy.to_player, enemy.track_speed);
+      enemy.dir.normalise();
+
       if (enemy.sprite.animations.attack.frame == 3)
       {
         let map = world_data.map_handler.active_map;
@@ -232,7 +235,6 @@ const behaviour_scripts = {
 
         enemy.sprite.animations.attack.frame = 0;
         world_data.map_handler.active_map.create_projectile(enemy.pos, 1*e2p_x, 1*e2p_y, enemy.damage);
-        enemy.sound_attack.setVolume(0.7);
         enemy.sound_attack.play();
       }
     }
@@ -254,6 +256,9 @@ const behaviour_scripts = {
     if (dist <= enemy.attack_range) {
       
       enemy.sprite.changeAnimation("attack");
+
+      enemy.dir.lerp(enemy.to_player, enemy.track_speed);
+      enemy.dir.normalise();
 
       if (enemy.sprite.animations.attack.frame == 3) {
         enemy.sprite.animations.attack.frame = 0;

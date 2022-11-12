@@ -16,6 +16,14 @@
       "height": 0.05,
       "vertical_offset": 5100
     },
+    
+    "pillar_electric": {
+      "directory": "engine/prop/pillar_electric",
+      "frames": 3,
+      "collision_radius": 25,
+      "height": 0.05,
+      "vertical_offset": 5100
+    },
 
     "barrelfire": {
       "directory": "engine/prop/barrelfire",
@@ -302,7 +310,7 @@
     "cyberdemon": {
       "directory": "engine/enemy/cyberdemon",
       "frames": 4,
-      "behaviour_scripts": ["shoot_player", "follow_player_zigzag", "killable"],
+      "behaviour_scripts": ["push_player", "follow_player_zigzag", "killable"],
       "height": 0.07,
       "vertical_offset": -1200,
       "health": 100,

@@ -9,9 +9,12 @@ class CyberDemon {
   health = 10;
   speed = 1;
 
+  projectile_speed = 2;
+
   chase_range = 200;
   attack_range = 100;
   push_range = 15;
+  track_speed = 0.8;
 
   frames;
 
@@ -51,6 +54,7 @@ class CyberDemon {
 
   sound_attack;
   sound_injury;
+  sound_death;
 
   pos; default_pos;
   vel; dir;
@@ -144,9 +148,18 @@ class CyberDemon {
     loadSound("engine/enemy/cyberdemon/sounds/attack.mp3", (sound) => {
       this.sound_attack = sound;
     });
+
+    loadSound("engine/enemy/cyberdemon/sounds/death.mp3", (sound) => {
+      this.sound_death = sound;
+    });
   }
 
   setup() {
+
+    this.sound_death.setVolume(0.2);
+    this.sound_injury.setVolume(0.2);
+    this.sound_attack.setVolume(0.2);
+
     this.sprite = new Sprite();
     this.anim_walk_front = loadAnimation(this.sheet_walk_front);
     this.sprite.addAnimation("walkfront", this.anim_walk_front);
@@ -193,15 +206,12 @@ class CyberDemon {
       this.sprite.animations.attack.frameDelay          = floor(frame_delay * this.speed / 5);
     }
 
-
-
-    // this.follow_player(world_data);
+    this.shoot_player(world_data);
     this.correct_angle(world_data);
 
     for (let i=0; i<this.behaviour_scripts.length; i++) {
       this.behaviour_scripts[i](this, world_data);
     }
-
   }
 
   follow_player(world_data) {
@@ -233,27 +243,44 @@ class CyberDemon {
     }
   }
 
-  // shoot_player(world_data) {
-  //   let player = world_data.players[0];
-  //   let e2p_x = player.pos.x - this.pos.x;
-  //   let e2p_y = player.pos.y - this.pos.y;
-  
-  //   let mag = sqrt(e2p_x**2 + e2p_y**2);
-     
-  //   e2p_x /= mag;
-  //   e2p_y /= mag;
+  shoot_player(world_data) {
+
+    if (this.health <= 0)
+      return;
+
+    let player = world_data.players[0];
+    this.to_player.x = player.pos.x - this.pos.x;
+    this.to_player.y = player.pos.y - this.pos.y;
+
+    this.to_player.normalise();
+    this.to_player.rotate(-1.57);
+    this.to_player.scale(6);
+    this.to_player.add(this.pos);
+    
+    let e2p_x = player.pos.x - this.to_player.x;
+    let e2p_y = player.pos.y - this.to_player.y;
+    let mag = sqrt(e2p_x**2 + e2p_y**2);
+    e2p_x /= mag;
+    e2p_y /= mag;
 
 
-  //   let dist = vector2_dist(player.pos, this.pos);
+    let dist = vector2_dist(player.pos, this.pos);
+    
+    if (dist <= this.attack_range) {
+      this.sprite.changeAnimation("attack");
 
-  //   if (dist <= this.attack_range) {
+      if (this.sprite.animations.attack.frame == 3)
+      {
+        let map = world_data.map_handler.active_map;
+        if (obstructed(player.pos.x, player.pos.y, this.pos.x, this.pos.y, map))
+          return;
 
-  //     if (this.sprite.animations.attack.frame == 3) {
-  //       this.sprite.animations.attack.frame = 0;
-  //       world_data.map_handler.active_map.create_projectile(this.pos, e2p_x*0.7, e2p_y*0.7);
-  //     }
-  //   }
-  // }
+        this.sprite.animations.attack.frame = 0;
+        world_data.map_handler.active_map.create_projectile(this.to_player, e2p_x*this.projectile_speed, e2p_y*this.projectile_speed, this.damage);
+        this.sound_attack.play();
+      }
+    }
+  }
 
   correct_angle(world_data) {
 
