@@ -107,6 +107,14 @@
       "vertical_offset": 2700
     },
 
+    "table_reflect": {
+      "directory": "engine/prop/table_reflect",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.1,
+      "vertical_offset": 6000
+    },
+
     "chair": {
       "directory": "engine/prop/chair",
       "frames": 1,
@@ -115,12 +123,28 @@
       "vertical_offset": 200
     },
 
+    "chair_reflect": {
+      "directory": "engine/prop/chair_reflect",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.05,
+      "vertical_offset": 6000
+    },
+
     "trashcan": {
       "directory": "engine/prop/trashcan",
       "frames": 1,
       "collision_radius": 5,
       "height": 0.25,
       "vertical_offset": 3500
+    },
+
+    "trashcan_reflect": {
+      "directory": "engine/prop/trashcan_reflect",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.125,
+      "vertical_offset": 6000
     },
 
     "basketball": {
@@ -137,6 +161,14 @@
       "collision_radius": 5,
       "height": 0.3,
       "vertical_offset": 3200
+    },
+
+    "toilet_reflect": {
+      "directory": "engine/prop/toilet_reflect",
+      "frames": 1,
+      "collision_radius": 5,
+      "height": 0.15,
+      "vertical_offset": 6000
     },
 
     "rubble1": {
@@ -173,6 +205,16 @@
       "collision_radius": 5,
       "height": 0.3,
       "vertical_offset": 3500
+    },
+
+
+    "trashbag_reflect": {
+      "directory": "engine/prop/trashbag_reflect",
+      "frames": 1,
+      "random_placement": true,
+      "collision_radius": 5,
+      "height": 0.15,
+      "vertical_offset": 6000
     },
 
     "bed": {
@@ -322,6 +364,22 @@
       "behaviour_scripts": ["use_velocity", "push_player", "killable", "shoot_player_shotgun"],
       "height": 0.14,
       "vertical_offset": 1600,
+      "health": 25,
+      "damage": 15,
+      "speed": 1,
+      "attack_speed": 2,
+      "follow_range": 200,
+      "chase_range": 200,
+      "attack_range": 150,
+      "push_range": 7
+    },
+
+    "shotgunner_still_reflect": {
+      "directory": "engine/enemy/shotgunner_reflect",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "push_player", "killable", "shoot_player_shotgun"],
+      "height": 0.07,
+      "vertical_offset": 6000,
       "health": 25,
       "damage": 15,
       "speed": 1,

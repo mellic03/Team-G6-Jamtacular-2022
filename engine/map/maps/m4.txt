@@ -39,23 +39,23 @@ PROP: lightflkr
 NULL
 NULL
 NULL
-ENEMY: pinky
+ENEMY: pinky_reflect
 NULL
 NULL
 NULL
 NULL
-ENEMY: pinky
-NULL
-PROP: light
-WALL: 075,075,075
-WALL: 075,075,075
-NULL
-WALL: 075,075,075
-NULL
+ENEMY: pinky_reflect
 NULL
 PROP: light
+WALL: 075,075,075
+WALL: 075,075,075
 NULL
-ENEMY: zombie
+WALL: 075,075,075
+NULL
+NULL
+PROP: light
+NULL
+ENEMY: zombie_reflect
 NULL
 WALL: 075,075,075
 NULL
@@ -114,9 +114,9 @@ NULL
 PROP: pillar_reflect
 NULL
 WALL: 075,075,075
-ENEMY: pinky
+ENEMY: pinky_reflect
 WALL: 075,075,075
-ENEMY: shotgunner_still
+ENEMY: shotgunner_still_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
@@ -165,18 +165,18 @@ WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
 PROP: lightflkr
-ENEMY: shotgunner_still
+ENEMY: shotgunner_still_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: shotgunner_still
+ENEMY: shotgunner_still_reflect
 PROP: lightflkr
 WALL: 075,075,075
 WALL: 075,075,075
-PROP: toilet
+PROP: toilet_reflect
 WALL: 075,075,075
-PROP: toilet
+PROP: toilet_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 PROP: pillar_reflect
@@ -185,7 +185,7 @@ PROP: pillar_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: shotgunner_still
+ENEMY: shotgunner_still_reflect
 WALL: 075,075,075
 PICKUP: ritalin
 WALL: 075,075,075
@@ -199,7 +199,7 @@ WALL: 075,075,075
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: zombie
+ENEMY: zombie_reflect
 PROP: lightflkr
 NULL
 NULL
@@ -211,7 +211,7 @@ WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
 PROP: lightflkr
-ENEMY: pinky
+ENEMY: pinky_reflect
 PROP: light
 NULL
 PROP: light
@@ -224,7 +224,7 @@ NULL
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-PROP: toilet
+PROP: toilet_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 NULL
@@ -262,19 +262,19 @@ WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
-PROP: table
-PROP: chair:west:west
+PROP: table_reflect
+PROP: chair_reflect:west:west
 NULL
 NULL
-PROP: vendingmachine:west:east
-WALL: 075,075,075
-NULL
-WALL: 075,075,075
+PROP: chair_reflect:south:south
 WALL: 075,075,075
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-PROP: toilet
+NULL
+WALL: 075,075,075
+WALL: 075,075,075
+PROP: toilet_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 NULL
@@ -287,11 +287,11 @@ PROP: stool:south:north
 NULL
 PROP: stool:south:north
 WALL: 075,075,075
-PROP: chair:north:north
+PROP: chair_reflect:north:north
 NULL
 NULL
 NULL
-NULL
+PROP: table_reflect
 WALL: 075,075,075
 PROP: light
 WALL: 075,075,075
@@ -315,8 +315,8 @@ NULL
 NULL
 NULL
 PROP: light
-ENEMY: zombie:2
-NULL
+ENEMY: zombie_reflect:2
+PROP: chair_reflect:north:north
 WALL: 075,075,075
 NULL
 WALL: 075,075,075
@@ -324,9 +324,9 @@ WALL: 075,075,075
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-PROP: toilet
+PROP: toilet_reflect
 WALL: 075,075,075
-PROP: toilet
+PROP: toilet_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 PROP: pillar_reflect
@@ -339,7 +339,7 @@ PROP: stool:north:south
 WALL: 075,075,075
 NULL
 NULL
-ENEMY: pinky
+ENEMY: pinky_reflect
 NULL
 NULL
 WALL: 075,075,075
@@ -354,9 +354,9 @@ WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: pinky
+ENEMY: pinky_reflect
 NULL
-ENEMY: pinky
+ENEMY: pinky_reflect
 WALL: 075,075,075
 WALL: 075,075,075
 WALL: 075,075,075
@@ -380,7 +380,7 @@ NULL
 NULL
 WALL: 075,075,075
 PROP: pillar_reflect
-ENEMY: shotgunner
+ENEMY: shotgunner_reflect
 PROP: pillar_reflect
 WALL: 075,075,075
 WALL: 075,075,075
@@ -451,11 +451,11 @@ WALL: 075,075,075
 WALL: 075,075,075
 NULL
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 NULL
 NULL
 NULL
@@ -474,7 +474,7 @@ NULL
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: shotgunner
+ENEMY: shotgunner_reflect
 NULL
 PROP: light
 NULL
@@ -495,17 +495,17 @@ NULL
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: pinky:3
+ENEMY: pinky_reflect:3
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
 NULL
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
@@ -524,7 +524,7 @@ NULL
 NULL
 WALL: 075,075,075
 WALL: 075,075,075
-ENEMY: zombie:2
+ENEMY: zombie_reflect:2
 NULL
 PROP: light
 NULL
@@ -551,11 +551,11 @@ WALL: 075,075,075
 WALL: 075,075,075
 NULL
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 PROP: stool:east:east
-PROP: table
+PROP: table_reflect
 NULL
 NULL
 NULL
