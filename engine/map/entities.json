@@ -287,7 +287,7 @@
     "shotgunner": {
       "directory": "engine/enemy/shotgunner",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player_shotgun_narrow"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player_shotgun"],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 25,
@@ -329,6 +329,22 @@
       "follow_range": 200,
       "chase_range": 200,
       "attack_range": 150,
+      "push_range": 7
+    },
+
+    "shotgunner_long": {
+      "directory": "engine/enemy/shotgunner",
+      "frames": 4,
+      "behaviour_scripts": ["use_velocity", "push_player", "killable", "shoot_player_shotgun_narrow"],
+      "height": 0.14,
+      "vertical_offset": 1600,
+      "health": 25,
+      "damage": 15,
+      "speed": 1,
+      "attack_speed": 8,
+      "follow_range": 350,
+      "chase_range": 300,
+      "attack_range": 250,
       "push_range": 7
     },
 

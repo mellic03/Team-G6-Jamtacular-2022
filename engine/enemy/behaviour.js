@@ -308,11 +308,11 @@ const behaviour_scripts = {
           return;
         }
 
-        enemy.temp_dir1.rotate(-0.15);
+        enemy.temp_dir1.rotate(-0.025);
 
         for (let i=0; i<5; i++) {
-          world_data.map_handler.active_map.create_projectile(enemy.pos, 1*enemy.temp_dir1.x, 1*enemy.temp_dir1.y, enemy.damage);
-          enemy.temp_dir1.rotate(0.05);
+          world_data.map_handler.active_map.create_projectile(enemy.pos, 3*enemy.temp_dir1.x, 3*enemy.temp_dir1.y, enemy.damage);
+          enemy.temp_dir1.rotate(0.01);
         }
 
         enemy.sound_attack.play();
