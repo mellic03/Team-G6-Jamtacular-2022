@@ -16,10 +16,13 @@ class Pickup {
   spritesheet;
 
   pos = new Vector2(0, 0);
+  default_pos = new Vector2(0, 0);
   
   constructor(x, y, directory, name) {
     this.pos.x = x;
     this.pos.y = y;
+    this.default_pos.x = x;
+    this.default_pos.y = y;
     this.directory = directory;
     this.name = name;
   }
@@ -37,6 +40,11 @@ class Pickup {
   setup() {
     this.anim_front = loadAnimation(this.spritesheet);
     this.sprite.addAnimation('front', this.anim_front);
+  }
+
+  reset() {
+    this.pos.x = this.default_pos.x;
+    this.pos.y = this.default_pos.y;
   }
 
 }

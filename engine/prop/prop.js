@@ -40,6 +40,7 @@ class Prop {
     this.anim_front = loadAnimation(this.spritesheet);
     this.anim_front.frameDelay = 32;
     this.sprite.addAnimation('front', this.anim_front);
+    this.sprite.animations.front.frame = floor(random(0, 3));
   }
 
   draw() {

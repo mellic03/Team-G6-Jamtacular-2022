@@ -26,6 +26,7 @@ class EnemyType_1 {
   chase_range = 100;
   attack_range = 50;
   push_range = 7;
+  track_speed = 0.1;
 
   to_player = new Vector2(0, 0);
   to_this = new Vector2(0, 0);
