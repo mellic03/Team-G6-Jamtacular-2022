@@ -155,7 +155,7 @@ class UI {
     if (this.intro_playing) {
       background(0);
 
-      draw_button("SKIP", 10, 525, () => {
+      draw_button("SKIP", 825, 510, () => {
         this.intro_video.stop();
         this.intro_video.hide();
         this.intro_playing = false;

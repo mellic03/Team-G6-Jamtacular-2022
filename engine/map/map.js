@@ -165,6 +165,7 @@ class Map {
               prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
             }
 
+            prop.speed = obj.speed != undefined ? obj.speed : 1;
             prop.height = obj.height;
             prop.voffset = obj.vertical_offset;
             prop.collision_radius = obj.collision_radius;

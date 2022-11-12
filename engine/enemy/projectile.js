@@ -5,8 +5,8 @@ class Projectile {
 
   frame_count = 0;
 
-  height = 0.4;
-  voffset = 0;
+  height = 0.09;
+  voffset = 4500;
 
   radius = 5;
   damage = 5;

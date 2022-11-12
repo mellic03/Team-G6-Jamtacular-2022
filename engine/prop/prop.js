@@ -9,6 +9,7 @@ class Prop {
   height = 0.1;
   voffset = 0;
   collision_radius = 0;
+  speed = 1;
 
   active_img;
   spritesheet;
@@ -44,6 +45,12 @@ class Prop {
   }
 
   draw() {
+
+    if (frameCount % floor(frameRate()) == 0) {
+      let frame_delay = floor( 2/9 * ceil(frameRate()) / this.speed);
+      this.sprite.animations.front.frameDelay = frame_delay;
+    }
+
     
   }
 }

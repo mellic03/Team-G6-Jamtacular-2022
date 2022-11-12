@@ -19,10 +19,11 @@
     
     "pillar_electric": {
       "directory": "engine/prop/pillar_electric",
+      "speed": 2,
       "frames": 3,
       "collision_radius": 25,
-      "height": 0.05,
-      "vertical_offset": 5100
+      "height": 0.1,
+      "vertical_offset": 0
     },
 
     "barrelfire": {
@@ -210,8 +211,16 @@
       "directory": "engine/prop/projectile",
       "frames": 1,
       "collision_radius": 0,
-      "height": 0.08,
-      "vertical_offset": -300
+      "height": 0.1,
+      "vertical_offset": 4500
+    },
+
+    "snake": {
+      "directory": "engine/prop/snake",
+      "frames": 1,
+      "collision_radius": 0,
+      "height": 0.05,
+      "vertical_offset": 0
     }
   },
 
@@ -311,8 +320,8 @@
       "directory": "engine/enemy/cyberdemon",
       "frames": 4,
       "behaviour_scripts": ["push_player", "follow_player_zigzag", "killable"],
-      "height": 0.07,
-      "vertical_offset": -1200,
+      "height": 0.035,
+      "vertical_offset": 5000,
       "health": 100,
       "damage": 10,
       "speed": 1,
