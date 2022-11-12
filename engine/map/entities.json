@@ -290,6 +290,14 @@
       "amounts": [90, true, 50, 100, 5],
       "height": 0.2,
       "vertical_offset": 3500
+    },
+
+    "pistol": {
+      "directory": "engine/pickup/pistol",
+      "attributes": ["has_pistol"],
+      "amounts": [true],
+      "height": 0.2,
+      "vertical_offset": 3500
     }
   },
 
@@ -412,7 +420,7 @@
       "behaviour_scripts": ["push_player", "follow_player_zigzag", "killable"],
       "height": 0.035,
       "vertical_offset": 5000,
-      "health": 15,
+      "health": 1000,
       "damage": 10,
       "speed": 1,
       "follow_range": 300,

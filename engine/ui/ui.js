@@ -70,7 +70,7 @@ class UI {
 
   preload() {
 
-    this.intro_video = createVideo("engine/ui/intro.mp4", () => {
+    this.intro_video = createVideo("engine/ui/intro.webm", () => {
       this.intro_video.looping = false;
       this.intro_video.position(0, 0);
       this.intro_video.volume(1);
@@ -329,7 +329,7 @@ class UI {
     this.res_slider.show();
     world_data.audio_handler.active_track.setVolume(this.music_volume_slider.value());
     
-    text(`${this.pistol_checkbox.value() == 0 ? "Europe" : "Uvalde"}`, 100, 500);
+    text(`${this.pistol_checkbox.value() == 0 ? "NO GUN" : "YES GUN"}`, 100, 500);
     this.pistol_checkbox.show();
     world_data.players[0].has_pistol = this.pistol_checkbox.value();
     

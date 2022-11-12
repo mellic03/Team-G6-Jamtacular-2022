@@ -20,7 +20,7 @@ function setup() {
   scr_hght = windowHeight;
   windowResized();
   createCanvas(scr_wdth, scr_hght);
-  frameRate(144); pixelDensity(1); noSmooth();
+  frameRate(60); pixelDensity(1); noSmooth();
 
   player_handler.setup();
   map_handler.setup(player_handler);

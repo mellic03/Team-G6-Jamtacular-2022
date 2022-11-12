@@ -233,8 +233,10 @@ class Map {
             }
 
             else {
-              if (enemy_name == "cyberdemon")
+              if (enemy_name == "cyberdemon") {
                 enemy = new CyberDemon((i%25)*25 + 12.5, floor(i/25)*25 + 12.5);
+                cyberdemon = enemy;
+              }
 
               else
                 enemy = new EnemyType_1((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory);
@@ -286,6 +288,11 @@ class Map {
     }
     for (let pickup of this.pickups) {
       pickup.setup();
+      if (pickup.name == "pistol") {
+        pistol_pickup = pickup;
+        pickup.pos.x = -100;
+        pickup.pos.y = -100;
+      }
     }
   }
 

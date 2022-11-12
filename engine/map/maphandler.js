@@ -12,6 +12,10 @@ class MapHandler {
   }
 
   set_active_map(map_name, player) {
+    enemies_killed = 0;
+    if (map_name == "m5") {
+      m5_setup(world_data);
+    }
     for (let map of this._maps) {
       if (map.name == map_name) {
         this.active_map = map;
@@ -74,9 +78,81 @@ class MapHandler {
       this.map_number += 1;
       this.set_active_map("m" + this.map_number, player);
     }
+
+    if (this.active_map.name == "m5") {
+      last_minute_spaghetti(world_data);
+    }
+  }
+}
+
+
+let final_map_enemies = [];
+
+function m5_setup(world_data) {
+  let map = world_data.map_handler._maps[4];
+  for (let enemy of map.enemies) {
+    if (enemy.name != "cyberdemon") {
+      final_map_enemies.push(enemy);
+    }
+  }
+}
+
+let spawn_flag = 0;
+
+function last_minute_spaghetti(world_data) {
+
+  let player = world_data.players[0];
+
+  if (player.has_pistol == false && enemies_killed >= 4) {
+    enemies_killed = 0;
+    pistol_pickup.pos.x = 312.5;
+    pistol_pickup.pos.y = 437.5;
+  }
+  
+
+  if (cyberdemon.health <= 0 && enemies_killed >= 4) {
+    for (let prop of world_data.map_handler._maps[4].props) {
+      if (prop.name == "pillar_electric") {
+        prop.pos.x = -100;
+        prop.pos.y = -100;
+      }
+    }
+  }
+  
+  else if (cyberdemon.health < 250 && spawn_flag == 2) {
+    enemies_killed = 0;
+    spawn_flag += 1;
+    for (let enemy of final_map_enemies) {
+      if (enemy.health <= 0) {
+        enemy.reset();
+      }
+    }
   }
 
+  else if (cyberdemon.health < 500 && spawn_flag == 1) {
+    enemies_killed = 0;
+    spawn_flag += 1;
+    for (let enemy of final_map_enemies) {
+      if (enemy.health <= 0) {
+        enemy.reset();
+      }
+    }
+  }
+
+  else if (cyberdemon.health < 750 && spawn_flag == 0) {
+    enemies_killed = 0;
+    spawn_flag += 1;
+    for (let enemy of final_map_enemies) {
+      if (enemy.health <= 0) {
+        enemy.reset();
+      }
+    }
+  }
+
+
 }
+
+
 
 /** Determine if an object fits the player specification
  *  described in this file.

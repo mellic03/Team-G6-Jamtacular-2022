@@ -435,7 +435,7 @@ NULL
 PROP: pillar_reflect
 NULL
 NULL
-NULL
+PICKUP: pistol
 NULL
 NULL
 PROP: pillar_reflect

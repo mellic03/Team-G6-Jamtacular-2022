@@ -140,6 +140,7 @@ const behaviour_scripts = {
       enemy.sound_death.play();
       enemy.death_sound_play = true;
       enemy.sprite.changeAnimation("death");
+      enemies_killed += 1;
       return;
     }
 

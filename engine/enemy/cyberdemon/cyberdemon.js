@@ -1,4 +1,3 @@
-
 class CyberDemon {
 
   behaviour_scripts = [];
@@ -6,7 +5,7 @@ class CyberDemon {
   sprite;
   height;
 
-  health = 10;
+  health = 100;
   speed = 1;
 
   projectile_speed = 2;
@@ -210,8 +209,6 @@ class CyberDemon {
 
 
     this.sprite.changeAnimation("attack");
-
-
   }
 
   draw(world_data) {
@@ -227,9 +224,8 @@ class CyberDemon {
       this.sprite.animations.walkright.frameDelay       = frame_delay;
       this.sprite.animations.walkleft.frameDelay        = frame_delay;
       this.sprite.animations.attack.frameDelay          = floor(frame_delay * this.speed / 5);
+      this.sprite.animations.death.frameDelay           = frame_delay;
     }
-
-    console.log(this.health);
 
     let player = world_data.players[0];
     let dist = vector2_dist(player.pos, this.pos);

@@ -132,6 +132,9 @@ class Player {
 
     if (this.health <= 0) {
       world_data.map_handler.active_map.reset(this);
+      this.has_pistol = false;
+      pistol_pickup.pos.x = -100;
+      pistol_pickup.pos.y = -100;
       this.health = 100;
       this.armor = 100;
       this.stimmed_up_on_ritalin = false;
@@ -513,7 +516,7 @@ class Player {
         this.tempvec_1.normalise();
         this.tempvec_1.scale(5);
 
-        world_data.map_handler.active_map.create_projectile(this.tempvec_2, this.tempvec_1.x, this.tempvec_1.y, 5, 2);
+        world_data.map_handler.active_map.create_projectile(this.tempvec_2, this.tempvec_1.x, this.tempvec_1.y, 500, 2);
       }
 
       if (this.pistol.sprite.animation.frame == 4) {
