@@ -2,7 +2,6 @@
 
 "use strict";
 
-
 let player_handler = player_init();
 let map_handler = map_init();
 let ui_handler = ui_init();
