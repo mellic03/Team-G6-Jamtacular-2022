@@ -21,7 +21,7 @@ class Player {
   injury_sound;
 
   can_shoot = true;
-  has_pistol = true;
+  has_pistol = false;
   pistol = new Pistol(scr_wdth/2, scr_hght);
   shoot_sound;
 
