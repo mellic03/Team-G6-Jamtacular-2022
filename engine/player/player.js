@@ -92,7 +92,16 @@ class Player {
   count = 0;
 
   draw(world_data) {
-    
+
+    if (this.health <= 0) {
+      world_data.map_handler.active_map.reset(this);
+      this.health = 100;
+      this.armor = 100;
+      this.stimmed_up_on_ritalin = false;
+      this.hitpoints_until_nostim = 0;
+      world_data.ui_handler.pause();
+    }
+
     this.health = clamp(this.health, 0, 100);
     this.armor = clamp(this.armor, 0, 100);
     this.stamina = clamp(this.stamina, 0, 100);
