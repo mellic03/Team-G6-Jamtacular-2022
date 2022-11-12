@@ -287,7 +287,7 @@
     "shotgunner": {
       "directory": "engine/enemy/shotgunner",
       "frames": 4,
-      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player_shotgun"],
+      "behaviour_scripts": ["use_velocity", "push_player", "follow_player_zigzag", "killable", "shoot_player_shotgun_narrow"],
       "height": 0.14,
       "vertical_offset": 1600,
       "health": 25,
