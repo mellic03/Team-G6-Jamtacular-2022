@@ -69,8 +69,6 @@ class UI {
       this.intro_video.looping = false;
       this.intro_video.position(0, 0);
       this.intro_video.volume(1);
-      this.intro_video.show();
-      this.intro_video.play();
       this.intro_video.speed(1);
       this.intro_video.onended((vid) => {
         vid.hide();
