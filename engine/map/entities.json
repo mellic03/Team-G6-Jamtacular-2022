@@ -329,21 +329,6 @@
       "push_range": 7
     },
 
-    "revenant": {
-      "directory": "engine/enemy/revenant",
-      "frames": 6,
-      "behaviour_scripts": ["use_velocity", "follow_player_zigzag", "killable"],
-      "height": 0.14,
-      "vertical_offset": 2300,
-      "health": 100,
-      "damage": 10,
-      "speed": 1,
-      "follow_range": 100,
-      "chase_range": 20,
-      "attack_range": 15,
-      "push_range": 7
-    },
-
     "pinky": {
       "directory": "engine/enemy/pinky",
       "frames": 4,
@@ -351,11 +336,11 @@
       "height": 0.14,
       "vertical_offset": 1800,
       "health": 50,
-      "damage": 5,
+      "damage": 5  ,
       "speed": 3,
       "follow_range": 250,
       "chase_range": 50,
-      "attack_range": 8,
+      "attack_range": 10,
       "push_range": 5
     }
 

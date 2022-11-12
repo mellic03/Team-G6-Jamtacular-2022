@@ -106,7 +106,7 @@ class Player {
     this.armor = clamp(this.armor, 0, 100);
     this.stamina = clamp(this.stamina, 0, 100);
 
-    this.stamina += 0.003 * deltaTime;
+    this.stamina += 0.006 * deltaTime;
 
     this.res = world_data.ui_handler.res_slider.value();
     this.fov = this.fov_modifier * (scr_hght/scr_wdth);
