@@ -24,7 +24,6 @@ class MapHandler {
   }
 
   add(map) {
-    
     let validity = is_valid_map(map);
 
     if (validity == true) {

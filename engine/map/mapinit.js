@@ -11,7 +11,7 @@ function map_init() {
   map_handler.add(new Map("m5", "engine/map/maps/m5.txt"));
   map_handler.add(new Map("m6", "engine/map/maps/m6.txt"));
 
-
   map_handler.active_map = m1;
+
   return map_handler;
 }
