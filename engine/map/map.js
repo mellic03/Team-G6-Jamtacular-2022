@@ -165,6 +165,10 @@ class Map {
               prop = new Prop((i%25)*25 + 12.5, floor(i/25)*25 + 12.5, obj.directory, obj.frames, prop_name);
             }
 
+            if (prop_name == "snake") {
+              snake = prop;
+            }
+
             prop.speed = obj.speed != undefined ? obj.speed : 1;
             prop.height = obj.height;
             prop.voffset = obj.vertical_offset;
@@ -217,7 +221,8 @@ class Map {
                 enemy.frames = obj.frames;
                 enemy.height = obj.height;
                 enemy.voffset = obj.vertical_offset;
-                
+              
+                enemy.name = enemy_name;
                 enemy.health = obj.health;
                 enemy.default_health = obj.health;
                 enemy.damage = obj.damage;
@@ -249,6 +254,7 @@ class Map {
               enemy.height = obj.height;
               enemy.voffset = obj.vertical_offset;
               
+              enemy.name = enemy_name;
               enemy.health = obj.health;
               enemy.damage = obj.damage;
               enemy.speed = obj.speed;

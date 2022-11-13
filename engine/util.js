@@ -4,6 +4,7 @@ let scr_hght = 800;
 let game_paused = true;
 let pistol_pickup;
 let cyberdemon;
+let snake;
 let enemies_killed = 0;
 
 const keycodes = {

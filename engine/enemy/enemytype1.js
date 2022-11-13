@@ -11,6 +11,8 @@ class EnemyType_1 {
 
   behaviour_scripts = []; // Array of functions to be executed in draw()
 
+  name;
+
   health = 50; default_health = 50;
   damage = 5;
   speed = 1;

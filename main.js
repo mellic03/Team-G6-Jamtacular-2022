@@ -41,8 +41,12 @@ function draw() {
   resizeCanvas(scr_wdth, scr_hght);
   image(world_data.map_handler.active_map.background, 0, 0, scr_wdth, scr_hght);
 
-  map_handler.draw(world_data);
-  player_handler.draw(world_data);
+  if (world_data.ui_handler.outro_playing == false) {
+    map_handler.draw(world_data);
+    player_handler.draw(world_data);
+  }  
+  else 
+    background(0);
   ui_handler.draw(world_data);
   audio_handler.draw(world_data);
 

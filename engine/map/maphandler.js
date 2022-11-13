@@ -98,6 +98,7 @@ function m5_setup(world_data) {
 }
 
 let spawn_flag = 0;
+let video_lock = false;
 
 function last_minute_spaghetti(world_data) {
 
@@ -108,7 +109,20 @@ function last_minute_spaghetti(world_data) {
     pistol_pickup.pos.x = 312.5;
     pistol_pickup.pos.y = 437.5;
   }
-  
+
+  if (cyberdemon.pos.x == NaN || cyberdemon.pos.y == NaN) {
+    cyberdemon.pos.x = 500;
+    cyberdemon.pos.y = 500;
+    cyberdemon.vel.x = 500;
+    cyberdemon.vel.y = 500;
+
+    cyberdemon.dir.x = 1;
+    cyberdemon.dir.y = 0;
+
+    cyberdemon.player_delta_dist = 0.2;
+    cyberdemon.player_last_dist = 50;
+
+  }
 
   if (cyberdemon.health <= 0 && enemies_killed >= 4) {
     for (let prop of world_data.map_handler._maps[4].props) {
@@ -116,6 +130,17 @@ function last_minute_spaghetti(world_data) {
         prop.pos.x = -100;
         prop.pos.y = -100;
       }
+    }
+
+    if (vector2_dist(player.pos, snake.pos) < 15 && video_lock == false) {
+      video_lock = true;
+      player.mov_speed = 0;
+      player.mov_friction = 1;
+      world_data.audio_handler.active_track.pause();
+      world_data.ui_handler.pause();
+      world_data.ui_handler.music_volume_slider.hide();
+      world_data.ui_handler.outro_video.hideControls();
+      world_data.ui_handler.outro_playing = true;
     }
   }
   
@@ -130,6 +155,9 @@ function last_minute_spaghetti(world_data) {
   }
 
   else if (cyberdemon.health < 500 && spawn_flag == 1) {
+    player.has_pistol = false;
+    pistol_pickup.pos.x = -100;
+    pistol_pickup.pos.y = -100;
     enemies_killed = 0;
     spawn_flag += 1;
     for (let enemy of final_map_enemies) {
@@ -140,6 +168,9 @@ function last_minute_spaghetti(world_data) {
   }
 
   else if (cyberdemon.health < 750 && spawn_flag == 0) {
+    player.has_pistol = false;
+    pistol_pickup.pos.x = -100;
+    pistol_pickup.pos.y = -100;
     enemies_killed = 0;
     spawn_flag += 1;
     for (let enemy of final_map_enemies) {
@@ -149,6 +180,23 @@ function last_minute_spaghetti(world_data) {
     }
   }
 
+  if (cyberdemon.health > 250) {
+    for (let enemy of final_map_enemies) {
+      if (enemy.name == "zombie_reflect") {
+        enemy.pos.x = -500;
+        enemy.pos.y = -500;
+      }
+    }
+  }
+
+  else {
+    for (let enemy of final_map_enemies) {
+      if (enemy.name == "zombie_reflect") {
+        enemy.pos.x = enemy.default_pos.x;
+        enemy.pos.y = enemy.default_pos.y;
+      }
+    }
+  }
 
 }
 

@@ -91,10 +91,6 @@ class UI {
       this.outro_video.volume(1);
       this.outro_video.speed(1);
       this.outro_video.hide();
-      this.outro_video.onended((vid) => {
-        vid.hide();
-        world_data.ui_handler.outro_playing = false;
-      })
     });
 
     this.hud = loadImage('engine/ui/player_sprites/hud.png');
@@ -191,6 +187,11 @@ class UI {
       return;
     }
 
+    if (this.outro_playing) {
+      this.draw_menu();
+      return;
+    }
+
     ratio_x = scr_wdth/1000;
     ratio_y = scr_hght/1000;
 
@@ -260,6 +261,13 @@ class UI {
   }
 
   draw_menu() {
+
+    if (this.outro_playing) {
+      this.outro_video.show();
+      this.outro_video.showControls();
+
+      return;
+    }
 
     textSize(128);
     strokeWeight(1);

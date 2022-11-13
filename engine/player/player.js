@@ -516,7 +516,7 @@ class Player {
         this.tempvec_1.normalise();
         this.tempvec_1.scale(5);
 
-        world_data.map_handler.active_map.create_projectile(this.tempvec_2, this.tempvec_1.x, this.tempvec_1.y, 500, 2);
+        world_data.map_handler.active_map.create_projectile(this.tempvec_2, this.tempvec_1.x, this.tempvec_1.y, 50, 2);
       }
 
       if (this.pistol.sprite.animation.frame == 4) {
