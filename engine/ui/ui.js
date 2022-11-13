@@ -272,7 +272,7 @@ class UI {
     textSize(128);
     strokeWeight(1);
     textAlign(CENTER, CENTER);
-    text(`CHADS FISTING RAMPAGE`, scr_wdth/2,  scr_hght/8);
+    text(`SLITHER-BOY RESCUE`, scr_wdth/2,  scr_hght/8);
 
     switch (this.menu_state)
     {
