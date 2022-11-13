@@ -192,6 +192,8 @@ class UI {
       return;
     }
 
+
+
     ratio_x = scr_wdth/1000;
     ratio_y = scr_hght/1000;
 
@@ -247,6 +249,14 @@ class UI {
       // text(`FPS: ${this.framerate}`, 10, 30);
       // text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     }
+
+    if (!this.outro_playing) {
+      textAlign(LEFT, CENTER);
+      textSize(64);
+      fill(255);
+      text("P: pause", 10, 20);
+    }
+
   }
 
   unpause() {
