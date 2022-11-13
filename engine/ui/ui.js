@@ -226,7 +226,7 @@ class UI {
       if (this.ui_display == true) {
         this.draw_armor_state(world_data);
         imageMode(CENTER);
-        image(this.hud, scr_wdth/2, scr_hght/2, scr_wdth, scr_hght);
+        image(this.hud, scr_wdth/2, scr_hght/2, scr_wdth, scr_hght*1.01);
         this.draw_stat_ui(world_data);
         this.draw_face_state(world_data);
   
@@ -241,11 +241,11 @@ class UI {
   
       this.draw_low_health(world_data);
       
-      strokeWeight(1);
-      fill(255);
-      textSize(60);
-      text(`FPS: ${this.framerate}`, 10, 30);
-      text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
+      // strokeWeight(1);
+      // fill(255);
+      // textSize(60);
+      // text(`FPS: ${this.framerate}`, 10, 30);
+      // text(`(${floor(world_data.players[0].pos.x)}, ${floor(world_data.players[0].pos.y)})`, 10, 55);
     }
   }
 
