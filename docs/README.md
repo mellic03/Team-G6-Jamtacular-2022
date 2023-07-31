@@ -1,4 +1,16 @@
-# Using the Map Editor
+# 2022 p5.js Jamtaculer
+
+
+<img src="scr1.png">
+<img src="scr2.png">
+
+## What is this?
+This is a small DOOM-like game made during a two-week game jam. For the game jam I wrote a custom raycasting engine in JavaScript using the DDA algorithm.
+
+I also wrote some tooling for creating levels and assets. While the engine was written in JavaScript, the levels were created and pieced together in a small C program.
+
+The rest of this document was written for my team members, it describes how to create and use assets for the engine.
+
 
 ## Creating a Map
 - Clicking on and keeping the mouse over the "RGB", "PROP", "PICKUP" or "ENEMY" buttons allows the user to type the name of an entity into that field (e.g. "255,255,255" or "pillar"). With one of these selected, left-clicking the mouse can be used to place these entities on the map. Read through /engine/map/entities.json to view which entities exist and are placeable.
@@ -126,18 +138,3 @@ Scripts can be assigned to an enemy by adding the name of the script to the beha
 4. The new pickup can now be placed in the map editor by typing the pickup name in the "pickup" field.
 
 &nbsp;
-
-# Planning For The Future
-
-## TODO
-- [ ] Pickups -cocaine, ritalin?
-- [x] Chad looks left or right with player rotation
-- [ ] More props, enemy sprites
-- [x] Enemy behaviour scripting
-- [ ] Boss, bosses?
-- [ ] Weapons -shiv, needle?
-- [ ] Gameplay loop
-    - [ ] Combat
-    - [ ] Dying
-    - [x] enemy death
-- [x] Map transitions
