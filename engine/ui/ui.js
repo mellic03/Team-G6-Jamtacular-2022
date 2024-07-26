@@ -53,8 +53,8 @@ class UI {
   currframe2;
   toggle;
 
-  intro_video;
-  intro_playing = true;
+  // intro_video;
+  // intro_playing = true;
 
   outro_video;
   outro_playing = false;
@@ -70,20 +70,20 @@ class UI {
 
   preload() {
 
-    this.intro_video = createVideo("engine/ui/intro.webm", () => {
-      this.intro_video.looping = false;
-      this.intro_video.position(0, 0);
-      this.intro_video.volume(1);
-      this.intro_video.speed(1);
-      this.intro_video.showControls();
-      this.intro_video.onended((vid) => {
-        vid.hide();
-        world_data.ui_handler.intro_playing = false;
-        world_data.audio_handler.active_track.setVolume(
-          world_data.ui_handler.music_volume_slider.value()
-        );
-      })
-    });
+    // this.intro_video = createVideo("engine/ui/intro.webm", () => {
+    //   this.intro_video.looping = false;
+    //   this.intro_video.position(0, 0);
+    //   this.intro_video.volume(1);
+    //   this.intro_video.speed(1);
+    //   this.intro_video.showControls();
+    //   this.intro_video.onended((vid) => {
+    //     vid.hide();
+    //     world_data.ui_handler.intro_playing = false;
+    //     world_data.audio_handler.active_track.setVolume(
+    //       world_data.ui_handler.music_volume_slider.value()
+    //     );
+    //   })
+    // });
 
     this.outro_video = createVideo("engine/ui/ending.webm", () => {
       this.outro_video.looping = false;
@@ -172,20 +172,20 @@ class UI {
 
   draw(world_data) {
 
-    if (this.intro_playing) {
-      background(0);
+    // if (this.intro_playing) {
+    //   background(0);
 
-      draw_button("SKIP", 825, 510, () => {
-        this.intro_video.stop();
-        this.intro_video.hide();
-        this.intro_playing = false;
-        world_data.ui_handler.intro_playing = false;
-        world_data.audio_handler?.active_track.setVolume(
-          world_data.ui_handler.music_volume_slider.value()
-        );
-      })
-      return;
-    }
+    //   draw_button("SKIP", 825, 510, () => {
+    //     this.intro_video.stop();
+    //     this.intro_video.hide();
+    //     this.intro_playing = false;
+    //     world_data.ui_handler.intro_playing = false;
+    //     world_data.audio_handler?.active_track.setVolume(
+    //       world_data.ui_handler.music_volume_slider.value()
+    //     );
+    //   })
+    //   return;
+    // }
 
     if (this.outro_playing) {
       this.draw_menu();
